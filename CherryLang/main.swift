@@ -15,7 +15,7 @@ func parseFile(path: String) throws {
     try tokens.fill()
     print(tokens.getTokens())
     let parser = try CherryParser(tokens)
-    let tree = try parser.tokens()
+    let tree = try parser.prog()
     print(tree.toStringTree(parser))
 }
 

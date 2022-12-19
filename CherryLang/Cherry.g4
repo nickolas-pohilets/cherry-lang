@@ -26,6 +26,7 @@ expr:   expr ('*'|'/') expr
     |   STRING
     |   stringInterpolation
     |   '(' expr ')'
+    |   expr LBRACE expr RBRACE expr
     ;
     
 stringInterpolation

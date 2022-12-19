@@ -299,6 +299,14 @@ open class CherryParser: Parser {
 			func expr(_ i: Int) -> ExprContext? {
 				return getRuleContext(ExprContext.self, i)
 			}
+			open
+			func LBRACE() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.LBRACE.rawValue, 0)
+			}
+			open
+			func RBRACE() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.RBRACE.rawValue, 0)
+			}
 		override open
 		func getRuleIndex() -> Int {
 			return CherryParser.RULE_expr
@@ -376,7 +384,7 @@ open class CherryParser: Parser {
 				throw ANTLRException.recognition(e: NoViableAltException(self))
 			}
 			_ctx!.stop = try _input.LT(-1)
-			setState(55)
+			setState(61)
 			try _errHandler.sync(self)
 			_alt = try getInterpreter().adaptivePredict(_input,5,_ctx)
 			while (_alt != 2 && _alt != ATN.INVALID_ALT_NUMBER) {
@@ -385,15 +393,15 @@ open class CherryParser: Parser {
 					   try triggerExitRuleEvent()
 					}
 					_prevctx = _localctx
-					setState(53)
+					setState(59)
 					try _errHandler.sync(self)
 					switch(try getInterpreter().adaptivePredict(_input,4, _ctx)) {
 					case 1:
 						_localctx = ExprContext(_parentctx, _parentState);
 						try pushNewRecursionContext(_localctx, _startState, CherryParser.RULE_expr)
 						setState(47)
-						if (!(precpred(_ctx, 7))) {
-						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 7)"))
+						if (!(precpred(_ctx, 8))) {
+						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 8)"))
 						}
 						setState(48)
 						_la = try _input.LA(1)
@@ -405,15 +413,15 @@ open class CherryParser: Parser {
 							try consume()
 						}
 						setState(49)
-						try expr(8)
+						try expr(9)
 
 						break
 					case 2:
 						_localctx = ExprContext(_parentctx, _parentState);
 						try pushNewRecursionContext(_localctx, _startState, CherryParser.RULE_expr)
 						setState(50)
-						if (!(precpred(_ctx, 6))) {
-						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 6)"))
+						if (!(precpred(_ctx, 7))) {
+						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 7)"))
 						}
 						setState(51)
 						_la = try _input.LA(1)
@@ -425,14 +433,31 @@ open class CherryParser: Parser {
 							try consume()
 						}
 						setState(52)
-						try expr(7)
+						try expr(8)
+
+						break
+					case 3:
+						_localctx = ExprContext(_parentctx, _parentState);
+						try pushNewRecursionContext(_localctx, _startState, CherryParser.RULE_expr)
+						setState(53)
+						if (!(precpred(_ctx, 1))) {
+						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 1)"))
+						}
+						setState(54)
+						try match(CherryParser.Tokens.LBRACE.rawValue)
+						setState(55)
+						try expr(0)
+						setState(56)
+						try match(CherryParser.Tokens.RBRACE.rawValue)
+						setState(57)
+						try expr(2)
 
 						break
 					default: break
 					}
 			 
 				}
-				setState(57)
+				setState(63)
 				try _errHandler.sync(self)
 				_alt = try getInterpreter().adaptivePredict(_input,5,_ctx)
 			}
@@ -500,25 +525,25 @@ open class CherryParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(58)
-		 	try match(CherryParser.Tokens.STRING_INTERPOLATION_START.rawValue)
-		 	setState(59)
-		 	try expr(0)
 		 	setState(64)
+		 	try match(CherryParser.Tokens.STRING_INTERPOLATION_START.rawValue)
+		 	setState(65)
+		 	try expr(0)
+		 	setState(70)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
 		 	while (_la == CherryParser.Tokens.STRING_INTERPOLATION_CONTINUE.rawValue) {
-		 		setState(60)
+		 		setState(66)
 		 		try match(CherryParser.Tokens.STRING_INTERPOLATION_CONTINUE.rawValue)
-		 		setState(61)
+		 		setState(67)
 		 		try expr(0)
 
 
-		 		setState(66)
+		 		setState(72)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 	}
-		 	setState(67)
+		 	setState(73)
 		 	try match(CherryParser.Tokens.STRING_INTERPOLATION_FINISH.rawValue)
 
 		}
@@ -541,34 +566,37 @@ open class CherryParser: Parser {
 	}
 	private func expr_sempred(_ _localctx: ExprContext!,  _ predIndex: Int) throws -> Bool {
 		switch (predIndex) {
-		    case 0:return precpred(_ctx, 7)
-		    case 1:return precpred(_ctx, 6)
+		    case 0:return precpred(_ctx, 8)
+		    case 1:return precpred(_ctx, 7)
+		    case 2:return precpred(_ctx, 1)
 		    default: return true
 		}
 	}
 
 	static let _serializedATN:[Int] = [
-		4,1,17,70,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,1,0,4,0,12,8,0,11,0,
+		4,1,17,76,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,1,0,4,0,12,8,0,11,0,
 		12,0,13,1,0,1,0,1,1,5,1,19,8,1,10,1,12,1,22,9,1,1,1,1,1,1,2,1,2,1,2,1,
 		2,1,2,1,2,1,2,1,2,1,2,3,2,35,8,2,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,3,
-		3,46,8,3,1,3,1,3,1,3,1,3,1,3,1,3,5,3,54,8,3,10,3,12,3,57,9,3,1,4,1,4,1,
-		4,1,4,5,4,63,8,4,10,4,12,4,66,9,4,1,4,1,4,1,4,0,1,6,5,0,2,4,6,8,0,2,1,
-		0,2,3,1,0,4,5,75,0,11,1,0,0,0,2,20,1,0,0,0,4,34,1,0,0,0,6,45,1,0,0,0,8,
-		58,1,0,0,0,10,12,3,4,2,0,11,10,1,0,0,0,12,13,1,0,0,0,13,11,1,0,0,0,13,
-		14,1,0,0,0,14,15,1,0,0,0,15,16,5,0,0,1,16,1,1,0,0,0,17,19,9,0,0,0,18,17,
-		1,0,0,0,19,22,1,0,0,0,20,18,1,0,0,0,20,21,1,0,0,0,21,23,1,0,0,0,22,20,
-		1,0,0,0,23,24,5,0,0,1,24,3,1,0,0,0,25,26,3,6,3,0,26,27,5,10,0,0,27,35,
-		1,0,0,0,28,29,5,8,0,0,29,30,5,1,0,0,30,31,3,6,3,0,31,32,5,10,0,0,32,35,
-		1,0,0,0,33,35,5,10,0,0,34,25,1,0,0,0,34,28,1,0,0,0,34,33,1,0,0,0,35,5,
-		1,0,0,0,36,37,6,3,-1,0,37,46,5,9,0,0,38,46,5,8,0,0,39,46,5,14,0,0,40,46,
-		3,8,4,0,41,42,5,6,0,0,42,43,3,6,3,0,43,44,5,7,0,0,44,46,1,0,0,0,45,36,
-		1,0,0,0,45,38,1,0,0,0,45,39,1,0,0,0,45,40,1,0,0,0,45,41,1,0,0,0,46,55,
-		1,0,0,0,47,48,10,7,0,0,48,49,7,0,0,0,49,54,3,6,3,8,50,51,10,6,0,0,51,52,
-		7,1,0,0,52,54,3,6,3,7,53,47,1,0,0,0,53,50,1,0,0,0,54,57,1,0,0,0,55,53,
-		1,0,0,0,55,56,1,0,0,0,56,7,1,0,0,0,57,55,1,0,0,0,58,59,5,15,0,0,59,64,
-		3,6,3,0,60,61,5,16,0,0,61,63,3,6,3,0,62,60,1,0,0,0,63,66,1,0,0,0,64,62,
-		1,0,0,0,64,65,1,0,0,0,65,67,1,0,0,0,66,64,1,0,0,0,67,68,5,17,0,0,68,9,
-		1,0,0,0,7,13,20,34,45,53,55,64
+		3,46,8,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,5,3,60,8,3,10,
+		3,12,3,63,9,3,1,4,1,4,1,4,1,4,5,4,69,8,4,10,4,12,4,72,9,4,1,4,1,4,1,4,
+		0,1,6,5,0,2,4,6,8,0,2,1,0,2,3,1,0,4,5,82,0,11,1,0,0,0,2,20,1,0,0,0,4,34,
+		1,0,0,0,6,45,1,0,0,0,8,64,1,0,0,0,10,12,3,4,2,0,11,10,1,0,0,0,12,13,1,
+		0,0,0,13,11,1,0,0,0,13,14,1,0,0,0,14,15,1,0,0,0,15,16,5,0,0,1,16,1,1,0,
+		0,0,17,19,9,0,0,0,18,17,1,0,0,0,19,22,1,0,0,0,20,18,1,0,0,0,20,21,1,0,
+		0,0,21,23,1,0,0,0,22,20,1,0,0,0,23,24,5,0,0,1,24,3,1,0,0,0,25,26,3,6,3,
+		0,26,27,5,10,0,0,27,35,1,0,0,0,28,29,5,8,0,0,29,30,5,1,0,0,30,31,3,6,3,
+		0,31,32,5,10,0,0,32,35,1,0,0,0,33,35,5,10,0,0,34,25,1,0,0,0,34,28,1,0,
+		0,0,34,33,1,0,0,0,35,5,1,0,0,0,36,37,6,3,-1,0,37,46,5,9,0,0,38,46,5,8,
+		0,0,39,46,5,14,0,0,40,46,3,8,4,0,41,42,5,6,0,0,42,43,3,6,3,0,43,44,5,7,
+		0,0,44,46,1,0,0,0,45,36,1,0,0,0,45,38,1,0,0,0,45,39,1,0,0,0,45,40,1,0,
+		0,0,45,41,1,0,0,0,46,61,1,0,0,0,47,48,10,8,0,0,48,49,7,0,0,0,49,60,3,6,
+		3,9,50,51,10,7,0,0,51,52,7,1,0,0,52,60,3,6,3,8,53,54,10,1,0,0,54,55,5,
+		12,0,0,55,56,3,6,3,0,56,57,5,13,0,0,57,58,3,6,3,2,58,60,1,0,0,0,59,47,
+		1,0,0,0,59,50,1,0,0,0,59,53,1,0,0,0,60,63,1,0,0,0,61,59,1,0,0,0,61,62,
+		1,0,0,0,62,7,1,0,0,0,63,61,1,0,0,0,64,65,5,15,0,0,65,70,3,6,3,0,66,67,
+		5,16,0,0,67,69,3,6,3,0,68,66,1,0,0,0,69,72,1,0,0,0,70,68,1,0,0,0,70,71,
+		1,0,0,0,71,73,1,0,0,0,72,70,1,0,0,0,73,74,5,17,0,0,74,9,1,0,0,0,7,13,20,
+		34,45,59,61,70
 	]
 
 	public

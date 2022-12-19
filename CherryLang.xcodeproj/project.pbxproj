@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		4A9183492950A57D00EDB39C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9183482950A57D00EDB39C /* main.swift */; };
+		4A9183512950A5DB00EDB39C /* Antlr4 in Frameworks */ = {isa = PBXBuildFile; productRef = 4A9183502950A5DB00EDB39C /* Antlr4 */; };
+		4A91835F2950A88900EDB39C /* CherryParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9183582950A88900EDB39C /* CherryParser.swift */; };
+		4A9183602950A88900EDB39C /* CherryListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9183592950A88900EDB39C /* CherryListener.swift */; };
+		4A9183612950A88900EDB39C /* CherryBaseListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A91835B2950A88900EDB39C /* CherryBaseListener.swift */; };
+		4A9183622950A88900EDB39C /* CherryLexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A91835C2950A88900EDB39C /* CherryLexer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +30,16 @@
 /* Begin PBXFileReference section */
 		4A9183452950A57D00EDB39C /* CherryLang */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = CherryLang; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A9183482950A57D00EDB39C /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		4A9183522950A5F500EDB39C /* Cherry.g4 */ = {isa = PBXFileReference; lastKnownFileType = text; path = Cherry.g4; sourceTree = "<group>"; };
+		4A9183572950A88900EDB39C /* Cherry.interp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cherry.interp; sourceTree = "<group>"; };
+		4A9183582950A88900EDB39C /* CherryParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CherryParser.swift; sourceTree = "<group>"; };
+		4A9183592950A88900EDB39C /* CherryListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CherryListener.swift; sourceTree = "<group>"; };
+		4A91835A2950A88900EDB39C /* CherryLexer.interp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CherryLexer.interp; sourceTree = "<group>"; };
+		4A91835B2950A88900EDB39C /* CherryBaseListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CherryBaseListener.swift; sourceTree = "<group>"; };
+		4A91835C2950A88900EDB39C /* CherryLexer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CherryLexer.swift; sourceTree = "<group>"; };
+		4A91835D2950A88900EDB39C /* Cherry.tokens */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Cherry.tokens; sourceTree = "<group>"; };
+		4A91835E2950A88900EDB39C /* CherryLexer.tokens */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CherryLexer.tokens; sourceTree = "<group>"; };
+		4A9183632950A9FF00EDB39C /* dummy.cherry */ = {isa = PBXFileReference; lastKnownFileType = text; path = dummy.cherry; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4A9183512950A5DB00EDB39C /* Antlr4 in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,9 +73,27 @@
 		4A9183472950A57D00EDB39C /* CherryLang */ = {
 			isa = PBXGroup;
 			children = (
+				4A9183562950A88900EDB39C /* Generated */,
 				4A9183482950A57D00EDB39C /* main.swift */,
+				4A9183522950A5F500EDB39C /* Cherry.g4 */,
+				4A9183632950A9FF00EDB39C /* dummy.cherry */,
 			);
 			path = CherryLang;
+			sourceTree = "<group>";
+		};
+		4A9183562950A88900EDB39C /* Generated */ = {
+			isa = PBXGroup;
+			children = (
+				4A9183572950A88900EDB39C /* Cherry.interp */,
+				4A9183582950A88900EDB39C /* CherryParser.swift */,
+				4A9183592950A88900EDB39C /* CherryListener.swift */,
+				4A91835A2950A88900EDB39C /* CherryLexer.interp */,
+				4A91835B2950A88900EDB39C /* CherryBaseListener.swift */,
+				4A91835C2950A88900EDB39C /* CherryLexer.swift */,
+				4A91835D2950A88900EDB39C /* Cherry.tokens */,
+				4A91835E2950A88900EDB39C /* CherryLexer.tokens */,
+			);
+			path = Generated;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -69,6 +103,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4A91834C2950A57D00EDB39C /* Build configuration list for PBXNativeTarget "CherryLang" */;
 			buildPhases = (
+				4A9183542950A69100EDB39C /* ShellScript */,
 				4A9183412950A57D00EDB39C /* Sources */,
 				4A9183422950A57D00EDB39C /* Frameworks */,
 				4A9183432950A57D00EDB39C /* CopyFiles */,
@@ -78,6 +113,9 @@
 			dependencies = (
 			);
 			name = CherryLang;
+			packageProductDependencies = (
+				4A9183502950A5DB00EDB39C /* Antlr4 */,
+			);
 			productName = CherryLang;
 			productReference = 4A9183452950A57D00EDB39C /* CherryLang */;
 			productType = "com.apple.product-type.tool";
@@ -106,6 +144,9 @@
 				Base,
 			);
 			mainGroup = 4A91833C2950A57D00EDB39C;
+			packageReferences = (
+				4A91834F2950A5DB00EDB39C /* XCRemoteSwiftPackageReference "antlr4" */,
+			);
 			productRefGroup = 4A9183462950A57D00EDB39C /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -115,12 +156,44 @@
 		};
 /* End PBXProject section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		4A9183542950A69100EDB39C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/CherryLang/Cherry.g4",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/CherryLang/Generated/Cherry.interp",
+				"$(SRCROOT)/CherryLang/Generated/CherryParser.swift",
+				"$(SRCROOT)/CherryLang/Generated/CherryListener.swift",
+				"$(SRCROOT)/CherryLang/Generated/CherryLexer.interp",
+				"$(SRCROOT)/CherryLang/Generated/CherryBaseListener.swift",
+				"$(SRCROOT)/CherryLang/Generated/Cherry.tokens",
+				"$(SRCROOT)/CherryLang/Generated/CherryLexer.tokens",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd $SRCROOT/CherryLang\n/opt/homebrew/bin/antlr4 -Dlanguage=Swift -message-format gnu -o Generated Cherry.g4\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		4A9183412950A57D00EDB39C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				4A9183492950A57D00EDB39C /* main.swift in Sources */,
+				4A9183622950A88900EDB39C /* CherryLexer.swift in Sources */,
+				4A9183612950A88900EDB39C /* CherryBaseListener.swift in Sources */,
+				4A91835F2950A88900EDB39C /* CherryParser.swift in Sources */,
+				4A9183602950A88900EDB39C /* CherryListener.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -280,6 +353,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		4A91834F2950A5DB00EDB39C /* XCRemoteSwiftPackageReference "antlr4" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/antlr/antlr4";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4A9183502950A5DB00EDB39C /* Antlr4 */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 4A91834F2950A5DB00EDB39C /* XCRemoteSwiftPackageReference "antlr4" */;
+			productName = Antlr4;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4A91833D2950A57D00EDB39C /* Project object */;
 }

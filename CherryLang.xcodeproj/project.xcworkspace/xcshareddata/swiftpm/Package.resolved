@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "antlr4",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/antlr/antlr4",
+      "state" : {
+        "branch" : "master",
+        "revision" : "76fa05c21b12b96a6c12a0a82e611ed9d87d5af4"
+      }
+    }
+  ],
+  "version" : 2
+}

@@ -6,6 +6,22 @@
 //
 
 import Foundation
+import Antlr4
 
-print("Hello, World!")
+func parseFile(path: String) throws {
+    let input = try ANTLRFileStream(path)
+    let lexer = CherryLexer(input)
+    let tokens = CommonTokenStream(lexer)
+    try tokens.fill()
+    print(tokens.getTokens())
+    let parser = try CherryParser(tokens)
+    let tree = try parser.tokens()
+    print(tree.toStringTree(parser))
+}
 
+func main() throws {
+    let url = URL(fileURLWithPath: #file).deletingLastPathComponent().appendingPathComponent("dummy.cherry")
+    try parseFile(path: url.path)
+}
+
+try main()

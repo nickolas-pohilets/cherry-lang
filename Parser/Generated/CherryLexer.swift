@@ -1,7 +1,7 @@
 // Generated from java-escape by ANTLR 4.11.1
 import Antlr4
 
-open class CherryLexer: Lexer {
+internal class CherryLexer: Lexer {
 
 	internal static var _decisionToDFA: [DFA] = {
           var decisionToDFA = [DFA]()
@@ -14,22 +14,22 @@ open class CherryLexer: Lexer {
 
 	internal static let _sharedContextCache = PredictionContextCache()
 
-	public
+	internal
 	static let T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, ID=8, 
             INT=9, NEWLINE=10, WS=11, LBRACE=12, RBRACE=13, STRING=14, STRING_INTERPOLATION_START=15, 
             STRING_INTERPOLATION_CONTINUE=16, STRING_INTERPOLATION_FINISH=17
 
-	public
+	internal
 	static let channelNames: [String] = [
 		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
 	]
 
-	public
+	internal
 	static let modeNames: [String] = [
 		"DEFAULT_MODE"
 	]
 
-	public
+	internal
 	static let ruleNames: [String] = [
 		"T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", "ID", "INT", "NEWLINE", 
 		"WS", "LBRACE", "RBRACE", "STRING", "STRING_INTERPOLATION_START", "STRING_INTERPOLATION_CONTINUE", 
@@ -45,7 +45,7 @@ open class CherryLexer: Lexer {
 		"LBRACE", "RBRACE", "STRING", "STRING_INTERPOLATION_START", "STRING_INTERPOLATION_CONTINUE", 
 		"STRING_INTERPOLATION_FINISH"
 	]
-	public
+	internal
 	static let VOCABULARY = Vocabulary(_LITERAL_NAMES, _SYMBOLIC_NAMES)
 
 
@@ -57,34 +57,34 @@ open class CherryLexer: Lexer {
 	    }
 
 
-	override open
+	override internal
 	func getVocabulary() -> Vocabulary {
 		return CherryLexer.VOCABULARY
 	}
 
-	public
+	internal
 	required init(_ input: CharStream) {
 	    RuntimeMetaData.checkVersion("4.11.1", RuntimeMetaData.VERSION)
 		super.init(input)
 		_interp = LexerATNSimulator(self, CherryLexer._ATN, CherryLexer._decisionToDFA, CherryLexer._sharedContextCache)
 	}
 
-	override open
+	override internal
 	func getGrammarFileName() -> String { return "Cherry.g4" }
 
-	override open
+	override internal
 	func getRuleNames() -> [String] { return CherryLexer.ruleNames }
 
-	override open
+	override internal
 	func getSerializedATN() -> [Int] { return CherryLexer._serializedATN }
 
-	override open
+	override internal
 	func getChannelNames() -> [String] { return CherryLexer.channelNames }
 
-	override open
+	override internal
 	func getModeNames() -> [String] { return CherryLexer.modeNames }
 
-	override open
+	override internal
 	func getATN() -> ATN { return CherryLexer._ATN }
 
 	override open
@@ -210,6 +210,6 @@ open class CherryLexer: Lexer {
 		2,1,16,3
 	]
 
-	public
+	internal
 	static let _ATN: ATN = try! ATNDeserializer().deserialize(_serializedATN)
 }

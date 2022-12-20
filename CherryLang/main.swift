@@ -6,22 +6,10 @@
 //
 
 import Foundation
-import Antlr4
+import CherryParser
 
-func parseFile(path: String) throws {
-    let input = try ANTLRFileStream(path)
-    let lexer = CherryLexer(input)
-    let tokens = CommonTokenStream(lexer)
-    try tokens.fill()
-    print(tokens.getTokens())
-    let parser = try CherryParser(tokens)
-    let tree = try parser.prog()
-    print(tree.toStringTree(parser))
-}
-
-func main() throws {
-    let url = URL(fileURLWithPath: #file).deletingLastPathComponent().appendingPathComponent("dummy.cherry")
-    try parseFile(path: url.path)
-}
-
-try main()
+let text = #"""
+"Hello, \{ 3 { 4 { 5 } 6 } 7 } ho-ho-ho \{ 1 { "Nested \{ "Inner\{ A { B } C }" } interpolation" } z } in Cherry"
+"""#
+let lexer = LexerRig(text: text)
+print(lexer.tokens)

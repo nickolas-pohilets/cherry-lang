@@ -1,7 +1,7 @@
 // Generated from java-escape by ANTLR 4.11.1
 import Antlr4
 
-open class CherryParser: Parser {
+internal class CherryParser: Parser {
 
 	internal static var _decisionToDFA: [DFA] = {
           var decisionToDFA = [DFA]()
@@ -14,7 +14,7 @@ open class CherryParser: Parser {
 
 	internal static let _sharedContextCache = PredictionContextCache()
 
-	public
+	internal
 	enum Tokens: Int {
 		case EOF = -1, T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, 
                  T__6 = 7, ID = 8, INT = 9, NEWLINE = 10, WS = 11, LBRACE = 12, 
@@ -22,11 +22,11 @@ open class CherryParser: Parser {
                  STRING_INTERPOLATION_CONTINUE = 16, STRING_INTERPOLATION_FINISH = 17
 	}
 
-	public
+	internal
 	static let RULE_prog = 0, RULE_tokens = 1, RULE_stat = 2, RULE_expr = 3, 
             RULE_stringInterpolation = 4
 
-	public
+	internal
 	static let ruleNames: [String] = [
 		"prog", "tokens", "stat", "expr", "stringInterpolation"
 	]
@@ -40,28 +40,28 @@ open class CherryParser: Parser {
 		"LBRACE", "RBRACE", "STRING", "STRING_INTERPOLATION_START", "STRING_INTERPOLATION_CONTINUE", 
 		"STRING_INTERPOLATION_FINISH"
 	]
-	public
+	internal
 	static let VOCABULARY = Vocabulary(_LITERAL_NAMES, _SYMBOLIC_NAMES)
 
-	override open
+	override internal
 	func getGrammarFileName() -> String { return "java-escape" }
 
-	override open
+	override internal
 	func getRuleNames() -> [String] { return CherryParser.ruleNames }
 
-	override open
+	override internal
 	func getSerializedATN() -> [Int] { return CherryParser._serializedATN }
 
-	override open
+	override internal
 	func getATN() -> ATN { return CherryParser._ATN }
 
 
-	override open
+	override internal
 	func getVocabulary() -> Vocabulary {
 	    return CherryParser.VOCABULARY
 	}
 
-	override public
+	override internal
 	init(_ input:TokenStream) throws {
 	    RuntimeMetaData.checkVersion("4.11.1", RuntimeMetaData.VERSION)
 		try super.init(input)
@@ -69,30 +69,30 @@ open class CherryParser: Parser {
 	}
 
 
-	public class ProgContext: ParserRuleContext {
-			open
+	internal class ProgContext: ParserRuleContext {
+			internal
 			func EOF() -> TerminalNode? {
 				return getToken(CherryParser.Tokens.EOF.rawValue, 0)
 			}
-			open
+			internal
 			func stat() -> [StatContext] {
 				return getRuleContexts(StatContext.self)
 			}
-			open
+			internal
 			func stat(_ i: Int) -> StatContext? {
 				return getRuleContext(StatContext.self, i)
 			}
-		override open
+		override internal
 		func getRuleIndex() -> Int {
 			return CherryParser.RULE_prog
 		}
-		override open
+		override internal
 		func enterRule(_ listener: ParseTreeListener) {
 			if let listener = listener as? CherryListener {
 				listener.enterProg(self)
 			}
 		}
-		override open
+		override internal
 		func exitRule(_ listener: ParseTreeListener) {
 			if let listener = listener as? CherryListener {
 				listener.exitProg(self)
@@ -100,7 +100,7 @@ open class CherryParser: Parser {
 		}
 	}
 	@discardableResult
-	 open func prog() throws -> ProgContext {
+	 internal func prog() throws -> ProgContext {
 		var _localctx: ProgContext
 		_localctx = ProgContext(_ctx, getState())
 		try enterRule(_localctx, 0, CherryParser.RULE_prog)
@@ -135,22 +135,22 @@ open class CherryParser: Parser {
 		return _localctx
 	}
 
-	public class TokensContext: ParserRuleContext {
-			open
+	internal class TokensContext: ParserRuleContext {
+			internal
 			func EOF() -> TerminalNode? {
 				return getToken(CherryParser.Tokens.EOF.rawValue, 0)
 			}
-		override open
+		override internal
 		func getRuleIndex() -> Int {
 			return CherryParser.RULE_tokens
 		}
-		override open
+		override internal
 		func enterRule(_ listener: ParseTreeListener) {
 			if let listener = listener as? CherryListener {
 				listener.enterTokens(self)
 			}
 		}
-		override open
+		override internal
 		func exitRule(_ listener: ParseTreeListener) {
 			if let listener = listener as? CherryListener {
 				listener.exitTokens(self)
@@ -158,7 +158,7 @@ open class CherryParser: Parser {
 		}
 	}
 	@discardableResult
-	 open func tokens() throws -> TokensContext {
+	 internal func tokens() throws -> TokensContext {
 		var _localctx: TokensContext
 		_localctx = TokensContext(_ctx, getState())
 		try enterRule(_localctx, 2, CherryParser.RULE_tokens)
@@ -193,30 +193,30 @@ open class CherryParser: Parser {
 		return _localctx
 	}
 
-	public class StatContext: ParserRuleContext {
-			open
+	internal class StatContext: ParserRuleContext {
+			internal
 			func expr() -> ExprContext? {
 				return getRuleContext(ExprContext.self, 0)
 			}
-			open
+			internal
 			func NEWLINE() -> TerminalNode? {
 				return getToken(CherryParser.Tokens.NEWLINE.rawValue, 0)
 			}
-			open
+			internal
 			func ID() -> TerminalNode? {
 				return getToken(CherryParser.Tokens.ID.rawValue, 0)
 			}
-		override open
+		override internal
 		func getRuleIndex() -> Int {
 			return CherryParser.RULE_stat
 		}
-		override open
+		override internal
 		func enterRule(_ listener: ParseTreeListener) {
 			if let listener = listener as? CherryListener {
 				listener.enterStat(self)
 			}
 		}
-		override open
+		override internal
 		func exitRule(_ listener: ParseTreeListener) {
 			if let listener = listener as? CherryListener {
 				listener.exitStat(self)
@@ -224,7 +224,7 @@ open class CherryParser: Parser {
 		}
 	}
 	@discardableResult
-	 open func stat() throws -> StatContext {
+	 internal func stat() throws -> StatContext {
 		var _localctx: StatContext
 		_localctx = StatContext(_ctx, getState())
 		try enterRule(_localctx, 4, CherryParser.RULE_stat)
@@ -274,50 +274,50 @@ open class CherryParser: Parser {
 	}
 
 
-	public class ExprContext: ParserRuleContext {
-			open
+	internal class ExprContext: ParserRuleContext {
+			internal
 			func INT() -> TerminalNode? {
 				return getToken(CherryParser.Tokens.INT.rawValue, 0)
 			}
-			open
+			internal
 			func ID() -> TerminalNode? {
 				return getToken(CherryParser.Tokens.ID.rawValue, 0)
 			}
-			open
+			internal
 			func STRING() -> TerminalNode? {
 				return getToken(CherryParser.Tokens.STRING.rawValue, 0)
 			}
-			open
+			internal
 			func stringInterpolation() -> StringInterpolationContext? {
 				return getRuleContext(StringInterpolationContext.self, 0)
 			}
-			open
+			internal
 			func expr() -> [ExprContext] {
 				return getRuleContexts(ExprContext.self)
 			}
-			open
+			internal
 			func expr(_ i: Int) -> ExprContext? {
 				return getRuleContext(ExprContext.self, i)
 			}
-			open
+			internal
 			func LBRACE() -> TerminalNode? {
 				return getToken(CherryParser.Tokens.LBRACE.rawValue, 0)
 			}
-			open
+			internal
 			func RBRACE() -> TerminalNode? {
 				return getToken(CherryParser.Tokens.RBRACE.rawValue, 0)
 			}
-		override open
+		override internal
 		func getRuleIndex() -> Int {
 			return CherryParser.RULE_expr
 		}
-		override open
+		override internal
 		func enterRule(_ listener: ParseTreeListener) {
 			if let listener = listener as? CherryListener {
 				listener.enterExpr(self)
 			}
 		}
-		override open
+		override internal
 		func exitRule(_ listener: ParseTreeListener) {
 			if let listener = listener as? CherryListener {
 				listener.exitExpr(self)
@@ -325,7 +325,7 @@ open class CherryParser: Parser {
 		}
 	}
 
-	 public final  func expr( ) throws -> ExprContext   {
+	 internal final  func expr( ) throws -> ExprContext   {
 		return try expr(0)
 	}
 	@discardableResult
@@ -472,42 +472,42 @@ open class CherryParser: Parser {
 		return _localctx;
 	}
 
-	public class StringInterpolationContext: ParserRuleContext {
-			open
+	internal class StringInterpolationContext: ParserRuleContext {
+			internal
 			func STRING_INTERPOLATION_START() -> TerminalNode? {
 				return getToken(CherryParser.Tokens.STRING_INTERPOLATION_START.rawValue, 0)
 			}
-			open
+			internal
 			func expr() -> [ExprContext] {
 				return getRuleContexts(ExprContext.self)
 			}
-			open
+			internal
 			func expr(_ i: Int) -> ExprContext? {
 				return getRuleContext(ExprContext.self, i)
 			}
-			open
+			internal
 			func STRING_INTERPOLATION_FINISH() -> TerminalNode? {
 				return getToken(CherryParser.Tokens.STRING_INTERPOLATION_FINISH.rawValue, 0)
 			}
-			open
+			internal
 			func STRING_INTERPOLATION_CONTINUE() -> [TerminalNode] {
 				return getTokens(CherryParser.Tokens.STRING_INTERPOLATION_CONTINUE.rawValue)
 			}
-			open
+			internal
 			func STRING_INTERPOLATION_CONTINUE(_ i:Int) -> TerminalNode? {
 				return getToken(CherryParser.Tokens.STRING_INTERPOLATION_CONTINUE.rawValue, i)
 			}
-		override open
+		override internal
 		func getRuleIndex() -> Int {
 			return CherryParser.RULE_stringInterpolation
 		}
-		override open
+		override internal
 		func enterRule(_ listener: ParseTreeListener) {
 			if let listener = listener as? CherryListener {
 				listener.enterStringInterpolation(self)
 			}
 		}
-		override open
+		override internal
 		func exitRule(_ listener: ParseTreeListener) {
 			if let listener = listener as? CherryListener {
 				listener.exitStringInterpolation(self)
@@ -515,7 +515,7 @@ open class CherryParser: Parser {
 		}
 	}
 	@discardableResult
-	 open func stringInterpolation() throws -> StringInterpolationContext {
+	 internal func stringInterpolation() throws -> StringInterpolationContext {
 		var _localctx: StringInterpolationContext
 		_localctx = StringInterpolationContext(_ctx, getState())
 		try enterRule(_localctx, 8, CherryParser.RULE_stringInterpolation)
@@ -556,7 +556,7 @@ open class CherryParser: Parser {
 		return _localctx
 	}
 
-	override open
+	override internal
 	func sempred(_ _localctx: RuleContext?, _ ruleIndex: Int,  _ predIndex: Int)throws -> Bool {
 		switch (ruleIndex) {
 		case  3:
@@ -599,6 +599,6 @@ open class CherryParser: Parser {
 		34,45,59,61,70
 	]
 
-	public
+	internal
 	static let _ATN = try! ATNDeserializer().deserialize(_serializedATN)
 }

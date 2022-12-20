@@ -5,7 +5,7 @@ import Antlr4
  * This interface defines a complete listener for a parse tree produced by
  * {@link CherryParser}.
  */
-public protocol CherryListener: ParseTreeListener {
+internal protocol CherryListener: ParseTreeListener {
 	/**
 	 * Enter a parse tree produced by {@link CherryParser#prog}.
 	 - Parameters:

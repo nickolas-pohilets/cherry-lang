@@ -8,95 +8,95 @@ import Antlr4
  * which can be extended to create a listener which only needs to handle a subset
  * of the available methods.
  */
-open class CherryBaseListener: CherryListener {
-     public init() { }
+internal class CherryBaseListener: CherryListener {
+     internal init() { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterProg(_ ctx: CherryParser.ProgContext) { }
+	internal func enterProg(_ ctx: CherryParser.ProgContext) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func exitProg(_ ctx: CherryParser.ProgContext) { }
+	internal func exitProg(_ ctx: CherryParser.ProgContext) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterTokens(_ ctx: CherryParser.TokensContext) { }
+	internal func enterTokens(_ ctx: CherryParser.TokensContext) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func exitTokens(_ ctx: CherryParser.TokensContext) { }
+	internal func exitTokens(_ ctx: CherryParser.TokensContext) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterStat(_ ctx: CherryParser.StatContext) { }
+	internal func enterStat(_ ctx: CherryParser.StatContext) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func exitStat(_ ctx: CherryParser.StatContext) { }
+	internal func exitStat(_ ctx: CherryParser.StatContext) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterExpr(_ ctx: CherryParser.ExprContext) { }
+	internal func enterExpr(_ ctx: CherryParser.ExprContext) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func exitExpr(_ ctx: CherryParser.ExprContext) { }
+	internal func exitExpr(_ ctx: CherryParser.ExprContext) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterStringInterpolation(_ ctx: CherryParser.StringInterpolationContext) { }
+	internal func enterStringInterpolation(_ ctx: CherryParser.StringInterpolationContext) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func exitStringInterpolation(_ ctx: CherryParser.StringInterpolationContext) { }
+	internal func exitStringInterpolation(_ ctx: CherryParser.StringInterpolationContext) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func enterEveryRule(_ ctx: ParserRuleContext) throws { }
+	internal func enterEveryRule(_ ctx: ParserRuleContext) throws { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func exitEveryRule(_ ctx: ParserRuleContext) throws { }
+	internal func exitEveryRule(_ ctx: ParserRuleContext) throws { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func visitTerminal(_ node: TerminalNode) { }
+	internal func visitTerminal(_ node: TerminalNode) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	open func visitErrorNode(_ node: ErrorNode) { }
+	internal func visitErrorNode(_ node: ErrorNode) { }
 }

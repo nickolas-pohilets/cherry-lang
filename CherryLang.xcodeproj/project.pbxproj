@@ -19,6 +19,7 @@
 		4A91838D2951FA9600EDB39C /* CherryBaseListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A91835B2950A88900EDB39C /* CherryBaseListener.swift */; };
 		4A91838E2951FA9900EDB39C /* CherryLexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A91835C2950A88900EDB39C /* CherryLexer.swift */; };
 		4A91838F2951FAB000EDB39C /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9183892951F80500EDB39C /* Parser.swift */; };
+		4A9183932952011E00EDB39C /* Token.Kind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9183912952011800EDB39C /* Token.Kind.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,8 @@
 		4A9183702951F5D700EDB39C /* CherryParserTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CherryParserTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A9183752951F5D700EDB39C /* CherryParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CherryParserTests.swift; sourceTree = "<group>"; };
 		4A9183892951F80500EDB39C /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		4A9183902951FD3C00EDB39C /* gen-tokens.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = "gen-tokens.py"; sourceTree = "<group>"; };
+		4A9183912952011800EDB39C /* Token.Kind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Token.Kind.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +145,7 @@
 		4A9183562950A88900EDB39C /* Generated */ = {
 			isa = PBXGroup;
 			children = (
+				4A9183912952011800EDB39C /* Token.Kind.swift */,
 				4A9183572950A88900EDB39C /* Cherry.interp */,
 				4A9183582950A88900EDB39C /* CherryParser.swift */,
 				4A9183592950A88900EDB39C /* CherryListener.swift */,
@@ -157,6 +161,7 @@
 		4A91836A2951F5D700EDB39C /* Parser */ = {
 			isa = PBXGroup;
 			children = (
+				4A9183902951FD3C00EDB39C /* gen-tokens.py */,
 				4A9183562950A88900EDB39C /* Generated */,
 				4A9183522950A5F500EDB39C /* Cherry.g4 */,
 				4A91836B2951F5D700EDB39C /* CherryParser.h */,
@@ -327,6 +332,7 @@
 			);
 			inputPaths = (
 				"$(SRCROOT)/Parser/Cherry.g4",
+				"$(SRCROOT)/Parser/gen-tokens.py",
 			);
 			outputFileListPaths = (
 			);
@@ -337,10 +343,11 @@
 				"$(SRCROOT)/CherryLang/Generated/CherryLexer.interp",
 				"$(SRCROOT)/CherryLang/Generated/CherryLexer.swift",
 				"$(SRCROOT)/Parser/Generated/Cherry.tokens",
+				"$(SRCROOT)/Parser/Generated/Token.Kind.swift",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $SRCROOT/Parser\n/opt/homebrew/bin/antlr4 -Dlanguage=Swift -DaccessLevel=internal -message-format gnu -o Generated Cherry.g4\n";
+			shellScript = "cd $SRCROOT/Parser\n/opt/homebrew/bin/antlr4 -Dlanguage=Swift -DaccessLevel=internal -message-format gnu -o Generated Cherry.g4\n./gen-tokens.py\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -359,6 +366,7 @@
 			files = (
 				4A91838D2951FA9600EDB39C /* CherryBaseListener.swift in Sources */,
 				4A91838E2951FA9900EDB39C /* CherryLexer.swift in Sources */,
+				4A9183932952011E00EDB39C /* Token.Kind.swift in Sources */,
 				4A91838F2951FAB000EDB39C /* Parser.swift in Sources */,
 				4A91838C2951FA9400EDB39C /* CherryListener.swift in Sources */,
 				4A91838B2951FA9100EDB39C /* CherryParser.swift in Sources */,

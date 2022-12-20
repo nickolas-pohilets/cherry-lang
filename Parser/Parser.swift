@@ -13,6 +13,10 @@ public struct Token: CustomStringConvertible {
     public var description: String {
         return impl.description
     }
+    
+    public var kind: Kind {
+        return Kind(rawValue: impl.getType())!
+    }
 }
 
 public class LexerRig {

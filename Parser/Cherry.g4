@@ -7,19 +7,184 @@ grammar Cherry;
     private func canResumeInterpolation() -> Bool {
         stringInterpolations.last == bracketDepth
     }
+    
+    private func reportCustomError(_ msg: String) {
+        let charPositionInLine = getInterpreter().getCharPositionInLine()
+        let line = getInterpreter().getLine()
+            
+        let listener = getErrorListenerDispatch()
+        listener.syntaxError(self, nil, line, charPositionInLine, msg, nil)
+    }
 }
 
+// Whitespace and comments
+
+NL: '\r'? '\n' | '\r' ;
+WS: (' ' | '\u0009' | '\u000B' | '\u000C')+ -> skip ;
+
+COMMENT: '//' ~[\n]* -> skip;
+MULTILINE_COMMENT: '/*' .*? '*/' -> skip;
+
+// Identifiers
+
+identifierList: identifier ( ',' identifier )* ;
+
+identifier
+    : IDENTIFIER
+    | 'higherThan'
+    | 'lowerThan'
+    | 'assignment'
+    | 'associativity'
+    | 'left'
+    | 'right'
+    | 'none'
+    ;
+
+IDENTIFIER
+    : IDENTIFIER_HEAD IDENTIFIER_CHARACTER*
+    | '`' IDENTIFIER_HEAD IDENTIFIER_CHARACTER* '`'
+//    | IMPLICIT_PARAMETER_NAME
+//    | PROPERTY_WRAPPER_PROJECTION
+    ;
+
+fragment IDENTIFIER_HEAD
+    : 'A'..'Z' | 'a'..'z'
+    | '_'
+    | '\u00A8' | '\u00AA' | '\u00AD' | '\u00AF' | '\u00B2'..'\u00B5' | '\u00B7'..'\u00BA'
+    | '\u00BC'..'\u00BE' | '\u00C0'..'\u00D6' | '\u00D8'..'\u00F6' | '\u00F8'..'\u00FF'
+    | '\u0100'..'\u02FF' | '\u0370'..'\u167F' | '\u1681'..'\u180D' | '\u180F'..'\u1DBF'
+    | '\u1E00'..'\u1FFF'
+    | '\u200B'..'\u200D' | '\u202A'..'\u202E' | '\u203F'..'\u2040' | '\u2054' | '\u2060'..'\u206F'
+    | '\u2070'..'\u20CF' | '\u2100'..'\u218F' | '\u2460'..'\u24FF' | '\u2776'..'\u2793'
+    | '\u2C00'..'\u2DFF' | '\u2E80'..'\u2FFF'
+    | '\u3004'..'\u3007' | '\u3021'..'\u302F' | '\u3031'..'\u303F' | '\u3040'..'\uD7FF'
+    | '\uF900'..'\uFD3D' | '\uFD40'..'\uFDCF' | '\uFDF0'..'\uFE1F' | '\uFE30'..'\uFE44'
+    | '\uFE47'..'\uFFFD'
+    | '\u{10000}'..'\u{1FFFD}' | '\u{20000}'..'\u{2FFFD}' | '\u{30000}'..'\u{3FFFD}' | '\u{40000}'..'\u{4FFFD}'
+    | '\u{50000}'..'\u{5FFFD}' | '\u{60000}'..'\u{6FFFD}' | '\u{70000}'..'\u{7FFFD}' | '\u{80000}'..'\u{8FFFD}'
+    | '\u{90000}'..'\u{9FFFD}' | '\u{A0000}'..'\u{AFFFD}' | '\u{B0000}'..'\u{BFFFD}' | '\u{C0000}'..'\u{CFFFD}'
+    | '\u{D0000}'..'\u{DFFFD}' | '\u{E0000}'..'\u{EFFFD}'
+    ;
+    
+fragment IDENTIFIER_CHARACTER
+    : '0'..'9'
+    | '\u0300'..'\u036F' | '\u1DC0'..'\u1DFF' | '\u20D0'..'\u20FF' | '\uFE20'..'\uFE2F'
+    | IDENTIFIER_HEAD
+    ;
+
+// Cannot be used for naming new things
+IMPLICIT_PARAMETER_NAME: '$' [0-9]+ ; // Note: underscores not allowed
+// PROPERTY_WRAPPER_PROJECTION: '$' IDENTIFIER_CHARACTER* ;
+
+// Literals
+
+literal
+    : numericLiteral
+    | STRING_LITERAL
+//  | regularExpressionLiteral
+    | BOOLEAN_LITERAL
+    | NIL_LITERAL
+    ;
+    
+numericLiteral
+    : '-'? (INTEGER_LITERAL | FLOATING_POINT_LITERAL )
+    ;
+    
+INTEGER_LITERAL
+    : '0b' [01] [01_]*
+    | '0o' [0-7] [0-7_]*
+    | DECIMAL_LITERAL
+    | HEXADECIMAL_LITERAL
+    ;
+    
+fragment DECIMAL_LITERAL: [0-9] [0-9_]* ;
+fragment HEXADECIMAL_LITERAL: '0x' HEXADECIMAL_DIGITS ;
+fragment HEXADECIMAL_DIGITS: [0-9a-fA-F] [0-9a-fA-F_]* ;
+    
+FLOATING_POINT_LITERAL
+    // If dot is present, fractional digits are required, to disambiguate from member access
+    : DECIMAL_LITERAL ('.' DECIMAL_LITERAL)? ([eE] [+-]? DECIMAL_LITERAL)?
+    // Exponent is required, to disambiguate from member access
+    | HEXADECIMAL_LITERAL ('.' HEXADECIMAL_DIGITS)? [pP] [+-]? DECIMAL_LITERAL
+    | HEXADECIMAL_LITERAL ('.' [0-9] HEXADECIMAL_DIGITS?)?
+      { reportCustomError("Hexadecimal floating point literal must end with an exponent") }
+    ;
+
+BOOLEAN_LITERAL: 'true' | 'false';
+NIL_LITERAL: 'nil' ;
+
+STRING_LITERAL: '"' STRING_CONTENT '"';
+fragment STRING_CONTENT: (ESC | ~["\\\r\n])* ;
+fragment ESC: '\\' ([0"\\/bfnrt] | UNICODE | 'x' HEX HEX) ;
+fragment UNICODE : 'u' (HEX HEX HEX HEX | '{' HEX+ '}' );
+fragment HEX : [0-9a-fA-F];
+
+MULTILINE_STRING_LITERAL: '"""' WS? NL MULTILINE_STRING_CONTENT NL WS? '"""';
+fragment MULTILINE_STRING_CONTENT: (ESC | ~[\\])*?;
+
+STRING_INTERPOLATION_START   : '"' STRING_CONTENT '\\{' { stringInterpolations.append(bracketDepth) } ;
+STRING_INTERPOLATION_CONTINUE: '}' { canResumeInterpolation() }? STRING_CONTENT '\\{';
+STRING_INTERPOLATION_FINISH  : '}' { canResumeInterpolation() }? STRING_CONTENT '"' { stringInterpolations.removeLast() } ;
+
+MULTILINE_STRING_INTERPOLATION_START   : '"""' MULTILINE_STRING_CONTENT '\\{' { stringInterpolations.append(bracketDepth) } ;
+MULTILINE_STRING_INTERPOLATION_CONTINUE: '}' { canResumeInterpolation() }? MULTILINE_STRING_CONTENT '\\{';
+MULTILINE_STRING_INTERPOLATION_FINISH  : '}' { canResumeInterpolation() }? MULTILINE_STRING_CONTENT '"""' { stringInterpolations.removeLast() } ;
+
+RAW_STRING_LITERAL: '#' (RAW_STRING_LITERAL | '"' ~[\r\n]*? '"') '#' ;
+RAW_MULTILINE_STRING_LITERAL: '#' (RAW_MULTILINE_STRING_LITERAL | '"""' WS? NL  .*? NL WS? '"""') '#' ;
+
 /** The start rule; begin parsing here. */
-prog:   stat+ EOF;
+prog:   decl+ EOF;
 
-tokens: .* EOF;
+decl: varDecl
+    | funcDecl
+    | classDecl
+    | precedenceGroupDeclaration
+    ;
+    
+varDecl
+    : 'var' identifier (';' | NL+)
+    ;
+    
+funcDecl
+    : 'func' identifier (';' | NL+)
+    ;
+    
+classDecl
+    : 'class' identifier (';' | NL+)
+    ;
+        
+precedenceGroupDeclaration
+    : 'precedencegroup' precedenceGroupName '{' NL* (precedenceGroupAttribute (';' | NL)+)* '}' NL* ;
+    
+precedenceGroupAttribute
+    : precedenceGroupRelation
+    | precedenceGroupAssignment
+    | precedenceGroupAssociativity
+    ;
+    
+precedenceGroupRelation
+    : op=('higherThan' | 'lowerThan') ':' precedenceGroupName (',' precedenceGroupName)*
+    ;
 
+precedenceGroupAssignment
+    : 'assignment' ':' BOOL
+    ;
+    
+precedenceGroupAssociativity
+    : 'associativity' ':' value=('left' | 'right' | 'none')
+    ;
+    
+precedenceGroupName
+    : identifier
+    ;
+    
 stat: expr? NEWLINE
     ;
 
 expr: expr OP expr
-    | INT
-    | ID
+    | literal
+    | identifier
     | STRING
     | stringInterpolation
     | LPAREN expr RPAREN
@@ -29,27 +194,12 @@ expr: expr OP expr
 stringInterpolation
     : STRING_INTERPOLATION_START expr ( STRING_INTERPOLATION_CONTINUE expr)* STRING_INTERPOLATION_FINISH
     ;
-    
-
-ID  :   [a-zA-Z]+ ;      // match identifiers <label id="code.tour.expr.3"/>
-INT :   [0-9]+ ;         // match integers
-NEWLINE:'\r'? '\n' ;     // return newlines to parser (is end-statement signal)
-WS  :   [ \t]+ -> skip ; // toss out whitespace
 
 LPAREN: '(';
 RPAREN: ')';
 
 LBRACE: '{' { bracketDepth += 1 };
 RBRACE: '}' { bracketDepth -= 1 };
-STRING: '"' STRING_CONTENT '"';
-STRING_INTERPOLATION_START   : '"' STRING_CONTENT '\\{' { stringInterpolations.append(bracketDepth) } ;
-STRING_INTERPOLATION_CONTINUE: '}' { canResumeInterpolation() }? STRING_CONTENT '\\{';
-STRING_INTERPOLATION_FINISH  : '}' { canResumeInterpolation() }? STRING_CONTENT '"' { stringInterpolations.removeLast() } ;
-
-fragment STRING_CONTENT: (ESC | ~["\\])* ;
-fragment ESC: '\\' (["\\/bfnrt] | UNICODE | 'x' HEX HEX) ;
-fragment UNICODE : 'u' (HEX HEX HEX HEX | '{' HEX+ '}' );
-fragment HEX : [0-9a-fA-F];
 
 OP
     : OP_HEAD OP_CHARACTER*

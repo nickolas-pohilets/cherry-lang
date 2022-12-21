@@ -16,28 +16,53 @@ internal class CherryParser: Parser {
 
 	internal
 	enum Tokens: Int {
-		case EOF = -1, ID = 1, INT = 2, NEWLINE = 3, WS = 4, LPAREN = 5, RPAREN = 6, 
-                 LBRACE = 7, RBRACE = 8, STRING = 9, STRING_INTERPOLATION_START = 10, 
-                 STRING_INTERPOLATION_CONTINUE = 11, STRING_INTERPOLATION_FINISH = 12, 
-                 OP = 13
+		case EOF = -1, T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, 
+                 T__6 = 7, T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, 
+                 T__12 = 13, T__13 = 14, T__14 = 15, NL = 16, WS = 17, COMMENT = 18, 
+                 MULTILINE_COMMENT = 19, IDENTIFIER = 20, IMPLICIT_PARAMETER_NAME = 21, 
+                 INTEGER_LITERAL = 22, FLOATING_POINT_LITERAL = 23, BOOLEAN_LITERAL = 24, 
+                 NIL_LITERAL = 25, STRING_LITERAL = 26, MULTILINE_STRING_LITERAL = 27, 
+                 STRING_INTERPOLATION_START = 28, STRING_INTERPOLATION_CONTINUE = 29, 
+                 STRING_INTERPOLATION_FINISH = 30, MULTILINE_STRING_INTERPOLATION_START = 31, 
+                 MULTILINE_STRING_INTERPOLATION_CONTINUE = 32, MULTILINE_STRING_INTERPOLATION_FINISH = 33, 
+                 RAW_STRING_LITERAL = 34, RAW_MULTILINE_STRING_LITERAL = 35, 
+                 LPAREN = 36, RPAREN = 37, LBRACE = 38, RBRACE = 39, OP = 40, 
+                 BOOL = 41, NEWLINE = 42, STRING = 43
 	}
 
 	internal
-	static let RULE_prog = 0, RULE_tokens = 1, RULE_stat = 2, RULE_expr = 3, 
-            RULE_stringInterpolation = 4
+	static let RULE_identifierList = 0, RULE_identifier = 1, RULE_literal = 2, 
+            RULE_numericLiteral = 3, RULE_prog = 4, RULE_decl = 5, RULE_varDecl = 6, 
+            RULE_funcDecl = 7, RULE_classDecl = 8, RULE_precedenceGroupDeclaration = 9, 
+            RULE_precedenceGroupAttribute = 10, RULE_precedenceGroupRelation = 11, 
+            RULE_precedenceGroupAssignment = 12, RULE_precedenceGroupAssociativity = 13, 
+            RULE_precedenceGroupName = 14, RULE_stat = 15, RULE_expr = 16, 
+            RULE_stringInterpolation = 17
 
 	internal
 	static let ruleNames: [String] = [
-		"prog", "tokens", "stat", "expr", "stringInterpolation"
+		"identifierList", "identifier", "literal", "numericLiteral", "prog", "decl", 
+		"varDecl", "funcDecl", "classDecl", "precedenceGroupDeclaration", "precedenceGroupAttribute", 
+		"precedenceGroupRelation", "precedenceGroupAssignment", "precedenceGroupAssociativity", 
+		"precedenceGroupName", "stat", "expr", "stringInterpolation"
 	]
 
 	private static let _LITERAL_NAMES: [String?] = [
-		nil, nil, nil, nil, nil, "'('", "')'", "'{'", "'}'"
+		nil, "','", "'higherThan'", "'lowerThan'", "'assignment'", "'associativity'", 
+		"'left'", "'right'", "'none'", "'-'", "'var'", "';'", "'func'", "'class'", 
+		"'precedencegroup'", "':'", nil, nil, nil, nil, nil, nil, nil, nil, nil, 
+		"'nil'", nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, "'('", "')'", 
+		"'{'", "'}'"
 	]
 	private static let _SYMBOLIC_NAMES: [String?] = [
-		nil, "ID", "INT", "NEWLINE", "WS", "LPAREN", "RPAREN", "LBRACE", "RBRACE", 
-		"STRING", "STRING_INTERPOLATION_START", "STRING_INTERPOLATION_CONTINUE", 
-		"STRING_INTERPOLATION_FINISH", "OP"
+		nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, 
+		nil, nil, "NL", "WS", "COMMENT", "MULTILINE_COMMENT", "IDENTIFIER", "IMPLICIT_PARAMETER_NAME", 
+		"INTEGER_LITERAL", "FLOATING_POINT_LITERAL", "BOOLEAN_LITERAL", "NIL_LITERAL", 
+		"STRING_LITERAL", "MULTILINE_STRING_LITERAL", "STRING_INTERPOLATION_START", 
+		"STRING_INTERPOLATION_CONTINUE", "STRING_INTERPOLATION_FINISH", "MULTILINE_STRING_INTERPOLATION_START", 
+		"MULTILINE_STRING_INTERPOLATION_CONTINUE", "MULTILINE_STRING_INTERPOLATION_FINISH", 
+		"RAW_STRING_LITERAL", "RAW_MULTILINE_STRING_LITERAL", "LPAREN", "RPAREN", 
+		"LBRACE", "RBRACE", "OP", "BOOL", "NEWLINE", "STRING"
 	]
 	internal
 	static let VOCABULARY = Vocabulary(_LITERAL_NAMES, _SYMBOLIC_NAMES)
@@ -68,18 +93,289 @@ internal class CherryParser: Parser {
 	}
 
 
+	internal class IdentifierListContext: ParserRuleContext {
+			internal
+			func identifier() -> [IdentifierContext] {
+				return getRuleContexts(IdentifierContext.self)
+			}
+			internal
+			func identifier(_ i: Int) -> IdentifierContext? {
+				return getRuleContext(IdentifierContext.self, i)
+			}
+		override internal
+		func getRuleIndex() -> Int {
+			return CherryParser.RULE_identifierList
+		}
+		override internal
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.enterIdentifierList(self)
+			}
+		}
+		override internal
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.exitIdentifierList(self)
+			}
+		}
+	}
+	@discardableResult
+	 internal func identifierList() throws -> IdentifierListContext {
+		var _localctx: IdentifierListContext
+		_localctx = IdentifierListContext(_ctx, getState())
+		try enterRule(_localctx, 0, CherryParser.RULE_identifierList)
+		var _la: Int = 0
+		defer {
+	    		try! exitRule()
+	    }
+		do {
+		 	try enterOuterAlt(_localctx, 1)
+		 	setState(36)
+		 	try identifier()
+		 	setState(41)
+		 	try _errHandler.sync(self)
+		 	_la = try _input.LA(1)
+		 	while (_la == CherryParser.Tokens.T__0.rawValue) {
+		 		setState(37)
+		 		try match(CherryParser.Tokens.T__0.rawValue)
+		 		setState(38)
+		 		try identifier()
+
+
+		 		setState(43)
+		 		try _errHandler.sync(self)
+		 		_la = try _input.LA(1)
+		 	}
+
+		}
+		catch ANTLRException.recognition(let re) {
+			_localctx.exception = re
+			_errHandler.reportError(self, re)
+			try _errHandler.recover(self, re)
+		}
+
+		return _localctx
+	}
+
+	internal class IdentifierContext: ParserRuleContext {
+			internal
+			func IDENTIFIER() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.IDENTIFIER.rawValue, 0)
+			}
+		override internal
+		func getRuleIndex() -> Int {
+			return CherryParser.RULE_identifier
+		}
+		override internal
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.enterIdentifier(self)
+			}
+		}
+		override internal
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.exitIdentifier(self)
+			}
+		}
+	}
+	@discardableResult
+	 internal func identifier() throws -> IdentifierContext {
+		var _localctx: IdentifierContext
+		_localctx = IdentifierContext(_ctx, getState())
+		try enterRule(_localctx, 2, CherryParser.RULE_identifier)
+		var _la: Int = 0
+		defer {
+	    		try! exitRule()
+	    }
+		do {
+		 	try enterOuterAlt(_localctx, 1)
+		 	setState(44)
+		 	_la = try _input.LA(1)
+		 	if (!((Int64(_la) & ~0x3f) == 0 && ((Int64(1) << _la) & 1049084) != 0)) {
+		 	try _errHandler.recoverInline(self)
+		 	}
+		 	else {
+		 		_errHandler.reportMatch(self)
+		 		try consume()
+		 	}
+
+		}
+		catch ANTLRException.recognition(let re) {
+			_localctx.exception = re
+			_errHandler.reportError(self, re)
+			try _errHandler.recover(self, re)
+		}
+
+		return _localctx
+	}
+
+	internal class LiteralContext: ParserRuleContext {
+			internal
+			func numericLiteral() -> NumericLiteralContext? {
+				return getRuleContext(NumericLiteralContext.self, 0)
+			}
+			internal
+			func STRING_LITERAL() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.STRING_LITERAL.rawValue, 0)
+			}
+			internal
+			func BOOLEAN_LITERAL() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.BOOLEAN_LITERAL.rawValue, 0)
+			}
+			internal
+			func NIL_LITERAL() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.NIL_LITERAL.rawValue, 0)
+			}
+		override internal
+		func getRuleIndex() -> Int {
+			return CherryParser.RULE_literal
+		}
+		override internal
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.enterLiteral(self)
+			}
+		}
+		override internal
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.exitLiteral(self)
+			}
+		}
+	}
+	@discardableResult
+	 internal func literal() throws -> LiteralContext {
+		var _localctx: LiteralContext
+		_localctx = LiteralContext(_ctx, getState())
+		try enterRule(_localctx, 4, CherryParser.RULE_literal)
+		defer {
+	    		try! exitRule()
+	    }
+		do {
+		 	setState(50)
+		 	try _errHandler.sync(self)
+		 	switch (CherryParser.Tokens(rawValue: try _input.LA(1))!) {
+		 	case .T__8:fallthrough
+		 	case .INTEGER_LITERAL:fallthrough
+		 	case .FLOATING_POINT_LITERAL:
+		 		try enterOuterAlt(_localctx, 1)
+		 		setState(46)
+		 		try numericLiteral()
+
+		 		break
+
+		 	case .STRING_LITERAL:
+		 		try enterOuterAlt(_localctx, 2)
+		 		setState(47)
+		 		try match(CherryParser.Tokens.STRING_LITERAL.rawValue)
+
+		 		break
+
+		 	case .BOOLEAN_LITERAL:
+		 		try enterOuterAlt(_localctx, 3)
+		 		setState(48)
+		 		try match(CherryParser.Tokens.BOOLEAN_LITERAL.rawValue)
+
+		 		break
+
+		 	case .NIL_LITERAL:
+		 		try enterOuterAlt(_localctx, 4)
+		 		setState(49)
+		 		try match(CherryParser.Tokens.NIL_LITERAL.rawValue)
+
+		 		break
+		 	default:
+		 		throw ANTLRException.recognition(e: NoViableAltException(self))
+		 	}
+		}
+		catch ANTLRException.recognition(let re) {
+			_localctx.exception = re
+			_errHandler.reportError(self, re)
+			try _errHandler.recover(self, re)
+		}
+
+		return _localctx
+	}
+
+	internal class NumericLiteralContext: ParserRuleContext {
+			internal
+			func INTEGER_LITERAL() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.INTEGER_LITERAL.rawValue, 0)
+			}
+			internal
+			func FLOATING_POINT_LITERAL() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.FLOATING_POINT_LITERAL.rawValue, 0)
+			}
+		override internal
+		func getRuleIndex() -> Int {
+			return CherryParser.RULE_numericLiteral
+		}
+		override internal
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.enterNumericLiteral(self)
+			}
+		}
+		override internal
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.exitNumericLiteral(self)
+			}
+		}
+	}
+	@discardableResult
+	 internal func numericLiteral() throws -> NumericLiteralContext {
+		var _localctx: NumericLiteralContext
+		_localctx = NumericLiteralContext(_ctx, getState())
+		try enterRule(_localctx, 6, CherryParser.RULE_numericLiteral)
+		var _la: Int = 0
+		defer {
+	    		try! exitRule()
+	    }
+		do {
+		 	try enterOuterAlt(_localctx, 1)
+		 	setState(53)
+		 	try _errHandler.sync(self)
+		 	_la = try _input.LA(1)
+		 	if (_la == CherryParser.Tokens.T__8.rawValue) {
+		 		setState(52)
+		 		try match(CherryParser.Tokens.T__8.rawValue)
+
+		 	}
+
+		 	setState(55)
+		 	_la = try _input.LA(1)
+		 	if (!(_la == CherryParser.Tokens.INTEGER_LITERAL.rawValue || _la == CherryParser.Tokens.FLOATING_POINT_LITERAL.rawValue)) {
+		 	try _errHandler.recoverInline(self)
+		 	}
+		 	else {
+		 		_errHandler.reportMatch(self)
+		 		try consume()
+		 	}
+
+		}
+		catch ANTLRException.recognition(let re) {
+			_localctx.exception = re
+			_errHandler.reportError(self, re)
+			try _errHandler.recover(self, re)
+		}
+
+		return _localctx
+	}
+
 	internal class ProgContext: ParserRuleContext {
 			internal
 			func EOF() -> TerminalNode? {
 				return getToken(CherryParser.Tokens.EOF.rawValue, 0)
 			}
 			internal
-			func stat() -> [StatContext] {
-				return getRuleContexts(StatContext.self)
+			func decl() -> [DeclContext] {
+				return getRuleContexts(DeclContext.self)
 			}
 			internal
-			func stat(_ i: Int) -> StatContext? {
-				return getRuleContext(StatContext.self, i)
+			func decl(_ i: Int) -> DeclContext? {
+				return getRuleContext(DeclContext.self, i)
 			}
 		override internal
 		func getRuleIndex() -> Int {
@@ -102,26 +398,26 @@ internal class CherryParser: Parser {
 	 internal func prog() throws -> ProgContext {
 		var _localctx: ProgContext
 		_localctx = ProgContext(_ctx, getState())
-		try enterRule(_localctx, 0, CherryParser.RULE_prog)
+		try enterRule(_localctx, 8, CherryParser.RULE_prog)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(11) 
+		 	setState(58) 
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
 		 	repeat {
-		 		setState(10)
-		 		try stat()
+		 		setState(57)
+		 		try decl()
 
 
-		 		setState(13); 
+		 		setState(60); 
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
-		 	} while ((Int64(_la) & ~0x3f) == 0 && ((Int64(1) << _la) & 1582) != 0)
-		 	setState(15)
+		 	} while ((Int64(_la) & ~0x3f) == 0 && ((Int64(1) << _la) & 29696) != 0)
+		 	setState(62)
 		 	try match(CherryParser.Tokens.EOF.rawValue)
 
 		}
@@ -134,53 +430,763 @@ internal class CherryParser: Parser {
 		return _localctx
 	}
 
-	internal class TokensContext: ParserRuleContext {
+	internal class DeclContext: ParserRuleContext {
 			internal
-			func EOF() -> TerminalNode? {
-				return getToken(CherryParser.Tokens.EOF.rawValue, 0)
+			func varDecl() -> VarDeclContext? {
+				return getRuleContext(VarDeclContext.self, 0)
+			}
+			internal
+			func funcDecl() -> FuncDeclContext? {
+				return getRuleContext(FuncDeclContext.self, 0)
+			}
+			internal
+			func classDecl() -> ClassDeclContext? {
+				return getRuleContext(ClassDeclContext.self, 0)
+			}
+			internal
+			func precedenceGroupDeclaration() -> PrecedenceGroupDeclarationContext? {
+				return getRuleContext(PrecedenceGroupDeclarationContext.self, 0)
 			}
 		override internal
 		func getRuleIndex() -> Int {
-			return CherryParser.RULE_tokens
+			return CherryParser.RULE_decl
 		}
 		override internal
 		func enterRule(_ listener: ParseTreeListener) {
 			if let listener = listener as? CherryListener {
-				listener.enterTokens(self)
+				listener.enterDecl(self)
 			}
 		}
 		override internal
 		func exitRule(_ listener: ParseTreeListener) {
 			if let listener = listener as? CherryListener {
-				listener.exitTokens(self)
+				listener.exitDecl(self)
 			}
 		}
 	}
 	@discardableResult
-	 internal func tokens() throws -> TokensContext {
-		var _localctx: TokensContext
-		_localctx = TokensContext(_ctx, getState())
-		try enterRule(_localctx, 2, CherryParser.RULE_tokens)
+	 internal func decl() throws -> DeclContext {
+		var _localctx: DeclContext
+		_localctx = DeclContext(_ctx, getState())
+		try enterRule(_localctx, 10, CherryParser.RULE_decl)
+		defer {
+	    		try! exitRule()
+	    }
+		do {
+		 	setState(68)
+		 	try _errHandler.sync(self)
+		 	switch (CherryParser.Tokens(rawValue: try _input.LA(1))!) {
+		 	case .T__9:
+		 		try enterOuterAlt(_localctx, 1)
+		 		setState(64)
+		 		try varDecl()
+
+		 		break
+
+		 	case .T__11:
+		 		try enterOuterAlt(_localctx, 2)
+		 		setState(65)
+		 		try funcDecl()
+
+		 		break
+
+		 	case .T__12:
+		 		try enterOuterAlt(_localctx, 3)
+		 		setState(66)
+		 		try classDecl()
+
+		 		break
+
+		 	case .T__13:
+		 		try enterOuterAlt(_localctx, 4)
+		 		setState(67)
+		 		try precedenceGroupDeclaration()
+
+		 		break
+		 	default:
+		 		throw ANTLRException.recognition(e: NoViableAltException(self))
+		 	}
+		}
+		catch ANTLRException.recognition(let re) {
+			_localctx.exception = re
+			_errHandler.reportError(self, re)
+			try _errHandler.recover(self, re)
+		}
+
+		return _localctx
+	}
+
+	internal class VarDeclContext: ParserRuleContext {
+			internal
+			func identifier() -> IdentifierContext? {
+				return getRuleContext(IdentifierContext.self, 0)
+			}
+			internal
+			func NL() -> [TerminalNode] {
+				return getTokens(CherryParser.Tokens.NL.rawValue)
+			}
+			internal
+			func NL(_ i:Int) -> TerminalNode? {
+				return getToken(CherryParser.Tokens.NL.rawValue, i)
+			}
+		override internal
+		func getRuleIndex() -> Int {
+			return CherryParser.RULE_varDecl
+		}
+		override internal
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.enterVarDecl(self)
+			}
+		}
+		override internal
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.exitVarDecl(self)
+			}
+		}
+	}
+	@discardableResult
+	 internal func varDecl() throws -> VarDeclContext {
+		var _localctx: VarDeclContext
+		_localctx = VarDeclContext(_ctx, getState())
+		try enterRule(_localctx, 12, CherryParser.RULE_varDecl)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(20)
+		 	setState(70)
+		 	try match(CherryParser.Tokens.T__9.rawValue)
+		 	setState(71)
+		 	try identifier()
+		 	setState(78)
+		 	try _errHandler.sync(self)
+		 	switch (CherryParser.Tokens(rawValue: try _input.LA(1))!) {
+		 	case .T__10:
+		 		setState(72)
+		 		try match(CherryParser.Tokens.T__10.rawValue)
+
+		 		break
+
+		 	case .NL:
+		 		setState(74) 
+		 		try _errHandler.sync(self)
+		 		_la = try _input.LA(1)
+		 		repeat {
+		 			setState(73)
+		 			try match(CherryParser.Tokens.NL.rawValue)
+
+
+		 			setState(76); 
+		 			try _errHandler.sync(self)
+		 			_la = try _input.LA(1)
+		 		} while (_la == CherryParser.Tokens.NL.rawValue)
+
+		 		break
+		 	default:
+		 		throw ANTLRException.recognition(e: NoViableAltException(self))
+		 	}
+
+		}
+		catch ANTLRException.recognition(let re) {
+			_localctx.exception = re
+			_errHandler.reportError(self, re)
+			try _errHandler.recover(self, re)
+		}
+
+		return _localctx
+	}
+
+	internal class FuncDeclContext: ParserRuleContext {
+			internal
+			func identifier() -> IdentifierContext? {
+				return getRuleContext(IdentifierContext.self, 0)
+			}
+			internal
+			func NL() -> [TerminalNode] {
+				return getTokens(CherryParser.Tokens.NL.rawValue)
+			}
+			internal
+			func NL(_ i:Int) -> TerminalNode? {
+				return getToken(CherryParser.Tokens.NL.rawValue, i)
+			}
+		override internal
+		func getRuleIndex() -> Int {
+			return CherryParser.RULE_funcDecl
+		}
+		override internal
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.enterFuncDecl(self)
+			}
+		}
+		override internal
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.exitFuncDecl(self)
+			}
+		}
+	}
+	@discardableResult
+	 internal func funcDecl() throws -> FuncDeclContext {
+		var _localctx: FuncDeclContext
+		_localctx = FuncDeclContext(_ctx, getState())
+		try enterRule(_localctx, 14, CherryParser.RULE_funcDecl)
+		var _la: Int = 0
+		defer {
+	    		try! exitRule()
+	    }
+		do {
+		 	try enterOuterAlt(_localctx, 1)
+		 	setState(80)
+		 	try match(CherryParser.Tokens.T__11.rawValue)
+		 	setState(81)
+		 	try identifier()
+		 	setState(88)
+		 	try _errHandler.sync(self)
+		 	switch (CherryParser.Tokens(rawValue: try _input.LA(1))!) {
+		 	case .T__10:
+		 		setState(82)
+		 		try match(CherryParser.Tokens.T__10.rawValue)
+
+		 		break
+
+		 	case .NL:
+		 		setState(84) 
+		 		try _errHandler.sync(self)
+		 		_la = try _input.LA(1)
+		 		repeat {
+		 			setState(83)
+		 			try match(CherryParser.Tokens.NL.rawValue)
+
+
+		 			setState(86); 
+		 			try _errHandler.sync(self)
+		 			_la = try _input.LA(1)
+		 		} while (_la == CherryParser.Tokens.NL.rawValue)
+
+		 		break
+		 	default:
+		 		throw ANTLRException.recognition(e: NoViableAltException(self))
+		 	}
+
+		}
+		catch ANTLRException.recognition(let re) {
+			_localctx.exception = re
+			_errHandler.reportError(self, re)
+			try _errHandler.recover(self, re)
+		}
+
+		return _localctx
+	}
+
+	internal class ClassDeclContext: ParserRuleContext {
+			internal
+			func identifier() -> IdentifierContext? {
+				return getRuleContext(IdentifierContext.self, 0)
+			}
+			internal
+			func NL() -> [TerminalNode] {
+				return getTokens(CherryParser.Tokens.NL.rawValue)
+			}
+			internal
+			func NL(_ i:Int) -> TerminalNode? {
+				return getToken(CherryParser.Tokens.NL.rawValue, i)
+			}
+		override internal
+		func getRuleIndex() -> Int {
+			return CherryParser.RULE_classDecl
+		}
+		override internal
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.enterClassDecl(self)
+			}
+		}
+		override internal
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.exitClassDecl(self)
+			}
+		}
+	}
+	@discardableResult
+	 internal func classDecl() throws -> ClassDeclContext {
+		var _localctx: ClassDeclContext
+		_localctx = ClassDeclContext(_ctx, getState())
+		try enterRule(_localctx, 16, CherryParser.RULE_classDecl)
+		var _la: Int = 0
+		defer {
+	    		try! exitRule()
+	    }
+		do {
+		 	try enterOuterAlt(_localctx, 1)
+		 	setState(90)
+		 	try match(CherryParser.Tokens.T__12.rawValue)
+		 	setState(91)
+		 	try identifier()
+		 	setState(98)
+		 	try _errHandler.sync(self)
+		 	switch (CherryParser.Tokens(rawValue: try _input.LA(1))!) {
+		 	case .T__10:
+		 		setState(92)
+		 		try match(CherryParser.Tokens.T__10.rawValue)
+
+		 		break
+
+		 	case .NL:
+		 		setState(94) 
+		 		try _errHandler.sync(self)
+		 		_la = try _input.LA(1)
+		 		repeat {
+		 			setState(93)
+		 			try match(CherryParser.Tokens.NL.rawValue)
+
+
+		 			setState(96); 
+		 			try _errHandler.sync(self)
+		 			_la = try _input.LA(1)
+		 		} while (_la == CherryParser.Tokens.NL.rawValue)
+
+		 		break
+		 	default:
+		 		throw ANTLRException.recognition(e: NoViableAltException(self))
+		 	}
+
+		}
+		catch ANTLRException.recognition(let re) {
+			_localctx.exception = re
+			_errHandler.reportError(self, re)
+			try _errHandler.recover(self, re)
+		}
+
+		return _localctx
+	}
+
+	internal class PrecedenceGroupDeclarationContext: ParserRuleContext {
+			internal
+			func precedenceGroupName() -> PrecedenceGroupNameContext? {
+				return getRuleContext(PrecedenceGroupNameContext.self, 0)
+			}
+			internal
+			func LBRACE() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.LBRACE.rawValue, 0)
+			}
+			internal
+			func RBRACE() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.RBRACE.rawValue, 0)
+			}
+			internal
+			func NL() -> [TerminalNode] {
+				return getTokens(CherryParser.Tokens.NL.rawValue)
+			}
+			internal
+			func NL(_ i:Int) -> TerminalNode? {
+				return getToken(CherryParser.Tokens.NL.rawValue, i)
+			}
+			internal
+			func precedenceGroupAttribute() -> [PrecedenceGroupAttributeContext] {
+				return getRuleContexts(PrecedenceGroupAttributeContext.self)
+			}
+			internal
+			func precedenceGroupAttribute(_ i: Int) -> PrecedenceGroupAttributeContext? {
+				return getRuleContext(PrecedenceGroupAttributeContext.self, i)
+			}
+		override internal
+		func getRuleIndex() -> Int {
+			return CherryParser.RULE_precedenceGroupDeclaration
+		}
+		override internal
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.enterPrecedenceGroupDeclaration(self)
+			}
+		}
+		override internal
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.exitPrecedenceGroupDeclaration(self)
+			}
+		}
+	}
+	@discardableResult
+	 internal func precedenceGroupDeclaration() throws -> PrecedenceGroupDeclarationContext {
+		var _localctx: PrecedenceGroupDeclarationContext
+		_localctx = PrecedenceGroupDeclarationContext(_ctx, getState())
+		try enterRule(_localctx, 18, CherryParser.RULE_precedenceGroupDeclaration)
+		var _la: Int = 0
+		defer {
+	    		try! exitRule()
+	    }
+		do {
+		 	try enterOuterAlt(_localctx, 1)
+		 	setState(100)
+		 	try match(CherryParser.Tokens.T__13.rawValue)
+		 	setState(101)
+		 	try precedenceGroupName()
+		 	setState(102)
+		 	try match(CherryParser.Tokens.LBRACE.rawValue)
+		 	setState(106)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
-		 	while ((Int64(_la) & ~0x3f) == 0 && ((Int64(1) << _la) & 16382) != 0) {
-		 		setState(17)
-		 		try matchWildcard();
+		 	while (_la == CherryParser.Tokens.NL.rawValue) {
+		 		setState(103)
+		 		try match(CherryParser.Tokens.NL.rawValue)
 
 
-		 		setState(22)
+		 		setState(108)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 	}
-		 	setState(23)
-		 	try match(CherryParser.Tokens.EOF.rawValue)
+		 	setState(117)
+		 	try _errHandler.sync(self)
+		 	_la = try _input.LA(1)
+		 	while ((Int64(_la) & ~0x3f) == 0 && ((Int64(1) << _la) & 60) != 0) {
+		 		setState(109)
+		 		try precedenceGroupAttribute()
+		 		setState(111) 
+		 		try _errHandler.sync(self)
+		 		_la = try _input.LA(1)
+		 		repeat {
+		 			setState(110)
+		 			_la = try _input.LA(1)
+		 			if (!(_la == CherryParser.Tokens.T__10.rawValue || _la == CherryParser.Tokens.NL.rawValue)) {
+		 			try _errHandler.recoverInline(self)
+		 			}
+		 			else {
+		 				_errHandler.reportMatch(self)
+		 				try consume()
+		 			}
+
+
+		 			setState(113); 
+		 			try _errHandler.sync(self)
+		 			_la = try _input.LA(1)
+		 		} while (_la == CherryParser.Tokens.T__10.rawValue || _la == CherryParser.Tokens.NL.rawValue)
+
+
+		 		setState(119)
+		 		try _errHandler.sync(self)
+		 		_la = try _input.LA(1)
+		 	}
+		 	setState(120)
+		 	try match(CherryParser.Tokens.RBRACE.rawValue)
+		 	setState(124)
+		 	try _errHandler.sync(self)
+		 	_la = try _input.LA(1)
+		 	while (_la == CherryParser.Tokens.NL.rawValue) {
+		 		setState(121)
+		 		try match(CherryParser.Tokens.NL.rawValue)
+
+
+		 		setState(126)
+		 		try _errHandler.sync(self)
+		 		_la = try _input.LA(1)
+		 	}
+
+		}
+		catch ANTLRException.recognition(let re) {
+			_localctx.exception = re
+			_errHandler.reportError(self, re)
+			try _errHandler.recover(self, re)
+		}
+
+		return _localctx
+	}
+
+	internal class PrecedenceGroupAttributeContext: ParserRuleContext {
+			internal
+			func precedenceGroupRelation() -> PrecedenceGroupRelationContext? {
+				return getRuleContext(PrecedenceGroupRelationContext.self, 0)
+			}
+			internal
+			func precedenceGroupAssignment() -> PrecedenceGroupAssignmentContext? {
+				return getRuleContext(PrecedenceGroupAssignmentContext.self, 0)
+			}
+			internal
+			func precedenceGroupAssociativity() -> PrecedenceGroupAssociativityContext? {
+				return getRuleContext(PrecedenceGroupAssociativityContext.self, 0)
+			}
+		override internal
+		func getRuleIndex() -> Int {
+			return CherryParser.RULE_precedenceGroupAttribute
+		}
+		override internal
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.enterPrecedenceGroupAttribute(self)
+			}
+		}
+		override internal
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.exitPrecedenceGroupAttribute(self)
+			}
+		}
+	}
+	@discardableResult
+	 internal func precedenceGroupAttribute() throws -> PrecedenceGroupAttributeContext {
+		var _localctx: PrecedenceGroupAttributeContext
+		_localctx = PrecedenceGroupAttributeContext(_ctx, getState())
+		try enterRule(_localctx, 20, CherryParser.RULE_precedenceGroupAttribute)
+		defer {
+	    		try! exitRule()
+	    }
+		do {
+		 	setState(130)
+		 	try _errHandler.sync(self)
+		 	switch (CherryParser.Tokens(rawValue: try _input.LA(1))!) {
+		 	case .T__1:fallthrough
+		 	case .T__2:
+		 		try enterOuterAlt(_localctx, 1)
+		 		setState(127)
+		 		try precedenceGroupRelation()
+
+		 		break
+
+		 	case .T__3:
+		 		try enterOuterAlt(_localctx, 2)
+		 		setState(128)
+		 		try precedenceGroupAssignment()
+
+		 		break
+
+		 	case .T__4:
+		 		try enterOuterAlt(_localctx, 3)
+		 		setState(129)
+		 		try precedenceGroupAssociativity()
+
+		 		break
+		 	default:
+		 		throw ANTLRException.recognition(e: NoViableAltException(self))
+		 	}
+		}
+		catch ANTLRException.recognition(let re) {
+			_localctx.exception = re
+			_errHandler.reportError(self, re)
+			try _errHandler.recover(self, re)
+		}
+
+		return _localctx
+	}
+
+	internal class PrecedenceGroupRelationContext: ParserRuleContext {
+		internal var op: Token!
+			internal
+			func precedenceGroupName() -> [PrecedenceGroupNameContext] {
+				return getRuleContexts(PrecedenceGroupNameContext.self)
+			}
+			internal
+			func precedenceGroupName(_ i: Int) -> PrecedenceGroupNameContext? {
+				return getRuleContext(PrecedenceGroupNameContext.self, i)
+			}
+		override internal
+		func getRuleIndex() -> Int {
+			return CherryParser.RULE_precedenceGroupRelation
+		}
+		override internal
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.enterPrecedenceGroupRelation(self)
+			}
+		}
+		override internal
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.exitPrecedenceGroupRelation(self)
+			}
+		}
+	}
+	@discardableResult
+	 internal func precedenceGroupRelation() throws -> PrecedenceGroupRelationContext {
+		var _localctx: PrecedenceGroupRelationContext
+		_localctx = PrecedenceGroupRelationContext(_ctx, getState())
+		try enterRule(_localctx, 22, CherryParser.RULE_precedenceGroupRelation)
+		var _la: Int = 0
+		defer {
+	    		try! exitRule()
+	    }
+		do {
+		 	try enterOuterAlt(_localctx, 1)
+		 	setState(132)
+		 	_localctx.castdown(PrecedenceGroupRelationContext.self).op = try _input.LT(1)
+		 	_la = try _input.LA(1)
+		 	if (!(_la == CherryParser.Tokens.T__1.rawValue || _la == CherryParser.Tokens.T__2.rawValue)) {
+		 		_localctx.castdown(PrecedenceGroupRelationContext.self).op = try _errHandler.recoverInline(self) as Token
+		 	}
+		 	else {
+		 		_errHandler.reportMatch(self)
+		 		try consume()
+		 	}
+		 	setState(133)
+		 	try match(CherryParser.Tokens.T__14.rawValue)
+		 	setState(134)
+		 	try precedenceGroupName()
+		 	setState(139)
+		 	try _errHandler.sync(self)
+		 	_la = try _input.LA(1)
+		 	while (_la == CherryParser.Tokens.T__0.rawValue) {
+		 		setState(135)
+		 		try match(CherryParser.Tokens.T__0.rawValue)
+		 		setState(136)
+		 		try precedenceGroupName()
+
+
+		 		setState(141)
+		 		try _errHandler.sync(self)
+		 		_la = try _input.LA(1)
+		 	}
+
+		}
+		catch ANTLRException.recognition(let re) {
+			_localctx.exception = re
+			_errHandler.reportError(self, re)
+			try _errHandler.recover(self, re)
+		}
+
+		return _localctx
+	}
+
+	internal class PrecedenceGroupAssignmentContext: ParserRuleContext {
+			internal
+			func BOOL() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.BOOL.rawValue, 0)
+			}
+		override internal
+		func getRuleIndex() -> Int {
+			return CherryParser.RULE_precedenceGroupAssignment
+		}
+		override internal
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.enterPrecedenceGroupAssignment(self)
+			}
+		}
+		override internal
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.exitPrecedenceGroupAssignment(self)
+			}
+		}
+	}
+	@discardableResult
+	 internal func precedenceGroupAssignment() throws -> PrecedenceGroupAssignmentContext {
+		var _localctx: PrecedenceGroupAssignmentContext
+		_localctx = PrecedenceGroupAssignmentContext(_ctx, getState())
+		try enterRule(_localctx, 24, CherryParser.RULE_precedenceGroupAssignment)
+		defer {
+	    		try! exitRule()
+	    }
+		do {
+		 	try enterOuterAlt(_localctx, 1)
+		 	setState(142)
+		 	try match(CherryParser.Tokens.T__3.rawValue)
+		 	setState(143)
+		 	try match(CherryParser.Tokens.T__14.rawValue)
+		 	setState(144)
+		 	try match(CherryParser.Tokens.BOOL.rawValue)
+
+		}
+		catch ANTLRException.recognition(let re) {
+			_localctx.exception = re
+			_errHandler.reportError(self, re)
+			try _errHandler.recover(self, re)
+		}
+
+		return _localctx
+	}
+
+	internal class PrecedenceGroupAssociativityContext: ParserRuleContext {
+		internal var value: Token!
+		override internal
+		func getRuleIndex() -> Int {
+			return CherryParser.RULE_precedenceGroupAssociativity
+		}
+		override internal
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.enterPrecedenceGroupAssociativity(self)
+			}
+		}
+		override internal
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.exitPrecedenceGroupAssociativity(self)
+			}
+		}
+	}
+	@discardableResult
+	 internal func precedenceGroupAssociativity() throws -> PrecedenceGroupAssociativityContext {
+		var _localctx: PrecedenceGroupAssociativityContext
+		_localctx = PrecedenceGroupAssociativityContext(_ctx, getState())
+		try enterRule(_localctx, 26, CherryParser.RULE_precedenceGroupAssociativity)
+		var _la: Int = 0
+		defer {
+	    		try! exitRule()
+	    }
+		do {
+		 	try enterOuterAlt(_localctx, 1)
+		 	setState(146)
+		 	try match(CherryParser.Tokens.T__4.rawValue)
+		 	setState(147)
+		 	try match(CherryParser.Tokens.T__14.rawValue)
+		 	setState(148)
+		 	_localctx.castdown(PrecedenceGroupAssociativityContext.self).value = try _input.LT(1)
+		 	_la = try _input.LA(1)
+		 	if (!((Int64(_la) & ~0x3f) == 0 && ((Int64(1) << _la) & 448) != 0)) {
+		 		_localctx.castdown(PrecedenceGroupAssociativityContext.self).value = try _errHandler.recoverInline(self) as Token
+		 	}
+		 	else {
+		 		_errHandler.reportMatch(self)
+		 		try consume()
+		 	}
+
+		}
+		catch ANTLRException.recognition(let re) {
+			_localctx.exception = re
+			_errHandler.reportError(self, re)
+			try _errHandler.recover(self, re)
+		}
+
+		return _localctx
+	}
+
+	internal class PrecedenceGroupNameContext: ParserRuleContext {
+			internal
+			func identifier() -> IdentifierContext? {
+				return getRuleContext(IdentifierContext.self, 0)
+			}
+		override internal
+		func getRuleIndex() -> Int {
+			return CherryParser.RULE_precedenceGroupName
+		}
+		override internal
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.enterPrecedenceGroupName(self)
+			}
+		}
+		override internal
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryListener {
+				listener.exitPrecedenceGroupName(self)
+			}
+		}
+	}
+	@discardableResult
+	 internal func precedenceGroupName() throws -> PrecedenceGroupNameContext {
+		var _localctx: PrecedenceGroupNameContext
+		_localctx = PrecedenceGroupNameContext(_ctx, getState())
+		try enterRule(_localctx, 28, CherryParser.RULE_precedenceGroupName)
+		defer {
+	    		try! exitRule()
+	    }
+		do {
+		 	try enterOuterAlt(_localctx, 1)
+		 	setState(150)
+		 	try identifier()
 
 		}
 		catch ANTLRException.recognition(let re) {
@@ -222,23 +1228,23 @@ internal class CherryParser: Parser {
 	 internal func stat() throws -> StatContext {
 		var _localctx: StatContext
 		_localctx = StatContext(_ctx, getState())
-		try enterRule(_localctx, 4, CherryParser.RULE_stat)
+		try enterRule(_localctx, 30, CherryParser.RULE_stat)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(26)
+		 	setState(153)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
-		 	if ((Int64(_la) & ~0x3f) == 0 && ((Int64(1) << _la) & 1574) != 0) {
-		 		setState(25)
+		 	if ((Int64(_la) & ~0x3f) == 0 && ((Int64(1) << _la) & 8865212007420) != 0) {
+		 		setState(152)
 		 		try expr(0)
 
 		 	}
 
-		 	setState(28)
+		 	setState(155)
 		 	try match(CherryParser.Tokens.NEWLINE.rawValue)
 
 		}
@@ -254,12 +1260,12 @@ internal class CherryParser: Parser {
 
 	internal class ExprContext: ParserRuleContext {
 			internal
-			func INT() -> TerminalNode? {
-				return getToken(CherryParser.Tokens.INT.rawValue, 0)
+			func literal() -> LiteralContext? {
+				return getRuleContext(LiteralContext.self, 0)
 			}
 			internal
-			func ID() -> TerminalNode? {
-				return getToken(CherryParser.Tokens.ID.rawValue, 0)
+			func identifier() -> IdentifierContext? {
+				return getRuleContext(IdentifierContext.self, 0)
 			}
 			internal
 			func STRING() -> TerminalNode? {
@@ -325,47 +1331,58 @@ internal class CherryParser: Parser {
 		var _localctx: ExprContext
 		_localctx = ExprContext(_ctx, _parentState)
 		var _prevctx: ExprContext = _localctx
-		let _startState: Int = 6
-		try enterRecursionRule(_localctx, 6, CherryParser.RULE_expr, _p)
+		let _startState: Int = 32
+		try enterRecursionRule(_localctx, 32, CherryParser.RULE_expr, _p)
 		defer {
 	    		try! unrollRecursionContexts(_parentctx)
 	    }
 		do {
 			var _alt: Int
 			try enterOuterAlt(_localctx, 1)
-			setState(39)
+			setState(166)
 			try _errHandler.sync(self)
 			switch (CherryParser.Tokens(rawValue: try _input.LA(1))!) {
-			case .INT:
-				setState(31)
-				try match(CherryParser.Tokens.INT.rawValue)
+			case .T__8:fallthrough
+			case .INTEGER_LITERAL:fallthrough
+			case .FLOATING_POINT_LITERAL:fallthrough
+			case .BOOLEAN_LITERAL:fallthrough
+			case .NIL_LITERAL:fallthrough
+			case .STRING_LITERAL:
+				setState(158)
+				try literal()
 
 				break
-
-			case .ID:
-				setState(32)
-				try match(CherryParser.Tokens.ID.rawValue)
+			case .T__1:fallthrough
+			case .T__2:fallthrough
+			case .T__3:fallthrough
+			case .T__4:fallthrough
+			case .T__5:fallthrough
+			case .T__6:fallthrough
+			case .T__7:fallthrough
+			case .IDENTIFIER:
+				setState(159)
+				try identifier()
 
 				break
 
 			case .STRING:
-				setState(33)
+				setState(160)
 				try match(CherryParser.Tokens.STRING.rawValue)
 
 				break
 
 			case .STRING_INTERPOLATION_START:
-				setState(34)
+				setState(161)
 				try stringInterpolation()
 
 				break
 
 			case .LPAREN:
-				setState(35)
+				setState(162)
 				try match(CherryParser.Tokens.LPAREN.rawValue)
-				setState(36)
+				setState(163)
 				try expr(0)
-				setState(37)
+				setState(164)
 				try match(CherryParser.Tokens.RPAREN.rawValue)
 
 				break
@@ -373,45 +1390,45 @@ internal class CherryParser: Parser {
 				throw ANTLRException.recognition(e: NoViableAltException(self))
 			}
 			_ctx!.stop = try _input.LT(-1)
-			setState(52)
+			setState(179)
 			try _errHandler.sync(self)
-			_alt = try getInterpreter().adaptivePredict(_input,5,_ctx)
+			_alt = try getInterpreter().adaptivePredict(_input,20,_ctx)
 			while (_alt != 2 && _alt != ATN.INVALID_ALT_NUMBER) {
 				if ( _alt==1 ) {
 					if _parseListeners != nil {
 					   try triggerExitRuleEvent()
 					}
 					_prevctx = _localctx
-					setState(50)
+					setState(177)
 					try _errHandler.sync(self)
-					switch(try getInterpreter().adaptivePredict(_input,4, _ctx)) {
+					switch(try getInterpreter().adaptivePredict(_input,19, _ctx)) {
 					case 1:
 						_localctx = ExprContext(_parentctx, _parentState);
 						try pushNewRecursionContext(_localctx, _startState, CherryParser.RULE_expr)
-						setState(41)
+						setState(168)
 						if (!(precpred(_ctx, 7))) {
 						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 7)"))
 						}
-						setState(42)
+						setState(169)
 						try match(CherryParser.Tokens.OP.rawValue)
-						setState(43)
+						setState(170)
 						try expr(8)
 
 						break
 					case 2:
 						_localctx = ExprContext(_parentctx, _parentState);
 						try pushNewRecursionContext(_localctx, _startState, CherryParser.RULE_expr)
-						setState(44)
+						setState(171)
 						if (!(precpred(_ctx, 1))) {
 						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 1)"))
 						}
-						setState(45)
+						setState(172)
 						try match(CherryParser.Tokens.LBRACE.rawValue)
-						setState(46)
+						setState(173)
 						try expr(0)
-						setState(47)
+						setState(174)
 						try match(CherryParser.Tokens.RBRACE.rawValue)
-						setState(48)
+						setState(175)
 						try expr(2)
 
 						break
@@ -419,9 +1436,9 @@ internal class CherryParser: Parser {
 					}
 			 
 				}
-				setState(54)
+				setState(181)
 				try _errHandler.sync(self)
-				_alt = try getInterpreter().adaptivePredict(_input,5,_ctx)
+				_alt = try getInterpreter().adaptivePredict(_input,20,_ctx)
 			}
 
 		}
@@ -480,32 +1497,32 @@ internal class CherryParser: Parser {
 	 internal func stringInterpolation() throws -> StringInterpolationContext {
 		var _localctx: StringInterpolationContext
 		_localctx = StringInterpolationContext(_ctx, getState())
-		try enterRule(_localctx, 8, CherryParser.RULE_stringInterpolation)
+		try enterRule(_localctx, 34, CherryParser.RULE_stringInterpolation)
 		var _la: Int = 0
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(55)
+		 	setState(182)
 		 	try match(CherryParser.Tokens.STRING_INTERPOLATION_START.rawValue)
-		 	setState(56)
+		 	setState(183)
 		 	try expr(0)
-		 	setState(61)
+		 	setState(188)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
 		 	while (_la == CherryParser.Tokens.STRING_INTERPOLATION_CONTINUE.rawValue) {
-		 		setState(57)
+		 		setState(184)
 		 		try match(CherryParser.Tokens.STRING_INTERPOLATION_CONTINUE.rawValue)
-		 		setState(58)
+		 		setState(185)
 		 		try expr(0)
 
 
-		 		setState(63)
+		 		setState(190)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 	}
-		 	setState(64)
+		 	setState(191)
 		 	try match(CherryParser.Tokens.STRING_INTERPOLATION_FINISH.rawValue)
 
 		}
@@ -521,7 +1538,7 @@ internal class CherryParser: Parser {
 	override internal
 	func sempred(_ _localctx: RuleContext?, _ ruleIndex: Int,  _ predIndex: Int)throws -> Bool {
 		switch (ruleIndex) {
-		case  3:
+		case  16:
 			return try expr_sempred(_localctx?.castdown(ExprContext.self), predIndex)
 	    default: return true
 		}
@@ -535,26 +1552,68 @@ internal class CherryParser: Parser {
 	}
 
 	static let _serializedATN:[Int] = [
-		4,1,13,67,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,1,0,4,0,12,8,0,11,0,
-		12,0,13,1,0,1,0,1,1,5,1,19,8,1,10,1,12,1,22,9,1,1,1,1,1,1,2,3,2,27,8,2,
-		1,2,1,2,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,1,3,3,3,40,8,3,1,3,1,3,1,3,1,3,
-		1,3,1,3,1,3,1,3,1,3,5,3,51,8,3,10,3,12,3,54,9,3,1,4,1,4,1,4,1,4,5,4,60,
-		8,4,10,4,12,4,63,9,4,1,4,1,4,1,4,0,1,6,5,0,2,4,6,8,0,0,71,0,11,1,0,0,0,
-		2,20,1,0,0,0,4,26,1,0,0,0,6,39,1,0,0,0,8,55,1,0,0,0,10,12,3,4,2,0,11,10,
-		1,0,0,0,12,13,1,0,0,0,13,11,1,0,0,0,13,14,1,0,0,0,14,15,1,0,0,0,15,16,
-		5,0,0,1,16,1,1,0,0,0,17,19,9,0,0,0,18,17,1,0,0,0,19,22,1,0,0,0,20,18,1,
-		0,0,0,20,21,1,0,0,0,21,23,1,0,0,0,22,20,1,0,0,0,23,24,5,0,0,1,24,3,1,0,
-		0,0,25,27,3,6,3,0,26,25,1,0,0,0,26,27,1,0,0,0,27,28,1,0,0,0,28,29,5,3,
-		0,0,29,5,1,0,0,0,30,31,6,3,-1,0,31,40,5,2,0,0,32,40,5,1,0,0,33,40,5,9,
-		0,0,34,40,3,8,4,0,35,36,5,5,0,0,36,37,3,6,3,0,37,38,5,6,0,0,38,40,1,0,
-		0,0,39,30,1,0,0,0,39,32,1,0,0,0,39,33,1,0,0,0,39,34,1,0,0,0,39,35,1,0,
-		0,0,40,52,1,0,0,0,41,42,10,7,0,0,42,43,5,13,0,0,43,51,3,6,3,8,44,45,10,
-		1,0,0,45,46,5,7,0,0,46,47,3,6,3,0,47,48,5,8,0,0,48,49,3,6,3,2,49,51,1,
-		0,0,0,50,41,1,0,0,0,50,44,1,0,0,0,51,54,1,0,0,0,52,50,1,0,0,0,52,53,1,
-		0,0,0,53,7,1,0,0,0,54,52,1,0,0,0,55,56,5,10,0,0,56,61,3,6,3,0,57,58,5,
-		11,0,0,58,60,3,6,3,0,59,57,1,0,0,0,60,63,1,0,0,0,61,59,1,0,0,0,61,62,1,
-		0,0,0,62,64,1,0,0,0,63,61,1,0,0,0,64,65,5,12,0,0,65,9,1,0,0,0,7,13,20,
-		26,39,50,52,61
+		4,1,43,194,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,14,
+		2,15,7,15,2,16,7,16,2,17,7,17,1,0,1,0,1,0,5,0,40,8,0,10,0,12,0,43,9,0,
+		1,1,1,1,1,2,1,2,1,2,1,2,3,2,51,8,2,1,3,3,3,54,8,3,1,3,1,3,1,4,4,4,59,8,
+		4,11,4,12,4,60,1,4,1,4,1,5,1,5,1,5,1,5,3,5,69,8,5,1,6,1,6,1,6,1,6,4,6,
+		75,8,6,11,6,12,6,76,3,6,79,8,6,1,7,1,7,1,7,1,7,4,7,85,8,7,11,7,12,7,86,
+		3,7,89,8,7,1,8,1,8,1,8,1,8,4,8,95,8,8,11,8,12,8,96,3,8,99,8,8,1,9,1,9,
+		1,9,1,9,5,9,105,8,9,10,9,12,9,108,9,9,1,9,1,9,4,9,112,8,9,11,9,12,9,113,
+		5,9,116,8,9,10,9,12,9,119,9,9,1,9,1,9,5,9,123,8,9,10,9,12,9,126,9,9,1,
+		10,1,10,1,10,3,10,131,8,10,1,11,1,11,1,11,1,11,1,11,5,11,138,8,11,10,11,
+		12,11,141,9,11,1,12,1,12,1,12,1,12,1,13,1,13,1,13,1,13,1,14,1,14,1,15,
+		3,15,154,8,15,1,15,1,15,1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,3,
+		16,167,8,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,5,16,178,8,16,
+		10,16,12,16,181,9,16,1,17,1,17,1,17,1,17,5,17,187,8,17,10,17,12,17,190,
+		9,17,1,17,1,17,1,17,0,1,32,18,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,
+		30,32,34,0,5,2,0,2,8,20,20,1,0,22,23,2,0,11,11,16,16,1,0,2,3,1,0,6,8,205,
+		0,36,1,0,0,0,2,44,1,0,0,0,4,50,1,0,0,0,6,53,1,0,0,0,8,58,1,0,0,0,10,68,
+		1,0,0,0,12,70,1,0,0,0,14,80,1,0,0,0,16,90,1,0,0,0,18,100,1,0,0,0,20,130,
+		1,0,0,0,22,132,1,0,0,0,24,142,1,0,0,0,26,146,1,0,0,0,28,150,1,0,0,0,30,
+		153,1,0,0,0,32,166,1,0,0,0,34,182,1,0,0,0,36,41,3,2,1,0,37,38,5,1,0,0,
+		38,40,3,2,1,0,39,37,1,0,0,0,40,43,1,0,0,0,41,39,1,0,0,0,41,42,1,0,0,0,
+		42,1,1,0,0,0,43,41,1,0,0,0,44,45,7,0,0,0,45,3,1,0,0,0,46,51,3,6,3,0,47,
+		51,5,26,0,0,48,51,5,24,0,0,49,51,5,25,0,0,50,46,1,0,0,0,50,47,1,0,0,0,
+		50,48,1,0,0,0,50,49,1,0,0,0,51,5,1,0,0,0,52,54,5,9,0,0,53,52,1,0,0,0,53,
+		54,1,0,0,0,54,55,1,0,0,0,55,56,7,1,0,0,56,7,1,0,0,0,57,59,3,10,5,0,58,
+		57,1,0,0,0,59,60,1,0,0,0,60,58,1,0,0,0,60,61,1,0,0,0,61,62,1,0,0,0,62,
+		63,5,0,0,1,63,9,1,0,0,0,64,69,3,12,6,0,65,69,3,14,7,0,66,69,3,16,8,0,67,
+		69,3,18,9,0,68,64,1,0,0,0,68,65,1,0,0,0,68,66,1,0,0,0,68,67,1,0,0,0,69,
+		11,1,0,0,0,70,71,5,10,0,0,71,78,3,2,1,0,72,79,5,11,0,0,73,75,5,16,0,0,
+		74,73,1,0,0,0,75,76,1,0,0,0,76,74,1,0,0,0,76,77,1,0,0,0,77,79,1,0,0,0,
+		78,72,1,0,0,0,78,74,1,0,0,0,79,13,1,0,0,0,80,81,5,12,0,0,81,88,3,2,1,0,
+		82,89,5,11,0,0,83,85,5,16,0,0,84,83,1,0,0,0,85,86,1,0,0,0,86,84,1,0,0,
+		0,86,87,1,0,0,0,87,89,1,0,0,0,88,82,1,0,0,0,88,84,1,0,0,0,89,15,1,0,0,
+		0,90,91,5,13,0,0,91,98,3,2,1,0,92,99,5,11,0,0,93,95,5,16,0,0,94,93,1,0,
+		0,0,95,96,1,0,0,0,96,94,1,0,0,0,96,97,1,0,0,0,97,99,1,0,0,0,98,92,1,0,
+		0,0,98,94,1,0,0,0,99,17,1,0,0,0,100,101,5,14,0,0,101,102,3,28,14,0,102,
+		106,5,38,0,0,103,105,5,16,0,0,104,103,1,0,0,0,105,108,1,0,0,0,106,104,
+		1,0,0,0,106,107,1,0,0,0,107,117,1,0,0,0,108,106,1,0,0,0,109,111,3,20,10,
+		0,110,112,7,2,0,0,111,110,1,0,0,0,112,113,1,0,0,0,113,111,1,0,0,0,113,
+		114,1,0,0,0,114,116,1,0,0,0,115,109,1,0,0,0,116,119,1,0,0,0,117,115,1,
+		0,0,0,117,118,1,0,0,0,118,120,1,0,0,0,119,117,1,0,0,0,120,124,5,39,0,0,
+		121,123,5,16,0,0,122,121,1,0,0,0,123,126,1,0,0,0,124,122,1,0,0,0,124,125,
+		1,0,0,0,125,19,1,0,0,0,126,124,1,0,0,0,127,131,3,22,11,0,128,131,3,24,
+		12,0,129,131,3,26,13,0,130,127,1,0,0,0,130,128,1,0,0,0,130,129,1,0,0,0,
+		131,21,1,0,0,0,132,133,7,3,0,0,133,134,5,15,0,0,134,139,3,28,14,0,135,
+		136,5,1,0,0,136,138,3,28,14,0,137,135,1,0,0,0,138,141,1,0,0,0,139,137,
+		1,0,0,0,139,140,1,0,0,0,140,23,1,0,0,0,141,139,1,0,0,0,142,143,5,4,0,0,
+		143,144,5,15,0,0,144,145,5,41,0,0,145,25,1,0,0,0,146,147,5,5,0,0,147,148,
+		5,15,0,0,148,149,7,4,0,0,149,27,1,0,0,0,150,151,3,2,1,0,151,29,1,0,0,0,
+		152,154,3,32,16,0,153,152,1,0,0,0,153,154,1,0,0,0,154,155,1,0,0,0,155,
+		156,5,42,0,0,156,31,1,0,0,0,157,158,6,16,-1,0,158,167,3,4,2,0,159,167,
+		3,2,1,0,160,167,5,43,0,0,161,167,3,34,17,0,162,163,5,36,0,0,163,164,3,
+		32,16,0,164,165,5,37,0,0,165,167,1,0,0,0,166,157,1,0,0,0,166,159,1,0,0,
+		0,166,160,1,0,0,0,166,161,1,0,0,0,166,162,1,0,0,0,167,179,1,0,0,0,168,
+		169,10,7,0,0,169,170,5,40,0,0,170,178,3,32,16,8,171,172,10,1,0,0,172,173,
+		5,38,0,0,173,174,3,32,16,0,174,175,5,39,0,0,175,176,3,32,16,2,176,178,
+		1,0,0,0,177,168,1,0,0,0,177,171,1,0,0,0,178,181,1,0,0,0,179,177,1,0,0,
+		0,179,180,1,0,0,0,180,33,1,0,0,0,181,179,1,0,0,0,182,183,5,28,0,0,183,
+		188,3,32,16,0,184,185,5,29,0,0,185,187,3,32,16,0,186,184,1,0,0,0,187,190,
+		1,0,0,0,188,186,1,0,0,0,188,189,1,0,0,0,189,191,1,0,0,0,190,188,1,0,0,
+		0,191,192,5,30,0,0,192,35,1,0,0,0,22,41,50,53,60,68,76,78,86,88,96,98,
+		106,113,117,124,130,139,153,166,177,179,188
 	]
 
 	internal

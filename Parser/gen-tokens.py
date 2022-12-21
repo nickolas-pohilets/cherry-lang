@@ -9,7 +9,7 @@ def to_camel_case(snake_str):
     return components[0].lower() + ''.join(x.title() for x in components[1:])
 
 input_file = pathlib.Path(__file__).parent.joinpath('Generated/Cherry.tokens').resolve()
-output_file = pathlib.Path(__file__).parent.joinpath('Generated/Token.Kind.swift').resolve()
+output_file = pathlib.Path(__file__).parent.joinpath('Generated/CherryToken.Kind.swift').resolve()
 
 tokens = []
 with input_file.open('rt', encoding='utf8') as f:
@@ -22,7 +22,7 @@ with input_file.open('rt', encoding='utf8') as f:
         tokens.append((name, value))
 
 with output_file.open('wt', encoding='utf8') as f:
-    f.write('extension Token {\n')
+    f.write('extension CherryToken {\n')
     f.write('    public enum Kind: Int, Hashable {\n')
     f.write('        case eof = -1\n')
     for name, value in tokens:

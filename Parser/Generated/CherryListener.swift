@@ -7,30 +7,6 @@ import Antlr4
  */
 internal protocol CherryListener: ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link CherryParser#identifierList}.
-	 - Parameters:
-	   - ctx: the parse tree
-	 */
-	func enterIdentifierList(_ ctx: CherryParser.IdentifierListContext)
-	/**
-	 * Exit a parse tree produced by {@link CherryParser#identifierList}.
-	 - Parameters:
-	   - ctx: the parse tree
-	 */
-	func exitIdentifierList(_ ctx: CherryParser.IdentifierListContext)
-	/**
-	 * Enter a parse tree produced by {@link CherryParser#identifier}.
-	 - Parameters:
-	   - ctx: the parse tree
-	 */
-	func enterIdentifier(_ ctx: CherryParser.IdentifierContext)
-	/**
-	 * Exit a parse tree produced by {@link CherryParser#identifier}.
-	 - Parameters:
-	   - ctx: the parse tree
-	 */
-	func exitIdentifier(_ ctx: CherryParser.IdentifierContext)
-	/**
 	 * Enter a parse tree produced by {@link CherryParser#literal}.
 	 - Parameters:
 	   - ctx: the parse tree
@@ -54,6 +30,30 @@ internal protocol CherryListener: ParseTreeListener {
 	   - ctx: the parse tree
 	 */
 	func exitNumericLiteral(_ ctx: CherryParser.NumericLiteralContext)
+	/**
+	 * Enter a parse tree produced by {@link CherryParser#identifierList}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterIdentifierList(_ ctx: CherryParser.IdentifierListContext)
+	/**
+	 * Exit a parse tree produced by {@link CherryParser#identifierList}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitIdentifierList(_ ctx: CherryParser.IdentifierListContext)
+	/**
+	 * Enter a parse tree produced by {@link CherryParser#identifier}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterIdentifier(_ ctx: CherryParser.IdentifierContext)
+	/**
+	 * Exit a parse tree produced by {@link CherryParser#identifier}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitIdentifier(_ ctx: CherryParser.IdentifierContext)
 	/**
 	 * Enter a parse tree produced by {@link CherryParser#prog}.
 	 - Parameters:

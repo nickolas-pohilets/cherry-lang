@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		4A9183492950A57D00EDB39C /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9183482950A57D00EDB39C /* main.swift */; };
 		4A9183712951F5D700EDB39C /* CherryParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A9183692951F5D700EDB39C /* CherryParser.framework */; };
-		4A9183762951F5D700EDB39C /* CherryParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9183752951F5D700EDB39C /* CherryParserTests.swift */; };
+		4A9183762951F5D700EDB39C /* LiteralTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9183752951F5D700EDB39C /* LiteralTests.swift */; };
 		4A91837F2951F5F200EDB39C /* CherryParser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4A9183692951F5D700EDB39C /* CherryParser.framework */; };
 		4A9183812951F60300EDB39C /* Antlr4 in Frameworks */ = {isa = PBXBuildFile; productRef = 4A9183802951F60300EDB39C /* Antlr4 */; };
 		4A9183832951F60300EDB39C /* Antlr4 in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 4A9183802951F60300EDB39C /* Antlr4 */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -76,7 +76,7 @@
 		4A9183632950A9FF00EDB39C /* dummy.cherry */ = {isa = PBXFileReference; lastKnownFileType = text; path = dummy.cherry; sourceTree = "<group>"; };
 		4A9183692951F5D700EDB39C /* CherryParser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = CherryParser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4A9183702951F5D700EDB39C /* CherryParserTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CherryParserTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		4A9183752951F5D700EDB39C /* CherryParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CherryParserTests.swift; sourceTree = "<group>"; };
+		4A9183752951F5D700EDB39C /* LiteralTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiteralTests.swift; sourceTree = "<group>"; };
 		4A9183892951F80500EDB39C /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		4A9183902951FD3C00EDB39C /* gen-tokens.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = "gen-tokens.py"; sourceTree = "<group>"; };
 		4A9183912952011800EDB39C /* CherryToken.Kind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CherryToken.Kind.swift; sourceTree = "<group>"; };
@@ -170,7 +170,7 @@
 		4A9183742951F5D700EDB39C /* CherryParserTests */ = {
 			isa = PBXGroup;
 			children = (
-				4A9183752951F5D700EDB39C /* CherryParserTests.swift */,
+				4A9183752951F5D700EDB39C /* LiteralTests.swift */,
 			);
 			path = CherryParserTests;
 			sourceTree = "<group>";
@@ -373,7 +373,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4A9183762951F5D700EDB39C /* CherryParserTests.swift in Sources */,
+				4A9183762951F5D700EDB39C /* LiteralTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

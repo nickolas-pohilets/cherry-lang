@@ -15,32 +15,6 @@ internal class CherryBaseListener: CherryListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	internal func enterIdentifierList(_ ctx: CherryParser.IdentifierListContext) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	internal func exitIdentifierList(_ ctx: CherryParser.IdentifierListContext) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	internal func enterIdentifier(_ ctx: CherryParser.IdentifierContext) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	internal func exitIdentifier(_ ctx: CherryParser.IdentifierContext) { }
-
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	internal func enterLiteral(_ ctx: CherryParser.LiteralContext) { }
 	/**
 	 * {@inheritDoc}
@@ -61,6 +35,32 @@ internal class CherryBaseListener: CherryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	internal func exitNumericLiteral(_ ctx: CherryParser.NumericLiteralContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func enterIdentifierList(_ ctx: CherryParser.IdentifierListContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func exitIdentifierList(_ ctx: CherryParser.IdentifierListContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func enterIdentifier(_ ctx: CherryParser.IdentifierContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func exitIdentifier(_ ctx: CherryParser.IdentifierContext) { }
 
 	/**
 	 * {@inheritDoc}

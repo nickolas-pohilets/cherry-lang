@@ -19,6 +19,7 @@
 		4A91838E2951FA9900EDB39C /* CherryLexer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A91835C2950A88900EDB39C /* CherryLexer.swift */; };
 		4A91838F2951FAB000EDB39C /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9183892951F80500EDB39C /* Parser.swift */; };
 		4A9183932952011E00EDB39C /* CherryToken.Kind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9183912952011800EDB39C /* CherryToken.Kind.swift */; };
+		4A9183B42953D43F00EDB39C /* Diagnostic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9183B22953D31B00EDB39C /* Diagnostic.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,6 +81,7 @@
 		4A9183892951F80500EDB39C /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		4A9183902951FD3C00EDB39C /* gen-tokens.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = "gen-tokens.py"; sourceTree = "<group>"; };
 		4A9183912952011800EDB39C /* CherryToken.Kind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CherryToken.Kind.swift; sourceTree = "<group>"; };
+		4A9183B22953D31B00EDB39C /* Diagnostic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diagnostic.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +165,7 @@
 				4A9183562950A88900EDB39C /* Generated */,
 				4A9183522950A5F500EDB39C /* Cherry.g4 */,
 				4A9183892951F80500EDB39C /* Parser.swift */,
+				4A9183B22953D31B00EDB39C /* Diagnostic.swift */,
 			);
 			path = Parser;
 			sourceTree = "<group>";
@@ -362,6 +365,7 @@
 			files = (
 				4A91838D2951FA9600EDB39C /* CherryBaseListener.swift in Sources */,
 				4A91838E2951FA9900EDB39C /* CherryLexer.swift in Sources */,
+				4A9183B42953D43F00EDB39C /* Diagnostic.swift in Sources */,
 				4A9183932952011E00EDB39C /* CherryToken.Kind.swift in Sources */,
 				4A91838F2951FAB000EDB39C /* Parser.swift in Sources */,
 				4A91838C2951FA9400EDB39C /* CherryListener.swift in Sources */,

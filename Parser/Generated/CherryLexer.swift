@@ -147,7 +147,7 @@ internal class CherryLexer: Lexer {
 	private func FLOATING_POINT_LITERAL_action(_ _localctx: RuleContext?,  _ actionIndex: Int) {
 		switch (actionIndex) {
 		case 0:
-			 reportCustomError("Hexadecimal floating point literal must end with an exponent") 
+			 reportCustomError("hexadecimal floating point literal must end with an exponent") 
 
 		 default: break
 		}

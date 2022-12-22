@@ -60,7 +60,7 @@ FLOATING_POINT_LITERAL
     // Exponent is required, to disambiguate from member access
     | HEXADECIMAL_LITERAL ('.' HEXADECIMAL_DIGITS)? [pP] [+-]? DECIMAL_LITERAL
     | HEXADECIMAL_LITERAL ('.' [0-9] HEXADECIMAL_DIGITS?)?
-      { reportCustomError("Hexadecimal floating point literal must end with an exponent") }
+      { reportCustomError("hexadecimal floating point literal must end with an exponent") }
     ;
 
 BOOLEAN_LITERAL: 'true' | 'false';

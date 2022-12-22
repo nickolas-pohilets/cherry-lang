@@ -8,25 +8,34 @@
 import XCTest
 @testable import CherryParser
 
-private func withTokens(_ text: String, _ action: (([CherryToken.Kind]) throws -> Void)) rethrows {
-    let lexer = LexerRig(text: text)
+private let testFile = "test.cherry"
+
+private func withTokens(_ text: String, _ action: (([CherryToken.Kind], [Diagnostic]) throws -> Void)) rethrows {
+    let lexer = LexerRig(text: text, path: testFile)
     var tokens: [CherryToken.Kind] = lexer.tokens.map(\.kind)
     XCTAssertEqual(tokens.removeLast(), .eof)
-    try action(tokens)
+    try action(tokens, lexer.diagnostics)
 }
 
 private func validateTokens(_ text: String, _ expected: [CherryToken.Kind], file: StaticString = #file, line: UInt = #line) {
-    withTokens(text) { tokens in
+    withTokens(text) { tokens, _ in
         XCTAssertEqual(tokens, expected, file: file, line: line)
     }
 }
 
 private func validateTokens(_ text: String, _ expected: CherryToken.Kind, file: StaticString = #file, line: UInt = #line) {
-    withTokens(text) { tokens in
+    withTokens(text) { tokens, _ in
         tokens.enumerated().forEach {
             let (index, token) = $0
             XCTAssertEqual(token, expected, "Unexpected token at index \(index)")
         }
+    }
+}
+
+private func validateDiagnostics(_ text: String, _ expectedTokens: [CherryToken.Kind], _ expectedDiagnostics: [Diagnostic], file: StaticString = #file, line: UInt = #line) {
+    withTokens(text) { tokens, diagnostics in
+        XCTAssertEqual(tokens, expectedTokens, file: file, line: line)
+        XCTAssertEqual(diagnostics, expectedDiagnostics, file: file, line: line)
     }
 }
 
@@ -62,6 +71,12 @@ final class LiteralTests: XCTestCase {
     
     func testHexFloatLiterals() throws {
         validateTokens("0x1p0 0x1Cp+2 0x1cp-2 0x1P0 0x1CP+2 0x1cP-2 0x1.ffp0 0x1C.ffp+2 0x1c.FFp-2 0x1.aaP0 0x1c.AAP+2 0x1c.aAP-2", .floatingPointLiteral)
+    }
+    
+    func testHexFloatLiteralRequiresExponent() throws {
+        validateDiagnostics("0x1.7", [.floatingPointLiteral], [
+            Diagnostic(file: testFile, line: 1, column: 6, behavior: .error, message: "hexadecimal floating point literal must end with an exponent")
+        ])
     }
     
     func testStringInterpolation() throws {

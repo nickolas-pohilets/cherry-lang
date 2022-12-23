@@ -8,7 +8,7 @@ def to_camel_case(snake_str):
     # with the 'title' method and join them together.
     return components[0].lower() + ''.join(x.title() for x in components[1:])
 
-input_file = pathlib.Path(__file__).parent.joinpath('Generated/Cherry.tokens').resolve()
+input_file = pathlib.Path(__file__).parent.joinpath('Generated/CherryLexer.tokens').resolve()
 output_file = pathlib.Path(__file__).parent.joinpath('Generated/CherryToken.Kind.swift').resolve()
 
 tokens = []

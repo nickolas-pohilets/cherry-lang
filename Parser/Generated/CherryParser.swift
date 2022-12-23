@@ -16,18 +16,18 @@ internal class CherryParser: Parser {
 
 	internal
 	enum Tokens: Int {
-		case EOF = -1, T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, 
-                 T__6 = 7, T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, 
-                 T__12 = 13, T__13 = 14, T__14 = 15, NL = 16, WS = 17, COMMENT = 18, 
-                 MULTILINE_COMMENT = 19, INTEGER_LITERAL = 20, FLOATING_POINT_LITERAL = 21, 
-                 BOOLEAN_LITERAL = 22, NIL_LITERAL = 23, STRING_LITERAL = 24, 
-                 MULTILINE_STRING_LITERAL = 25, STRING_INTERPOLATION_START = 26, 
-                 STRING_INTERPOLATION_CONTINUE = 27, STRING_INTERPOLATION_FINISH = 28, 
-                 MULTILINE_STRING_INTERPOLATION_START = 29, MULTILINE_STRING_INTERPOLATION_CONTINUE = 30, 
-                 MULTILINE_STRING_INTERPOLATION_FINISH = 31, RAW_STRING_LITERAL = 32, 
-                 RAW_MULTILINE_STRING_LITERAL = 33, IDENTIFIER = 34, IMPLICIT_PARAMETER_NAME = 35, 
-                 LPAREN = 36, RPAREN = 37, DOT = 38, LBRACE = 39, RBRACE = 40, 
-                 OP = 41, NEWLINE = 42, STRING = 43
+		case EOF = -1, NL = 1, WS = 2, COMMENT = 3, MULTILINE_COMMENT = 4, KW_VAR = 5, 
+                 KW_FUNC = 6, KW_CLASS = 7, KW_PRECEDENCE_GROUP = 8, CKW_HIGHER_THAN = 9, 
+                 CKW_LOWER_THAN = 10, CKW_ASSIGNMENT = 11, CWK_ASSOCIATIVITY = 12, 
+                 CWK_ASSOCIATIVITY_VALUE = 13, INTEGER_LITERAL = 14, FLOATING_POINT_LITERAL = 15, 
+                 BOOLEAN_LITERAL = 16, NIL_LITERAL = 17, STRING_LITERAL = 18, 
+                 MULTILINE_STRING_LITERAL = 19, STRING_INTERPOLATION_START = 20, 
+                 STRING_INTERPOLATION_CONTINUE = 21, STRING_INTERPOLATION_FINISH = 22, 
+                 MULTILINE_STRING_INTERPOLATION_START = 23, MULTILINE_STRING_INTERPOLATION_CONTINUE = 24, 
+                 MULTILINE_STRING_INTERPOLATION_FINISH = 25, RAW_STRING_LITERAL = 26, 
+                 RAW_MULTILINE_STRING_LITERAL = 27, IDENTIFIER = 28, IMPLICIT_PARAMETER_NAME = 29, 
+                 LPAREN = 30, RPAREN = 31, DOT = 32, COMA = 33, COLON = 34, 
+                 SEMICOLON = 35, LBRACE = 36, RBRACE = 37, MINUS = 38, OP = 39
 	}
 
 	internal
@@ -37,31 +37,35 @@ internal class CherryParser: Parser {
             RULE_precedenceGroupAttribute = 10, RULE_precedenceGroupRelation = 11, 
             RULE_precedenceGroupAssignment = 12, RULE_precedenceGroupAssociativity = 13, 
             RULE_precedenceGroupName = 14, RULE_stat = 15, RULE_expr = 16, 
-            RULE_stringInterpolation = 17
+            RULE_stringInterpolation = 17, RULE_lbrace = 18, RULE_rbrace = 19, 
+            RULE_semicolon = 20, RULE_coma = 21
 
 	internal
 	static let ruleNames: [String] = [
 		"literal", "numericLiteral", "identifierList", "identifier", "prog", "decl", 
 		"varDecl", "funcDecl", "classDecl", "precedenceGroupDeclaration", "precedenceGroupAttribute", 
 		"precedenceGroupRelation", "precedenceGroupAssignment", "precedenceGroupAssociativity", 
-		"precedenceGroupName", "stat", "expr", "stringInterpolation"
+		"precedenceGroupName", "stat", "expr", "stringInterpolation", "lbrace", 
+		"rbrace", "semicolon", "coma"
 	]
 
 	private static let _LITERAL_NAMES: [String?] = [
-		nil, "'-'", "','", "'higherThan'", "'lowerThan'", "'assignment'", "'associativity'", 
-		"'left'", "'right'", "'none'", "'var'", "';'", "'func'", "'class'", "'precedencegroup'", 
-		"':'", nil, nil, nil, nil, nil, nil, nil, "'nil'", nil, nil, nil, nil, 
-		nil, nil, nil, nil, nil, nil, nil, nil, "'('", "')'", "'.'", "'{'", "'}'"
+		nil, nil, nil, nil, nil, "'var'", "'func'", "'class'", "'precedencegroup'", 
+		"'higherThan'", "'lowerThan'", "'assignment'", "'associativity'", nil, 
+		nil, nil, nil, "'nil'", nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, 
+		nil, nil, "'('", "')'", "'.'", "','", "':'", "';'", "'{'", "'}'", "'-'"
 	]
 	private static let _SYMBOLIC_NAMES: [String?] = [
-		nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, 
-		nil, nil, "NL", "WS", "COMMENT", "MULTILINE_COMMENT", "INTEGER_LITERAL", 
+		nil, "NL", "WS", "COMMENT", "MULTILINE_COMMENT", "KW_VAR", "KW_FUNC", 
+		"KW_CLASS", "KW_PRECEDENCE_GROUP", "CKW_HIGHER_THAN", "CKW_LOWER_THAN", 
+		"CKW_ASSIGNMENT", "CWK_ASSOCIATIVITY", "CWK_ASSOCIATIVITY_VALUE", "INTEGER_LITERAL", 
 		"FLOATING_POINT_LITERAL", "BOOLEAN_LITERAL", "NIL_LITERAL", "STRING_LITERAL", 
 		"MULTILINE_STRING_LITERAL", "STRING_INTERPOLATION_START", "STRING_INTERPOLATION_CONTINUE", 
 		"STRING_INTERPOLATION_FINISH", "MULTILINE_STRING_INTERPOLATION_START", 
 		"MULTILINE_STRING_INTERPOLATION_CONTINUE", "MULTILINE_STRING_INTERPOLATION_FINISH", 
 		"RAW_STRING_LITERAL", "RAW_MULTILINE_STRING_LITERAL", "IDENTIFIER", "IMPLICIT_PARAMETER_NAME", 
-		"LPAREN", "RPAREN", "DOT", "LBRACE", "RBRACE", "OP", "NEWLINE", "STRING"
+		"LPAREN", "RPAREN", "DOT", "COMA", "COLON", "SEMICOLON", "LBRACE", "RBRACE", 
+		"MINUS", "OP"
 	]
 	internal
 	static let VOCABULARY = Vocabulary(_LITERAL_NAMES, _SYMBOLIC_NAMES)
@@ -115,13 +119,13 @@ internal class CherryParser: Parser {
 		}
 		override internal
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.enterLiteral(self)
 			}
 		}
 		override internal
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.exitLiteral(self)
 			}
 		}
@@ -135,35 +139,34 @@ internal class CherryParser: Parser {
 	    		try! exitRule()
 	    }
 		do {
-		 	setState(40)
+		 	setState(48)
 		 	try _errHandler.sync(self)
 		 	switch (CherryParser.Tokens(rawValue: try _input.LA(1))!) {
-		 	case .T__0:fallthrough
 		 	case .INTEGER_LITERAL:fallthrough
 		 	case .FLOATING_POINT_LITERAL:
 		 		try enterOuterAlt(_localctx, 1)
-		 		setState(36)
+		 		setState(44)
 		 		try numericLiteral()
 
 		 		break
 
 		 	case .STRING_LITERAL:
 		 		try enterOuterAlt(_localctx, 2)
-		 		setState(37)
+		 		setState(45)
 		 		try match(CherryParser.Tokens.STRING_LITERAL.rawValue)
 
 		 		break
 
 		 	case .BOOLEAN_LITERAL:
 		 		try enterOuterAlt(_localctx, 3)
-		 		setState(38)
+		 		setState(46)
 		 		try match(CherryParser.Tokens.BOOLEAN_LITERAL.rawValue)
 
 		 		break
 
 		 	case .NIL_LITERAL:
 		 		try enterOuterAlt(_localctx, 4)
-		 		setState(39)
+		 		setState(47)
 		 		try match(CherryParser.Tokens.NIL_LITERAL.rawValue)
 
 		 		break
@@ -195,13 +198,13 @@ internal class CherryParser: Parser {
 		}
 		override internal
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.enterNumericLiteral(self)
 			}
 		}
 		override internal
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.exitNumericLiteral(self)
 			}
 		}
@@ -217,16 +220,7 @@ internal class CherryParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(43)
-		 	try _errHandler.sync(self)
-		 	_la = try _input.LA(1)
-		 	if (_la == CherryParser.Tokens.T__0.rawValue) {
-		 		setState(42)
-		 		try match(CherryParser.Tokens.T__0.rawValue)
-
-		 	}
-
-		 	setState(45)
+		 	setState(50)
 		 	_la = try _input.LA(1)
 		 	if (!(_la == CherryParser.Tokens.INTEGER_LITERAL.rawValue || _la == CherryParser.Tokens.FLOATING_POINT_LITERAL.rawValue)) {
 		 	try _errHandler.recoverInline(self)
@@ -255,19 +249,27 @@ internal class CherryParser: Parser {
 			func identifier(_ i: Int) -> IdentifierContext? {
 				return getRuleContext(IdentifierContext.self, i)
 			}
+			internal
+			func COMA() -> [TerminalNode] {
+				return getTokens(CherryParser.Tokens.COMA.rawValue)
+			}
+			internal
+			func COMA(_ i:Int) -> TerminalNode? {
+				return getToken(CherryParser.Tokens.COMA.rawValue, i)
+			}
 		override internal
 		func getRuleIndex() -> Int {
 			return CherryParser.RULE_identifierList
 		}
 		override internal
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.enterIdentifierList(self)
 			}
 		}
 		override internal
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.exitIdentifierList(self)
 			}
 		}
@@ -283,19 +285,19 @@ internal class CherryParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(47)
-		 	try identifier()
 		 	setState(52)
+		 	try identifier()
+		 	setState(57)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
-		 	while (_la == CherryParser.Tokens.T__1.rawValue) {
-		 		setState(48)
-		 		try match(CherryParser.Tokens.T__1.rawValue)
-		 		setState(49)
+		 	while (_la == CherryParser.Tokens.COMA.rawValue) {
+		 		setState(53)
+		 		try match(CherryParser.Tokens.COMA.rawValue)
+		 		setState(54)
 		 		try identifier()
 
 
-		 		setState(54)
+		 		setState(59)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 	}
@@ -315,19 +317,39 @@ internal class CherryParser: Parser {
 			func IDENTIFIER() -> TerminalNode? {
 				return getToken(CherryParser.Tokens.IDENTIFIER.rawValue, 0)
 			}
+			internal
+			func CKW_HIGHER_THAN() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.CKW_HIGHER_THAN.rawValue, 0)
+			}
+			internal
+			func CKW_LOWER_THAN() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.CKW_LOWER_THAN.rawValue, 0)
+			}
+			internal
+			func CKW_ASSIGNMENT() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.CKW_ASSIGNMENT.rawValue, 0)
+			}
+			internal
+			func CWK_ASSOCIATIVITY() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.CWK_ASSOCIATIVITY.rawValue, 0)
+			}
+			internal
+			func CWK_ASSOCIATIVITY_VALUE() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.CWK_ASSOCIATIVITY_VALUE.rawValue, 0)
+			}
 		override internal
 		func getRuleIndex() -> Int {
 			return CherryParser.RULE_identifier
 		}
 		override internal
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.enterIdentifier(self)
 			}
 		}
 		override internal
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.exitIdentifier(self)
 			}
 		}
@@ -343,9 +365,9 @@ internal class CherryParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(55)
+		 	setState(60)
 		 	_la = try _input.LA(1)
-		 	if (!((Int64(_la) & ~0x3f) == 0 && ((Int64(1) << _la) & 17179870200) != 0)) {
+		 	if (!((Int64(_la) & ~0x3f) == 0 && ((Int64(1) << _la) & 268451328) != 0)) {
 		 	try _errHandler.recoverInline(self)
 		 	}
 		 	else {
@@ -382,13 +404,13 @@ internal class CherryParser: Parser {
 		}
 		override internal
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.enterProg(self)
 			}
 		}
 		override internal
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.exitProg(self)
 			}
 		}
@@ -404,19 +426,19 @@ internal class CherryParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(58) 
+		 	setState(63) 
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
 		 	repeat {
-		 		setState(57)
+		 		setState(62)
 		 		try decl()
 
 
-		 		setState(60); 
+		 		setState(65); 
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
-		 	} while ((Int64(_la) & ~0x3f) == 0 && ((Int64(1) << _la) & 29696) != 0)
-		 	setState(62)
+		 	} while ((Int64(_la) & ~0x3f) == 0 && ((Int64(1) << _la) & 480) != 0)
+		 	setState(67)
 		 	try match(CherryParser.Tokens.EOF.rawValue)
 
 		}
@@ -452,13 +474,13 @@ internal class CherryParser: Parser {
 		}
 		override internal
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.enterDecl(self)
 			}
 		}
 		override internal
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.exitDecl(self)
 			}
 		}
@@ -472,33 +494,33 @@ internal class CherryParser: Parser {
 	    		try! exitRule()
 	    }
 		do {
-		 	setState(68)
+		 	setState(73)
 		 	try _errHandler.sync(self)
 		 	switch (CherryParser.Tokens(rawValue: try _input.LA(1))!) {
-		 	case .T__9:
+		 	case .KW_VAR:
 		 		try enterOuterAlt(_localctx, 1)
-		 		setState(64)
+		 		setState(69)
 		 		try varDecl()
 
 		 		break
 
-		 	case .T__11:
+		 	case .KW_FUNC:
 		 		try enterOuterAlt(_localctx, 2)
-		 		setState(65)
+		 		setState(70)
 		 		try funcDecl()
 
 		 		break
 
-		 	case .T__12:
+		 	case .KW_CLASS:
 		 		try enterOuterAlt(_localctx, 3)
-		 		setState(66)
+		 		setState(71)
 		 		try classDecl()
 
 		 		break
 
-		 	case .T__13:
+		 	case .KW_PRECEDENCE_GROUP:
 		 		try enterOuterAlt(_localctx, 4)
-		 		setState(67)
+		 		setState(72)
 		 		try precedenceGroupDeclaration()
 
 		 		break
@@ -517,8 +539,16 @@ internal class CherryParser: Parser {
 
 	internal class VarDeclContext: ParserRuleContext {
 			internal
+			func KW_VAR() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.KW_VAR.rawValue, 0)
+			}
+			internal
 			func identifier() -> IdentifierContext? {
 				return getRuleContext(IdentifierContext.self, 0)
+			}
+			internal
+			func SEMICOLON() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.SEMICOLON.rawValue, 0)
 			}
 			internal
 			func NL() -> [TerminalNode] {
@@ -534,13 +564,13 @@ internal class CherryParser: Parser {
 		}
 		override internal
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.enterVarDecl(self)
 			}
 		}
 		override internal
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.exitVarDecl(self)
 			}
 		}
@@ -556,29 +586,29 @@ internal class CherryParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(70)
-		 	try match(CherryParser.Tokens.T__9.rawValue)
-		 	setState(71)
+		 	setState(75)
+		 	try match(CherryParser.Tokens.KW_VAR.rawValue)
+		 	setState(76)
 		 	try identifier()
-		 	setState(78)
+		 	setState(83)
 		 	try _errHandler.sync(self)
 		 	switch (CherryParser.Tokens(rawValue: try _input.LA(1))!) {
-		 	case .T__10:
-		 		setState(72)
-		 		try match(CherryParser.Tokens.T__10.rawValue)
+		 	case .SEMICOLON:
+		 		setState(77)
+		 		try match(CherryParser.Tokens.SEMICOLON.rawValue)
 
 		 		break
 
 		 	case .NL:
-		 		setState(74) 
+		 		setState(79) 
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		repeat {
-		 			setState(73)
+		 			setState(78)
 		 			try match(CherryParser.Tokens.NL.rawValue)
 
 
-		 			setState(76); 
+		 			setState(81); 
 		 			try _errHandler.sync(self)
 		 			_la = try _input.LA(1)
 		 		} while (_la == CherryParser.Tokens.NL.rawValue)
@@ -600,8 +630,16 @@ internal class CherryParser: Parser {
 
 	internal class FuncDeclContext: ParserRuleContext {
 			internal
+			func KW_FUNC() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.KW_FUNC.rawValue, 0)
+			}
+			internal
 			func identifier() -> IdentifierContext? {
 				return getRuleContext(IdentifierContext.self, 0)
+			}
+			internal
+			func SEMICOLON() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.SEMICOLON.rawValue, 0)
 			}
 			internal
 			func NL() -> [TerminalNode] {
@@ -617,13 +655,13 @@ internal class CherryParser: Parser {
 		}
 		override internal
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.enterFuncDecl(self)
 			}
 		}
 		override internal
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.exitFuncDecl(self)
 			}
 		}
@@ -639,29 +677,29 @@ internal class CherryParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(80)
-		 	try match(CherryParser.Tokens.T__11.rawValue)
-		 	setState(81)
+		 	setState(85)
+		 	try match(CherryParser.Tokens.KW_FUNC.rawValue)
+		 	setState(86)
 		 	try identifier()
-		 	setState(88)
+		 	setState(93)
 		 	try _errHandler.sync(self)
 		 	switch (CherryParser.Tokens(rawValue: try _input.LA(1))!) {
-		 	case .T__10:
-		 		setState(82)
-		 		try match(CherryParser.Tokens.T__10.rawValue)
+		 	case .SEMICOLON:
+		 		setState(87)
+		 		try match(CherryParser.Tokens.SEMICOLON.rawValue)
 
 		 		break
 
 		 	case .NL:
-		 		setState(84) 
+		 		setState(89) 
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		repeat {
-		 			setState(83)
+		 			setState(88)
 		 			try match(CherryParser.Tokens.NL.rawValue)
 
 
-		 			setState(86); 
+		 			setState(91); 
 		 			try _errHandler.sync(self)
 		 			_la = try _input.LA(1)
 		 		} while (_la == CherryParser.Tokens.NL.rawValue)
@@ -683,8 +721,16 @@ internal class CherryParser: Parser {
 
 	internal class ClassDeclContext: ParserRuleContext {
 			internal
+			func KW_CLASS() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.KW_CLASS.rawValue, 0)
+			}
+			internal
 			func identifier() -> IdentifierContext? {
 				return getRuleContext(IdentifierContext.self, 0)
+			}
+			internal
+			func SEMICOLON() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.SEMICOLON.rawValue, 0)
 			}
 			internal
 			func NL() -> [TerminalNode] {
@@ -700,13 +746,13 @@ internal class CherryParser: Parser {
 		}
 		override internal
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.enterClassDecl(self)
 			}
 		}
 		override internal
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.exitClassDecl(self)
 			}
 		}
@@ -722,29 +768,29 @@ internal class CherryParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(90)
-		 	try match(CherryParser.Tokens.T__12.rawValue)
-		 	setState(91)
+		 	setState(95)
+		 	try match(CherryParser.Tokens.KW_CLASS.rawValue)
+		 	setState(96)
 		 	try identifier()
-		 	setState(98)
+		 	setState(103)
 		 	try _errHandler.sync(self)
 		 	switch (CherryParser.Tokens(rawValue: try _input.LA(1))!) {
-		 	case .T__10:
-		 		setState(92)
-		 		try match(CherryParser.Tokens.T__10.rawValue)
+		 	case .SEMICOLON:
+		 		setState(97)
+		 		try match(CherryParser.Tokens.SEMICOLON.rawValue)
 
 		 		break
 
 		 	case .NL:
-		 		setState(94) 
+		 		setState(99) 
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 		repeat {
-		 			setState(93)
+		 			setState(98)
 		 			try match(CherryParser.Tokens.NL.rawValue)
 
 
-		 			setState(96); 
+		 			setState(101); 
 		 			try _errHandler.sync(self)
 		 			_la = try _input.LA(1)
 		 		} while (_la == CherryParser.Tokens.NL.rawValue)
@@ -766,24 +812,20 @@ internal class CherryParser: Parser {
 
 	internal class PrecedenceGroupDeclarationContext: ParserRuleContext {
 			internal
+			func KW_PRECEDENCE_GROUP() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.KW_PRECEDENCE_GROUP.rawValue, 0)
+			}
+			internal
 			func precedenceGroupName() -> PrecedenceGroupNameContext? {
 				return getRuleContext(PrecedenceGroupNameContext.self, 0)
 			}
 			internal
-			func LBRACE() -> TerminalNode? {
-				return getToken(CherryParser.Tokens.LBRACE.rawValue, 0)
+			func lbrace() -> LbraceContext? {
+				return getRuleContext(LbraceContext.self, 0)
 			}
 			internal
-			func RBRACE() -> TerminalNode? {
-				return getToken(CherryParser.Tokens.RBRACE.rawValue, 0)
-			}
-			internal
-			func NL() -> [TerminalNode] {
-				return getTokens(CherryParser.Tokens.NL.rawValue)
-			}
-			internal
-			func NL(_ i:Int) -> TerminalNode? {
-				return getToken(CherryParser.Tokens.NL.rawValue, i)
+			func rbrace() -> RbraceContext? {
+				return getRuleContext(RbraceContext.self, 0)
 			}
 			internal
 			func precedenceGroupAttribute() -> [PrecedenceGroupAttributeContext] {
@@ -793,19 +835,27 @@ internal class CherryParser: Parser {
 			func precedenceGroupAttribute(_ i: Int) -> PrecedenceGroupAttributeContext? {
 				return getRuleContext(PrecedenceGroupAttributeContext.self, i)
 			}
+			internal
+			func semicolon() -> [SemicolonContext] {
+				return getRuleContexts(SemicolonContext.self)
+			}
+			internal
+			func semicolon(_ i: Int) -> SemicolonContext? {
+				return getRuleContext(SemicolonContext.self, i)
+			}
 		override internal
 		func getRuleIndex() -> Int {
 			return CherryParser.RULE_precedenceGroupDeclaration
 		}
 		override internal
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.enterPrecedenceGroupDeclaration(self)
 			}
 		}
 		override internal
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.exitPrecedenceGroupDeclaration(self)
 			}
 		}
@@ -821,69 +871,28 @@ internal class CherryParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(100)
-		 	try match(CherryParser.Tokens.T__13.rawValue)
-		 	setState(101)
-		 	try precedenceGroupName()
-		 	setState(102)
-		 	try match(CherryParser.Tokens.LBRACE.rawValue)
+		 	setState(105)
+		 	try match(CherryParser.Tokens.KW_PRECEDENCE_GROUP.rawValue)
 		 	setState(106)
+		 	try precedenceGroupName()
+		 	setState(107)
+		 	try lbrace()
+		 	setState(113)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
-		 	while (_la == CherryParser.Tokens.NL.rawValue) {
-		 		setState(103)
-		 		try match(CherryParser.Tokens.NL.rawValue)
-
-
+		 	while ((Int64(_la) & ~0x3f) == 0 && ((Int64(1) << _la) & 7680) != 0) {
 		 		setState(108)
-		 		try _errHandler.sync(self)
-		 		_la = try _input.LA(1)
-		 	}
-		 	setState(117)
-		 	try _errHandler.sync(self)
-		 	_la = try _input.LA(1)
-		 	while ((Int64(_la) & ~0x3f) == 0 && ((Int64(1) << _la) & 120) != 0) {
-		 		setState(109)
 		 		try precedenceGroupAttribute()
-		 		setState(111) 
-		 		try _errHandler.sync(self)
-		 		_la = try _input.LA(1)
-		 		repeat {
-		 			setState(110)
-		 			_la = try _input.LA(1)
-		 			if (!(_la == CherryParser.Tokens.T__10.rawValue || _la == CherryParser.Tokens.NL.rawValue)) {
-		 			try _errHandler.recoverInline(self)
-		 			}
-		 			else {
-		 				_errHandler.reportMatch(self)
-		 				try consume()
-		 			}
+		 		setState(109)
+		 		try semicolon()
 
 
-		 			setState(113); 
-		 			try _errHandler.sync(self)
-		 			_la = try _input.LA(1)
-		 		} while (_la == CherryParser.Tokens.T__10.rawValue || _la == CherryParser.Tokens.NL.rawValue)
-
-
-		 		setState(119)
+		 		setState(115)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 	}
-		 	setState(120)
-		 	try match(CherryParser.Tokens.RBRACE.rawValue)
-		 	setState(124)
-		 	try _errHandler.sync(self)
-		 	_la = try _input.LA(1)
-		 	while (_la == CherryParser.Tokens.NL.rawValue) {
-		 		setState(121)
-		 		try match(CherryParser.Tokens.NL.rawValue)
-
-
-		 		setState(126)
-		 		try _errHandler.sync(self)
-		 		_la = try _input.LA(1)
-		 	}
+		 	setState(116)
+		 	try rbrace()
 
 		}
 		catch ANTLRException.recognition(let re) {
@@ -914,13 +923,13 @@ internal class CherryParser: Parser {
 		}
 		override internal
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.enterPrecedenceGroupAttribute(self)
 			}
 		}
 		override internal
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.exitPrecedenceGroupAttribute(self)
 			}
 		}
@@ -934,27 +943,27 @@ internal class CherryParser: Parser {
 	    		try! exitRule()
 	    }
 		do {
-		 	setState(130)
+		 	setState(121)
 		 	try _errHandler.sync(self)
 		 	switch (CherryParser.Tokens(rawValue: try _input.LA(1))!) {
-		 	case .T__2:fallthrough
-		 	case .T__3:
+		 	case .CKW_HIGHER_THAN:fallthrough
+		 	case .CKW_LOWER_THAN:
 		 		try enterOuterAlt(_localctx, 1)
-		 		setState(127)
+		 		setState(118)
 		 		try precedenceGroupRelation()
 
 		 		break
 
-		 	case .T__4:
+		 	case .CKW_ASSIGNMENT:
 		 		try enterOuterAlt(_localctx, 2)
-		 		setState(128)
+		 		setState(119)
 		 		try precedenceGroupAssignment()
 
 		 		break
 
-		 	case .T__5:
+		 	case .CWK_ASSOCIATIVITY:
 		 		try enterOuterAlt(_localctx, 3)
-		 		setState(129)
+		 		setState(120)
 		 		try precedenceGroupAssociativity()
 
 		 		break
@@ -974,6 +983,10 @@ internal class CherryParser: Parser {
 	internal class PrecedenceGroupRelationContext: ParserRuleContext {
 		internal var op: Token!
 			internal
+			func COLON() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.COLON.rawValue, 0)
+			}
+			internal
 			func precedenceGroupName() -> [PrecedenceGroupNameContext] {
 				return getRuleContexts(PrecedenceGroupNameContext.self)
 			}
@@ -981,19 +994,35 @@ internal class CherryParser: Parser {
 			func precedenceGroupName(_ i: Int) -> PrecedenceGroupNameContext? {
 				return getRuleContext(PrecedenceGroupNameContext.self, i)
 			}
+			internal
+			func CKW_HIGHER_THAN() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.CKW_HIGHER_THAN.rawValue, 0)
+			}
+			internal
+			func CKW_LOWER_THAN() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.CKW_LOWER_THAN.rawValue, 0)
+			}
+			internal
+			func COMA() -> [TerminalNode] {
+				return getTokens(CherryParser.Tokens.COMA.rawValue)
+			}
+			internal
+			func COMA(_ i:Int) -> TerminalNode? {
+				return getToken(CherryParser.Tokens.COMA.rawValue, i)
+			}
 		override internal
 		func getRuleIndex() -> Int {
 			return CherryParser.RULE_precedenceGroupRelation
 		}
 		override internal
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.enterPrecedenceGroupRelation(self)
 			}
 		}
 		override internal
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.exitPrecedenceGroupRelation(self)
 			}
 		}
@@ -1009,31 +1038,31 @@ internal class CherryParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(132)
+		 	setState(123)
 		 	_localctx.castdown(PrecedenceGroupRelationContext.self).op = try _input.LT(1)
 		 	_la = try _input.LA(1)
-		 	if (!(_la == CherryParser.Tokens.T__2.rawValue || _la == CherryParser.Tokens.T__3.rawValue)) {
+		 	if (!(_la == CherryParser.Tokens.CKW_HIGHER_THAN.rawValue || _la == CherryParser.Tokens.CKW_LOWER_THAN.rawValue)) {
 		 		_localctx.castdown(PrecedenceGroupRelationContext.self).op = try _errHandler.recoverInline(self) as Token
 		 	}
 		 	else {
 		 		_errHandler.reportMatch(self)
 		 		try consume()
 		 	}
-		 	setState(133)
-		 	try match(CherryParser.Tokens.T__14.rawValue)
-		 	setState(134)
+		 	setState(124)
+		 	try match(CherryParser.Tokens.COLON.rawValue)
+		 	setState(125)
 		 	try precedenceGroupName()
-		 	setState(139)
+		 	setState(130)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
-		 	while (_la == CherryParser.Tokens.T__1.rawValue) {
-		 		setState(135)
-		 		try match(CherryParser.Tokens.T__1.rawValue)
-		 		setState(136)
+		 	while (_la == CherryParser.Tokens.COMA.rawValue) {
+		 		setState(126)
+		 		try match(CherryParser.Tokens.COMA.rawValue)
+		 		setState(127)
 		 		try precedenceGroupName()
 
 
-		 		setState(141)
+		 		setState(132)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 	}
@@ -1050,6 +1079,14 @@ internal class CherryParser: Parser {
 
 	internal class PrecedenceGroupAssignmentContext: ParserRuleContext {
 			internal
+			func CKW_ASSIGNMENT() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.CKW_ASSIGNMENT.rawValue, 0)
+			}
+			internal
+			func COLON() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.COLON.rawValue, 0)
+			}
+			internal
 			func BOOLEAN_LITERAL() -> TerminalNode? {
 				return getToken(CherryParser.Tokens.BOOLEAN_LITERAL.rawValue, 0)
 			}
@@ -1059,13 +1096,13 @@ internal class CherryParser: Parser {
 		}
 		override internal
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.enterPrecedenceGroupAssignment(self)
 			}
 		}
 		override internal
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.exitPrecedenceGroupAssignment(self)
 			}
 		}
@@ -1080,11 +1117,11 @@ internal class CherryParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(142)
-		 	try match(CherryParser.Tokens.T__4.rawValue)
-		 	setState(143)
-		 	try match(CherryParser.Tokens.T__14.rawValue)
-		 	setState(144)
+		 	setState(133)
+		 	try match(CherryParser.Tokens.CKW_ASSIGNMENT.rawValue)
+		 	setState(134)
+		 	try match(CherryParser.Tokens.COLON.rawValue)
+		 	setState(135)
 		 	try match(CherryParser.Tokens.BOOLEAN_LITERAL.rawValue)
 
 		}
@@ -1098,20 +1135,31 @@ internal class CherryParser: Parser {
 	}
 
 	internal class PrecedenceGroupAssociativityContext: ParserRuleContext {
-		internal var value: Token!
+			internal
+			func CWK_ASSOCIATIVITY() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.CWK_ASSOCIATIVITY.rawValue, 0)
+			}
+			internal
+			func COLON() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.COLON.rawValue, 0)
+			}
+			internal
+			func CWK_ASSOCIATIVITY_VALUE() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.CWK_ASSOCIATIVITY_VALUE.rawValue, 0)
+			}
 		override internal
 		func getRuleIndex() -> Int {
 			return CherryParser.RULE_precedenceGroupAssociativity
 		}
 		override internal
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.enterPrecedenceGroupAssociativity(self)
 			}
 		}
 		override internal
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.exitPrecedenceGroupAssociativity(self)
 			}
 		}
@@ -1121,26 +1169,17 @@ internal class CherryParser: Parser {
 		var _localctx: PrecedenceGroupAssociativityContext
 		_localctx = PrecedenceGroupAssociativityContext(_ctx, getState())
 		try enterRule(_localctx, 26, CherryParser.RULE_precedenceGroupAssociativity)
-		var _la: Int = 0
 		defer {
 	    		try! exitRule()
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(146)
-		 	try match(CherryParser.Tokens.T__5.rawValue)
-		 	setState(147)
-		 	try match(CherryParser.Tokens.T__14.rawValue)
-		 	setState(148)
-		 	_localctx.castdown(PrecedenceGroupAssociativityContext.self).value = try _input.LT(1)
-		 	_la = try _input.LA(1)
-		 	if (!((Int64(_la) & ~0x3f) == 0 && ((Int64(1) << _la) & 896) != 0)) {
-		 		_localctx.castdown(PrecedenceGroupAssociativityContext.self).value = try _errHandler.recoverInline(self) as Token
-		 	}
-		 	else {
-		 		_errHandler.reportMatch(self)
-		 		try consume()
-		 	}
+		 	setState(137)
+		 	try match(CherryParser.Tokens.CWK_ASSOCIATIVITY.rawValue)
+		 	setState(138)
+		 	try match(CherryParser.Tokens.COLON.rawValue)
+		 	setState(139)
+		 	try match(CherryParser.Tokens.CWK_ASSOCIATIVITY_VALUE.rawValue)
 
 		}
 		catch ANTLRException.recognition(let re) {
@@ -1163,13 +1202,13 @@ internal class CherryParser: Parser {
 		}
 		override internal
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.enterPrecedenceGroupName(self)
 			}
 		}
 		override internal
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.exitPrecedenceGroupName(self)
 			}
 		}
@@ -1184,7 +1223,7 @@ internal class CherryParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(150)
+		 	setState(141)
 		 	try identifier()
 
 		}
@@ -1199,8 +1238,8 @@ internal class CherryParser: Parser {
 
 	internal class StatContext: ParserRuleContext {
 			internal
-			func NEWLINE() -> TerminalNode? {
-				return getToken(CherryParser.Tokens.NEWLINE.rawValue, 0)
+			func semicolon() -> SemicolonContext? {
+				return getRuleContext(SemicolonContext.self, 0)
 			}
 			internal
 			func expr() -> ExprContext? {
@@ -1212,13 +1251,13 @@ internal class CherryParser: Parser {
 		}
 		override internal
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.enterStat(self)
 			}
 		}
 		override internal
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.exitStat(self)
 			}
 		}
@@ -1234,17 +1273,17 @@ internal class CherryParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(153)
+		 	setState(144)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
-		 	if ((Int64(_la) & ~0x3f) == 0 && ((Int64(1) << _la) & 8882091983866) != 0) {
-		 		setState(152)
+		 	if ((Int64(_la) & ~0x3f) == 0 && ((Int64(1) << _la) & 1343749632) != 0) {
+		 		setState(143)
 		 		try expr(0)
 
 		 	}
 
-		 	setState(155)
-		 	try match(CherryParser.Tokens.NEWLINE.rawValue)
+		 	setState(146)
+		 	try semicolon()
 
 		}
 		catch ANTLRException.recognition(let re) {
@@ -1267,8 +1306,8 @@ internal class CherryParser: Parser {
 				return getRuleContext(IdentifierContext.self, 0)
 			}
 			internal
-			func STRING() -> TerminalNode? {
-				return getToken(CherryParser.Tokens.STRING.rawValue, 0)
+			func STRING_LITERAL() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.STRING_LITERAL.rawValue, 0)
 			}
 			internal
 			func stringInterpolation() -> StringInterpolationContext? {
@@ -1308,13 +1347,13 @@ internal class CherryParser: Parser {
 		}
 		override internal
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.enterExpr(self)
 			}
 		}
 		override internal
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.exitExpr(self)
 			}
 		}
@@ -1338,96 +1377,80 @@ internal class CherryParser: Parser {
 		do {
 			var _alt: Int
 			try enterOuterAlt(_localctx, 1)
-			setState(166)
+			setState(157)
 			try _errHandler.sync(self)
-			switch (CherryParser.Tokens(rawValue: try _input.LA(1))!) {
-			case .T__0:fallthrough
-			case .INTEGER_LITERAL:fallthrough
-			case .FLOATING_POINT_LITERAL:fallthrough
-			case .BOOLEAN_LITERAL:fallthrough
-			case .NIL_LITERAL:fallthrough
-			case .STRING_LITERAL:
-				setState(158)
+			switch(try getInterpreter().adaptivePredict(_input,14, _ctx)) {
+			case 1:
+				setState(149)
 				try literal()
 
 				break
-			case .T__2:fallthrough
-			case .T__3:fallthrough
-			case .T__4:fallthrough
-			case .T__5:fallthrough
-			case .T__6:fallthrough
-			case .T__7:fallthrough
-			case .T__8:fallthrough
-			case .IDENTIFIER:
-				setState(159)
+			case 2:
+				setState(150)
 				try identifier()
 
 				break
-
-			case .STRING:
-				setState(160)
-				try match(CherryParser.Tokens.STRING.rawValue)
+			case 3:
+				setState(151)
+				try match(CherryParser.Tokens.STRING_LITERAL.rawValue)
 
 				break
-
-			case .STRING_INTERPOLATION_START:
-				setState(161)
+			case 4:
+				setState(152)
 				try stringInterpolation()
 
 				break
-
-			case .LPAREN:
-				setState(162)
+			case 5:
+				setState(153)
 				try match(CherryParser.Tokens.LPAREN.rawValue)
-				setState(163)
+				setState(154)
 				try expr(0)
-				setState(164)
+				setState(155)
 				try match(CherryParser.Tokens.RPAREN.rawValue)
 
 				break
-			default:
-				throw ANTLRException.recognition(e: NoViableAltException(self))
+			default: break
 			}
 			_ctx!.stop = try _input.LT(-1)
-			setState(179)
+			setState(170)
 			try _errHandler.sync(self)
-			_alt = try getInterpreter().adaptivePredict(_input,20,_ctx)
+			_alt = try getInterpreter().adaptivePredict(_input,16,_ctx)
 			while (_alt != 2 && _alt != ATN.INVALID_ALT_NUMBER) {
 				if ( _alt==1 ) {
 					if _parseListeners != nil {
 					   try triggerExitRuleEvent()
 					}
 					_prevctx = _localctx
-					setState(177)
+					setState(168)
 					try _errHandler.sync(self)
-					switch(try getInterpreter().adaptivePredict(_input,19, _ctx)) {
+					switch(try getInterpreter().adaptivePredict(_input,15, _ctx)) {
 					case 1:
 						_localctx = ExprContext(_parentctx, _parentState);
 						try pushNewRecursionContext(_localctx, _startState, CherryParser.RULE_expr)
-						setState(168)
+						setState(159)
 						if (!(precpred(_ctx, 7))) {
 						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 7)"))
 						}
-						setState(169)
+						setState(160)
 						try match(CherryParser.Tokens.OP.rawValue)
-						setState(170)
+						setState(161)
 						try expr(8)
 
 						break
 					case 2:
 						_localctx = ExprContext(_parentctx, _parentState);
 						try pushNewRecursionContext(_localctx, _startState, CherryParser.RULE_expr)
-						setState(171)
+						setState(162)
 						if (!(precpred(_ctx, 1))) {
 						    throw ANTLRException.recognition(e:FailedPredicateException(self, "precpred(_ctx, 1)"))
 						}
-						setState(172)
+						setState(163)
 						try match(CherryParser.Tokens.LBRACE.rawValue)
-						setState(173)
+						setState(164)
 						try expr(0)
-						setState(174)
+						setState(165)
 						try match(CherryParser.Tokens.RBRACE.rawValue)
-						setState(175)
+						setState(166)
 						try expr(2)
 
 						break
@@ -1435,9 +1458,9 @@ internal class CherryParser: Parser {
 					}
 			 
 				}
-				setState(181)
+				setState(172)
 				try _errHandler.sync(self)
-				_alt = try getInterpreter().adaptivePredict(_input,20,_ctx)
+				_alt = try getInterpreter().adaptivePredict(_input,16,_ctx)
 			}
 
 		}
@@ -1481,13 +1504,13 @@ internal class CherryParser: Parser {
 		}
 		override internal
 		func enterRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.enterStringInterpolation(self)
 			}
 		}
 		override internal
 		func exitRule(_ listener: ParseTreeListener) {
-			if let listener = listener as? CherryListener {
+			if let listener = listener as? CherryParserListener {
 				listener.exitStringInterpolation(self)
 			}
 		}
@@ -1503,26 +1526,304 @@ internal class CherryParser: Parser {
 	    }
 		do {
 		 	try enterOuterAlt(_localctx, 1)
-		 	setState(182)
+		 	setState(173)
 		 	try match(CherryParser.Tokens.STRING_INTERPOLATION_START.rawValue)
-		 	setState(183)
+		 	setState(174)
 		 	try expr(0)
-		 	setState(188)
+		 	setState(179)
 		 	try _errHandler.sync(self)
 		 	_la = try _input.LA(1)
 		 	while (_la == CherryParser.Tokens.STRING_INTERPOLATION_CONTINUE.rawValue) {
-		 		setState(184)
+		 		setState(175)
 		 		try match(CherryParser.Tokens.STRING_INTERPOLATION_CONTINUE.rawValue)
-		 		setState(185)
+		 		setState(176)
 		 		try expr(0)
+
+
+		 		setState(181)
+		 		try _errHandler.sync(self)
+		 		_la = try _input.LA(1)
+		 	}
+		 	setState(182)
+		 	try match(CherryParser.Tokens.STRING_INTERPOLATION_FINISH.rawValue)
+
+		}
+		catch ANTLRException.recognition(let re) {
+			_localctx.exception = re
+			_errHandler.reportError(self, re)
+			try _errHandler.recover(self, re)
+		}
+
+		return _localctx
+	}
+
+	internal class LbraceContext: ParserRuleContext {
+			internal
+			func LBRACE() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.LBRACE.rawValue, 0)
+			}
+			internal
+			func NL() -> [TerminalNode] {
+				return getTokens(CherryParser.Tokens.NL.rawValue)
+			}
+			internal
+			func NL(_ i:Int) -> TerminalNode? {
+				return getToken(CherryParser.Tokens.NL.rawValue, i)
+			}
+		override internal
+		func getRuleIndex() -> Int {
+			return CherryParser.RULE_lbrace
+		}
+		override internal
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryParserListener {
+				listener.enterLbrace(self)
+			}
+		}
+		override internal
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryParserListener {
+				listener.exitLbrace(self)
+			}
+		}
+	}
+	@discardableResult
+	 internal func lbrace() throws -> LbraceContext {
+		var _localctx: LbraceContext
+		_localctx = LbraceContext(_ctx, getState())
+		try enterRule(_localctx, 36, CherryParser.RULE_lbrace)
+		var _la: Int = 0
+		defer {
+	    		try! exitRule()
+	    }
+		do {
+		 	try enterOuterAlt(_localctx, 1)
+		 	setState(184)
+		 	try match(CherryParser.Tokens.LBRACE.rawValue)
+		 	setState(188)
+		 	try _errHandler.sync(self)
+		 	_la = try _input.LA(1)
+		 	while (_la == CherryParser.Tokens.NL.rawValue) {
+		 		setState(185)
+		 		try match(CherryParser.Tokens.NL.rawValue)
 
 
 		 		setState(190)
 		 		try _errHandler.sync(self)
 		 		_la = try _input.LA(1)
 		 	}
+
+		}
+		catch ANTLRException.recognition(let re) {
+			_localctx.exception = re
+			_errHandler.reportError(self, re)
+			try _errHandler.recover(self, re)
+		}
+
+		return _localctx
+	}
+
+	internal class RbraceContext: ParserRuleContext {
+			internal
+			func RBRACE() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.RBRACE.rawValue, 0)
+			}
+			internal
+			func NL() -> [TerminalNode] {
+				return getTokens(CherryParser.Tokens.NL.rawValue)
+			}
+			internal
+			func NL(_ i:Int) -> TerminalNode? {
+				return getToken(CherryParser.Tokens.NL.rawValue, i)
+			}
+		override internal
+		func getRuleIndex() -> Int {
+			return CherryParser.RULE_rbrace
+		}
+		override internal
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryParserListener {
+				listener.enterRbrace(self)
+			}
+		}
+		override internal
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryParserListener {
+				listener.exitRbrace(self)
+			}
+		}
+	}
+	@discardableResult
+	 internal func rbrace() throws -> RbraceContext {
+		var _localctx: RbraceContext
+		_localctx = RbraceContext(_ctx, getState())
+		try enterRule(_localctx, 38, CherryParser.RULE_rbrace)
+		var _la: Int = 0
+		defer {
+	    		try! exitRule()
+	    }
+		do {
+		 	try enterOuterAlt(_localctx, 1)
 		 	setState(191)
-		 	try match(CherryParser.Tokens.STRING_INTERPOLATION_FINISH.rawValue)
+		 	try match(CherryParser.Tokens.RBRACE.rawValue)
+		 	setState(195)
+		 	try _errHandler.sync(self)
+		 	_la = try _input.LA(1)
+		 	while (_la == CherryParser.Tokens.NL.rawValue) {
+		 		setState(192)
+		 		try match(CherryParser.Tokens.NL.rawValue)
+
+
+		 		setState(197)
+		 		try _errHandler.sync(self)
+		 		_la = try _input.LA(1)
+		 	}
+
+		}
+		catch ANTLRException.recognition(let re) {
+			_localctx.exception = re
+			_errHandler.reportError(self, re)
+			try _errHandler.recover(self, re)
+		}
+
+		return _localctx
+	}
+
+	internal class SemicolonContext: ParserRuleContext {
+			internal
+			func SEMICOLON() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.SEMICOLON.rawValue, 0)
+			}
+			internal
+			func NL() -> [TerminalNode] {
+				return getTokens(CherryParser.Tokens.NL.rawValue)
+			}
+			internal
+			func NL(_ i:Int) -> TerminalNode? {
+				return getToken(CherryParser.Tokens.NL.rawValue, i)
+			}
+		override internal
+		func getRuleIndex() -> Int {
+			return CherryParser.RULE_semicolon
+		}
+		override internal
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryParserListener {
+				listener.enterSemicolon(self)
+			}
+		}
+		override internal
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryParserListener {
+				listener.exitSemicolon(self)
+			}
+		}
+	}
+	@discardableResult
+	 internal func semicolon() throws -> SemicolonContext {
+		var _localctx: SemicolonContext
+		_localctx = SemicolonContext(_ctx, getState())
+		try enterRule(_localctx, 40, CherryParser.RULE_semicolon)
+		var _la: Int = 0
+		defer {
+	    		try! exitRule()
+	    }
+		do {
+		 	try enterOuterAlt(_localctx, 1)
+		 	setState(198)
+		 	_la = try _input.LA(1)
+		 	if (!(_la == CherryParser.Tokens.NL.rawValue || _la == CherryParser.Tokens.SEMICOLON.rawValue)) {
+		 	try _errHandler.recoverInline(self)
+		 	}
+		 	else {
+		 		_errHandler.reportMatch(self)
+		 		try consume()
+		 	}
+		 	setState(202)
+		 	try _errHandler.sync(self)
+		 	_la = try _input.LA(1)
+		 	while (_la == CherryParser.Tokens.NL.rawValue) {
+		 		setState(199)
+		 		try match(CherryParser.Tokens.NL.rawValue)
+
+
+		 		setState(204)
+		 		try _errHandler.sync(self)
+		 		_la = try _input.LA(1)
+		 	}
+
+		}
+		catch ANTLRException.recognition(let re) {
+			_localctx.exception = re
+			_errHandler.reportError(self, re)
+			try _errHandler.recover(self, re)
+		}
+
+		return _localctx
+	}
+
+	internal class ComaContext: ParserRuleContext {
+			internal
+			func COMA() -> TerminalNode? {
+				return getToken(CherryParser.Tokens.COMA.rawValue, 0)
+			}
+			internal
+			func NL() -> [TerminalNode] {
+				return getTokens(CherryParser.Tokens.NL.rawValue)
+			}
+			internal
+			func NL(_ i:Int) -> TerminalNode? {
+				return getToken(CherryParser.Tokens.NL.rawValue, i)
+			}
+		override internal
+		func getRuleIndex() -> Int {
+			return CherryParser.RULE_coma
+		}
+		override internal
+		func enterRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryParserListener {
+				listener.enterComa(self)
+			}
+		}
+		override internal
+		func exitRule(_ listener: ParseTreeListener) {
+			if let listener = listener as? CherryParserListener {
+				listener.exitComa(self)
+			}
+		}
+	}
+	@discardableResult
+	 internal func coma() throws -> ComaContext {
+		var _localctx: ComaContext
+		_localctx = ComaContext(_ctx, getState())
+		try enterRule(_localctx, 42, CherryParser.RULE_coma)
+		var _la: Int = 0
+		defer {
+	    		try! exitRule()
+	    }
+		do {
+		 	try enterOuterAlt(_localctx, 1)
+		 	setState(205)
+		 	_la = try _input.LA(1)
+		 	if (!(_la == CherryParser.Tokens.NL.rawValue || _la == CherryParser.Tokens.COMA.rawValue)) {
+		 	try _errHandler.recoverInline(self)
+		 	}
+		 	else {
+		 		_errHandler.reportMatch(self)
+		 		try consume()
+		 	}
+		 	setState(209)
+		 	try _errHandler.sync(self)
+		 	_la = try _input.LA(1)
+		 	while (_la == CherryParser.Tokens.NL.rawValue) {
+		 		setState(206)
+		 		try match(CherryParser.Tokens.NL.rawValue)
+
+
+		 		setState(211)
+		 		try _errHandler.sync(self)
+		 		_la = try _input.LA(1)
+		 	}
 
 		}
 		catch ANTLRException.recognition(let re) {
@@ -1551,68 +1852,74 @@ internal class CherryParser: Parser {
 	}
 
 	static let _serializedATN:[Int] = [
-		4,1,43,194,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
+		4,1,39,213,2,0,7,0,2,1,7,1,2,2,7,2,2,3,7,3,2,4,7,4,2,5,7,5,2,6,7,6,2,7,
 		7,7,2,8,7,8,2,9,7,9,2,10,7,10,2,11,7,11,2,12,7,12,2,13,7,13,2,14,7,14,
-		2,15,7,15,2,16,7,16,2,17,7,17,1,0,1,0,1,0,1,0,3,0,41,8,0,1,1,3,1,44,8,
-		1,1,1,1,1,1,2,1,2,1,2,5,2,51,8,2,10,2,12,2,54,9,2,1,3,1,3,1,4,4,4,59,8,
-		4,11,4,12,4,60,1,4,1,4,1,5,1,5,1,5,1,5,3,5,69,8,5,1,6,1,6,1,6,1,6,4,6,
-		75,8,6,11,6,12,6,76,3,6,79,8,6,1,7,1,7,1,7,1,7,4,7,85,8,7,11,7,12,7,86,
-		3,7,89,8,7,1,8,1,8,1,8,1,8,4,8,95,8,8,11,8,12,8,96,3,8,99,8,8,1,9,1,9,
-		1,9,1,9,5,9,105,8,9,10,9,12,9,108,9,9,1,9,1,9,4,9,112,8,9,11,9,12,9,113,
-		5,9,116,8,9,10,9,12,9,119,9,9,1,9,1,9,5,9,123,8,9,10,9,12,9,126,9,9,1,
-		10,1,10,1,10,3,10,131,8,10,1,11,1,11,1,11,1,11,1,11,5,11,138,8,11,10,11,
-		12,11,141,9,11,1,12,1,12,1,12,1,12,1,13,1,13,1,13,1,13,1,14,1,14,1,15,
-		3,15,154,8,15,1,15,1,15,1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,3,
-		16,167,8,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,5,16,178,8,16,
-		10,16,12,16,181,9,16,1,17,1,17,1,17,1,17,5,17,187,8,17,10,17,12,17,190,
-		9,17,1,17,1,17,1,17,0,1,32,18,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,
-		30,32,34,0,5,1,0,20,21,2,0,3,9,34,34,2,0,11,11,16,16,1,0,3,4,1,0,7,9,205,
-		0,40,1,0,0,0,2,43,1,0,0,0,4,47,1,0,0,0,6,55,1,0,0,0,8,58,1,0,0,0,10,68,
-		1,0,0,0,12,70,1,0,0,0,14,80,1,0,0,0,16,90,1,0,0,0,18,100,1,0,0,0,20,130,
-		1,0,0,0,22,132,1,0,0,0,24,142,1,0,0,0,26,146,1,0,0,0,28,150,1,0,0,0,30,
-		153,1,0,0,0,32,166,1,0,0,0,34,182,1,0,0,0,36,41,3,2,1,0,37,41,5,24,0,0,
-		38,41,5,22,0,0,39,41,5,23,0,0,40,36,1,0,0,0,40,37,1,0,0,0,40,38,1,0,0,
-		0,40,39,1,0,0,0,41,1,1,0,0,0,42,44,5,1,0,0,43,42,1,0,0,0,43,44,1,0,0,0,
-		44,45,1,0,0,0,45,46,7,0,0,0,46,3,1,0,0,0,47,52,3,6,3,0,48,49,5,2,0,0,49,
-		51,3,6,3,0,50,48,1,0,0,0,51,54,1,0,0,0,52,50,1,0,0,0,52,53,1,0,0,0,53,
-		5,1,0,0,0,54,52,1,0,0,0,55,56,7,1,0,0,56,7,1,0,0,0,57,59,3,10,5,0,58,57,
-		1,0,0,0,59,60,1,0,0,0,60,58,1,0,0,0,60,61,1,0,0,0,61,62,1,0,0,0,62,63,
-		5,0,0,1,63,9,1,0,0,0,64,69,3,12,6,0,65,69,3,14,7,0,66,69,3,16,8,0,67,69,
-		3,18,9,0,68,64,1,0,0,0,68,65,1,0,0,0,68,66,1,0,0,0,68,67,1,0,0,0,69,11,
-		1,0,0,0,70,71,5,10,0,0,71,78,3,6,3,0,72,79,5,11,0,0,73,75,5,16,0,0,74,
-		73,1,0,0,0,75,76,1,0,0,0,76,74,1,0,0,0,76,77,1,0,0,0,77,79,1,0,0,0,78,
-		72,1,0,0,0,78,74,1,0,0,0,79,13,1,0,0,0,80,81,5,12,0,0,81,88,3,6,3,0,82,
-		89,5,11,0,0,83,85,5,16,0,0,84,83,1,0,0,0,85,86,1,0,0,0,86,84,1,0,0,0,86,
-		87,1,0,0,0,87,89,1,0,0,0,88,82,1,0,0,0,88,84,1,0,0,0,89,15,1,0,0,0,90,
-		91,5,13,0,0,91,98,3,6,3,0,92,99,5,11,0,0,93,95,5,16,0,0,94,93,1,0,0,0,
-		95,96,1,0,0,0,96,94,1,0,0,0,96,97,1,0,0,0,97,99,1,0,0,0,98,92,1,0,0,0,
-		98,94,1,0,0,0,99,17,1,0,0,0,100,101,5,14,0,0,101,102,3,28,14,0,102,106,
-		5,39,0,0,103,105,5,16,0,0,104,103,1,0,0,0,105,108,1,0,0,0,106,104,1,0,
-		0,0,106,107,1,0,0,0,107,117,1,0,0,0,108,106,1,0,0,0,109,111,3,20,10,0,
-		110,112,7,2,0,0,111,110,1,0,0,0,112,113,1,0,0,0,113,111,1,0,0,0,113,114,
-		1,0,0,0,114,116,1,0,0,0,115,109,1,0,0,0,116,119,1,0,0,0,117,115,1,0,0,
-		0,117,118,1,0,0,0,118,120,1,0,0,0,119,117,1,0,0,0,120,124,5,40,0,0,121,
-		123,5,16,0,0,122,121,1,0,0,0,123,126,1,0,0,0,124,122,1,0,0,0,124,125,1,
-		0,0,0,125,19,1,0,0,0,126,124,1,0,0,0,127,131,3,22,11,0,128,131,3,24,12,
-		0,129,131,3,26,13,0,130,127,1,0,0,0,130,128,1,0,0,0,130,129,1,0,0,0,131,
-		21,1,0,0,0,132,133,7,3,0,0,133,134,5,15,0,0,134,139,3,28,14,0,135,136,
-		5,2,0,0,136,138,3,28,14,0,137,135,1,0,0,0,138,141,1,0,0,0,139,137,1,0,
-		0,0,139,140,1,0,0,0,140,23,1,0,0,0,141,139,1,0,0,0,142,143,5,5,0,0,143,
-		144,5,15,0,0,144,145,5,22,0,0,145,25,1,0,0,0,146,147,5,6,0,0,147,148,5,
-		15,0,0,148,149,7,4,0,0,149,27,1,0,0,0,150,151,3,6,3,0,151,29,1,0,0,0,152,
-		154,3,32,16,0,153,152,1,0,0,0,153,154,1,0,0,0,154,155,1,0,0,0,155,156,
-		5,42,0,0,156,31,1,0,0,0,157,158,6,16,-1,0,158,167,3,0,0,0,159,167,3,6,
-		3,0,160,167,5,43,0,0,161,167,3,34,17,0,162,163,5,36,0,0,163,164,3,32,16,
-		0,164,165,5,37,0,0,165,167,1,0,0,0,166,157,1,0,0,0,166,159,1,0,0,0,166,
-		160,1,0,0,0,166,161,1,0,0,0,166,162,1,0,0,0,167,179,1,0,0,0,168,169,10,
-		7,0,0,169,170,5,41,0,0,170,178,3,32,16,8,171,172,10,1,0,0,172,173,5,39,
-		0,0,173,174,3,32,16,0,174,175,5,40,0,0,175,176,3,32,16,2,176,178,1,0,0,
-		0,177,168,1,0,0,0,177,171,1,0,0,0,178,181,1,0,0,0,179,177,1,0,0,0,179,
-		180,1,0,0,0,180,33,1,0,0,0,181,179,1,0,0,0,182,183,5,26,0,0,183,188,3,
-		32,16,0,184,185,5,27,0,0,185,187,3,32,16,0,186,184,1,0,0,0,187,190,1,0,
-		0,0,188,186,1,0,0,0,188,189,1,0,0,0,189,191,1,0,0,0,190,188,1,0,0,0,191,
-		192,5,28,0,0,192,35,1,0,0,0,22,40,43,52,60,68,76,78,86,88,96,98,106,113,
-		117,124,130,139,153,166,177,179,188
+		2,15,7,15,2,16,7,16,2,17,7,17,2,18,7,18,2,19,7,19,2,20,7,20,2,21,7,21,
+		1,0,1,0,1,0,1,0,3,0,49,8,0,1,1,1,1,1,2,1,2,1,2,5,2,56,8,2,10,2,12,2,59,
+		9,2,1,3,1,3,1,4,4,4,64,8,4,11,4,12,4,65,1,4,1,4,1,5,1,5,1,5,1,5,3,5,74,
+		8,5,1,6,1,6,1,6,1,6,4,6,80,8,6,11,6,12,6,81,3,6,84,8,6,1,7,1,7,1,7,1,7,
+		4,7,90,8,7,11,7,12,7,91,3,7,94,8,7,1,8,1,8,1,8,1,8,4,8,100,8,8,11,8,12,
+		8,101,3,8,104,8,8,1,9,1,9,1,9,1,9,1,9,1,9,5,9,112,8,9,10,9,12,9,115,9,
+		9,1,9,1,9,1,10,1,10,1,10,3,10,122,8,10,1,11,1,11,1,11,1,11,1,11,5,11,129,
+		8,11,10,11,12,11,132,9,11,1,12,1,12,1,12,1,12,1,13,1,13,1,13,1,13,1,14,
+		1,14,1,15,3,15,145,8,15,1,15,1,15,1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,
+		16,1,16,3,16,158,8,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,1,16,5,16,
+		169,8,16,10,16,12,16,172,9,16,1,17,1,17,1,17,1,17,5,17,178,8,17,10,17,
+		12,17,181,9,17,1,17,1,17,1,18,1,18,5,18,187,8,18,10,18,12,18,190,9,18,
+		1,19,1,19,5,19,194,8,19,10,19,12,19,197,9,19,1,20,1,20,5,20,201,8,20,10,
+		20,12,20,204,9,20,1,21,1,21,5,21,208,8,21,10,21,12,21,211,9,21,1,21,0,
+		1,32,22,0,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,0,
+		5,1,0,14,15,2,0,9,13,28,28,1,0,9,10,2,0,1,1,35,35,2,0,1,1,33,33,220,0,
+		48,1,0,0,0,2,50,1,0,0,0,4,52,1,0,0,0,6,60,1,0,0,0,8,63,1,0,0,0,10,73,1,
+		0,0,0,12,75,1,0,0,0,14,85,1,0,0,0,16,95,1,0,0,0,18,105,1,0,0,0,20,121,
+		1,0,0,0,22,123,1,0,0,0,24,133,1,0,0,0,26,137,1,0,0,0,28,141,1,0,0,0,30,
+		144,1,0,0,0,32,157,1,0,0,0,34,173,1,0,0,0,36,184,1,0,0,0,38,191,1,0,0,
+		0,40,198,1,0,0,0,42,205,1,0,0,0,44,49,3,2,1,0,45,49,5,18,0,0,46,49,5,16,
+		0,0,47,49,5,17,0,0,48,44,1,0,0,0,48,45,1,0,0,0,48,46,1,0,0,0,48,47,1,0,
+		0,0,49,1,1,0,0,0,50,51,7,0,0,0,51,3,1,0,0,0,52,57,3,6,3,0,53,54,5,33,0,
+		0,54,56,3,6,3,0,55,53,1,0,0,0,56,59,1,0,0,0,57,55,1,0,0,0,57,58,1,0,0,
+		0,58,5,1,0,0,0,59,57,1,0,0,0,60,61,7,1,0,0,61,7,1,0,0,0,62,64,3,10,5,0,
+		63,62,1,0,0,0,64,65,1,0,0,0,65,63,1,0,0,0,65,66,1,0,0,0,66,67,1,0,0,0,
+		67,68,5,0,0,1,68,9,1,0,0,0,69,74,3,12,6,0,70,74,3,14,7,0,71,74,3,16,8,
+		0,72,74,3,18,9,0,73,69,1,0,0,0,73,70,1,0,0,0,73,71,1,0,0,0,73,72,1,0,0,
+		0,74,11,1,0,0,0,75,76,5,5,0,0,76,83,3,6,3,0,77,84,5,35,0,0,78,80,5,1,0,
+		0,79,78,1,0,0,0,80,81,1,0,0,0,81,79,1,0,0,0,81,82,1,0,0,0,82,84,1,0,0,
+		0,83,77,1,0,0,0,83,79,1,0,0,0,84,13,1,0,0,0,85,86,5,6,0,0,86,93,3,6,3,
+		0,87,94,5,35,0,0,88,90,5,1,0,0,89,88,1,0,0,0,90,91,1,0,0,0,91,89,1,0,0,
+		0,91,92,1,0,0,0,92,94,1,0,0,0,93,87,1,0,0,0,93,89,1,0,0,0,94,15,1,0,0,
+		0,95,96,5,7,0,0,96,103,3,6,3,0,97,104,5,35,0,0,98,100,5,1,0,0,99,98,1,
+		0,0,0,100,101,1,0,0,0,101,99,1,0,0,0,101,102,1,0,0,0,102,104,1,0,0,0,103,
+		97,1,0,0,0,103,99,1,0,0,0,104,17,1,0,0,0,105,106,5,8,0,0,106,107,3,28,
+		14,0,107,113,3,36,18,0,108,109,3,20,10,0,109,110,3,40,20,0,110,112,1,0,
+		0,0,111,108,1,0,0,0,112,115,1,0,0,0,113,111,1,0,0,0,113,114,1,0,0,0,114,
+		116,1,0,0,0,115,113,1,0,0,0,116,117,3,38,19,0,117,19,1,0,0,0,118,122,3,
+		22,11,0,119,122,3,24,12,0,120,122,3,26,13,0,121,118,1,0,0,0,121,119,1,
+		0,0,0,121,120,1,0,0,0,122,21,1,0,0,0,123,124,7,2,0,0,124,125,5,34,0,0,
+		125,130,3,28,14,0,126,127,5,33,0,0,127,129,3,28,14,0,128,126,1,0,0,0,129,
+		132,1,0,0,0,130,128,1,0,0,0,130,131,1,0,0,0,131,23,1,0,0,0,132,130,1,0,
+		0,0,133,134,5,11,0,0,134,135,5,34,0,0,135,136,5,16,0,0,136,25,1,0,0,0,
+		137,138,5,12,0,0,138,139,5,34,0,0,139,140,5,13,0,0,140,27,1,0,0,0,141,
+		142,3,6,3,0,142,29,1,0,0,0,143,145,3,32,16,0,144,143,1,0,0,0,144,145,1,
+		0,0,0,145,146,1,0,0,0,146,147,3,40,20,0,147,31,1,0,0,0,148,149,6,16,-1,
+		0,149,158,3,0,0,0,150,158,3,6,3,0,151,158,5,18,0,0,152,158,3,34,17,0,153,
+		154,5,30,0,0,154,155,3,32,16,0,155,156,5,31,0,0,156,158,1,0,0,0,157,148,
+		1,0,0,0,157,150,1,0,0,0,157,151,1,0,0,0,157,152,1,0,0,0,157,153,1,0,0,
+		0,158,170,1,0,0,0,159,160,10,7,0,0,160,161,5,39,0,0,161,169,3,32,16,8,
+		162,163,10,1,0,0,163,164,5,36,0,0,164,165,3,32,16,0,165,166,5,37,0,0,166,
+		167,3,32,16,2,167,169,1,0,0,0,168,159,1,0,0,0,168,162,1,0,0,0,169,172,
+		1,0,0,0,170,168,1,0,0,0,170,171,1,0,0,0,171,33,1,0,0,0,172,170,1,0,0,0,
+		173,174,5,20,0,0,174,179,3,32,16,0,175,176,5,21,0,0,176,178,3,32,16,0,
+		177,175,1,0,0,0,178,181,1,0,0,0,179,177,1,0,0,0,179,180,1,0,0,0,180,182,
+		1,0,0,0,181,179,1,0,0,0,182,183,5,22,0,0,183,35,1,0,0,0,184,188,5,36,0,
+		0,185,187,5,1,0,0,186,185,1,0,0,0,187,190,1,0,0,0,188,186,1,0,0,0,188,
+		189,1,0,0,0,189,37,1,0,0,0,190,188,1,0,0,0,191,195,5,37,0,0,192,194,5,
+		1,0,0,193,192,1,0,0,0,194,197,1,0,0,0,195,193,1,0,0,0,195,196,1,0,0,0,
+		196,39,1,0,0,0,197,195,1,0,0,0,198,202,7,3,0,0,199,201,5,1,0,0,200,199,
+		1,0,0,0,201,204,1,0,0,0,202,200,1,0,0,0,202,203,1,0,0,0,203,41,1,0,0,0,
+		204,202,1,0,0,0,205,209,7,4,0,0,206,208,5,1,0,0,207,206,1,0,0,0,208,211,
+		1,0,0,0,209,207,1,0,0,0,209,210,1,0,0,0,210,43,1,0,0,0,211,209,1,0,0,0,
+		22,48,57,65,73,81,83,91,93,101,103,113,121,130,144,157,168,170,179,188,
+		195,202,209
 	]
 
 	internal

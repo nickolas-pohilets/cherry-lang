@@ -4,11 +4,11 @@ import Antlr4
 
 
 /**
- * This class provides an empty implementation of {@link CherryListener},
+ * This class provides an empty implementation of {@link CherryParserListener},
  * which can be extended to create a listener which only needs to handle a subset
  * of the available methods.
  */
-internal class CherryBaseListener: CherryListener {
+internal class CherryParserBaseListener: CherryParserListener {
      internal init() { }
 	/**
 	 * {@inheritDoc}
@@ -243,6 +243,58 @@ internal class CherryBaseListener: CherryListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	internal func exitStringInterpolation(_ ctx: CherryParser.StringInterpolationContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func enterLbrace(_ ctx: CherryParser.LbraceContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func exitLbrace(_ ctx: CherryParser.LbraceContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func enterRbrace(_ ctx: CherryParser.RbraceContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func exitRbrace(_ ctx: CherryParser.RbraceContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func enterSemicolon(_ ctx: CherryParser.SemicolonContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func exitSemicolon(_ ctx: CherryParser.SemicolonContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func enterComa(_ ctx: CherryParser.ComaContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func exitComa(_ ctx: CherryParser.ComaContext) { }
 
 	/**
 	 * {@inheritDoc}

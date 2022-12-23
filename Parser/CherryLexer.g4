@@ -1,4 +1,4 @@
-grammar Cherry;
+lexer grammar CherryLexer;
 
 @lexer::members {
     private var stringInterpolations: [Int] = []
@@ -40,27 +40,30 @@ WS: (' ' | '\u0009' | '\u000B' | '\u000C')+ -> skip ;
 COMMENT: '//' ~[\n]* -> skip;
 MULTILINE_COMMENT: '/*' .*? '*/' -> skip;
 
+// Keywords
+KW_VAR: 'var' ;
+KW_FUNC: 'func' ;
+KW_CLASS: 'class' ;
+KW_PRECEDENCE_GROUP: 'precedencegroup';
+
+// Contextual keywords
+CKW_HIGHER_THAN: 'higherThan';
+CKW_LOWER_THAN: 'lowerThan';
+CKW_ASSIGNMENT: 'assignment';
+CWK_ASSOCIATIVITY: 'associativity';
+CWK_ASSOCIATIVITY_VALUE: 'left' | 'right' | 'none';
+
 //
 // Literals
 //
-
-literal
-    : numericLiteral
-    | STRING_LITERAL
-//  | regularExpressionLiteral
-    | BOOLEAN_LITERAL
-    | NIL_LITERAL
-    ;
-    
-numericLiteral
-    : '-'? (INTEGER_LITERAL | FLOATING_POINT_LITERAL )
-    ;
     
 INTEGER_LITERAL
-    : '0b' [01] [01_]*
-    | '0o' [0-7] [0-7_]*
-    | DECIMAL_LITERAL
-    | HEXADECIMAL_LITERAL
+    : '-'?
+      ( '0b' [01] [01_]*
+      | '0o' [0-7] [0-7_]*
+      | DECIMAL_LITERAL
+      | HEXADECIMAL_LITERAL
+      )
     ;
     
 fragment DECIMAL_LITERAL: [0-9] [0-9_]* ;
@@ -68,12 +71,14 @@ fragment HEXADECIMAL_LITERAL: '0x' HEXADECIMAL_DIGITS ;
 fragment HEXADECIMAL_DIGITS: [0-9a-fA-F] [0-9a-fA-F_]* ;
     
 FLOATING_POINT_LITERAL
-    // If dot is present, fractional digits are required, to disambiguate from member access
-    : DECIMAL_LITERAL ('.' DECIMAL_LITERAL)? ([eE] [+-]? DECIMAL_LITERAL)?
-    // Exponent is required, to disambiguate from member access
-    | HEXADECIMAL_LITERAL ('.' HEXADECIMAL_DIGITS)? [pP] [+-]? DECIMAL_LITERAL
-    | HEXADECIMAL_LITERAL ('.' [0-9] HEXADECIMAL_DIGITS?)?
-      { reportCustomError("hexadecimal floating point literal must end with an exponent") }
+    : '-'?
+      // If dot is present, fractional digits are required, to disambiguate from member access
+      ( DECIMAL_LITERAL ('.' DECIMAL_LITERAL)? ([eE] [+-]? DECIMAL_LITERAL)?
+      // Exponent is required, to disambiguate from member access
+      | HEXADECIMAL_LITERAL ('.' HEXADECIMAL_DIGITS)? [pP] [+-]? DECIMAL_LITERAL
+      | HEXADECIMAL_LITERAL ('.' [0-9] HEXADECIMAL_DIGITS?)?
+        { reportCustomError("hexadecimal floating point literal must end with an exponent") }
+      )
     ;
 
 BOOLEAN_LITERAL: 'true' | 'false';
@@ -104,19 +109,6 @@ RAW_MULTILINE_STRING_LITERAL: '#' (RAW_MULTILINE_STRING_LITERAL | '"""' WS? NL  
 //
 
 // Note that identifiers must come after literals to properly parse true/false/nil
-
-identifierList: identifier ( ',' identifier )* ;
-
-identifier
-    : IDENTIFIER
-    | 'higherThan'
-    | 'lowerThan'
-    | 'assignment'
-    | 'associativity'
-    | 'left'
-    | 'right'
-    | 'none'
-    ;
 
 IDENTIFIER
     : IDENTIFIER_HEAD IDENTIFIER_CHARACTER*
@@ -154,74 +146,26 @@ fragment IDENTIFIER_CHARACTER
 IMPLICIT_PARAMETER_NAME: '$' [0-9]+ ; // Note: underscores not allowed
 // PROPERTY_WRAPPER_PROJECTION: '$' IDENTIFIER_CHARACTER* ;
 
-/** The start rule; begin parsing here. */
-prog:   decl+ EOF;
-
-decl: varDecl
-    | funcDecl
-    | classDecl
-    | precedenceGroupDeclaration
-    ;
-    
-varDecl
-    : 'var' identifier (';' | NL+)
-    ;
-    
-funcDecl
-    : 'func' identifier (';' | NL+)
-    ;
-    
-classDecl
-    : 'class' identifier (';' | NL+)
-    ;
-        
-precedenceGroupDeclaration
-    : 'precedencegroup' precedenceGroupName '{' NL* (precedenceGroupAttribute (';' | NL)+)* '}' NL* ;
-    
-precedenceGroupAttribute
-    : precedenceGroupRelation
-    | precedenceGroupAssignment
-    | precedenceGroupAssociativity
-    ;
-    
-precedenceGroupRelation
-    : op=('higherThan' | 'lowerThan') ':' precedenceGroupName (',' precedenceGroupName)*
-    ;
-
-precedenceGroupAssignment
-    : 'assignment' ':' BOOLEAN_LITERAL
-    ;
-    
-precedenceGroupAssociativity
-    : 'associativity' ':' value=('left' | 'right' | 'none')
-    ;
-    
-precedenceGroupName
-    : identifier
-    ;
-    
-stat: expr? NEWLINE
-    ;
-
-expr: expr OP expr
-    | literal
-    | identifier
-    | STRING
-    | stringInterpolation
-    | LPAREN expr RPAREN
-    | expr LBRACE expr RBRACE expr
-    ;
-    
-stringInterpolation
-    : STRING_INTERPOLATION_START expr ( STRING_INTERPOLATION_CONTINUE expr)* STRING_INTERPOLATION_FINISH
-    ;
+//
+// Punctuation
+//
 
 LPAREN: '(';
 RPAREN: ')';
 DOT: '.';
 
+COMA: ',';
+COLON: ':';
+SEMICOLON: ';';
+
 LBRACE: '{' { bracketDepth += 1 };
 RBRACE: '}' { bracketDepth -= 1 };
+
+//
+// Operators
+//
+
+MINUS: '-' ; // Used in literal, overrides OP
 
 OP
     : OP_HEAD OP_CHARACTER*
@@ -262,4 +206,3 @@ fragment DOT_OP_CHARACTER
     : '.'
     | OP_CHARACTER
     ;
-

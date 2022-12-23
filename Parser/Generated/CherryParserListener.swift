@@ -5,7 +5,7 @@ import Antlr4
  * This interface defines a complete listener for a parse tree produced by
  * {@link CherryParser}.
  */
-internal protocol CherryListener: ParseTreeListener {
+internal protocol CherryParserListener: ParseTreeListener {
 	/**
 	 * Enter a parse tree produced by {@link CherryParser#literal}.
 	 - Parameters:
@@ -222,4 +222,52 @@ internal protocol CherryListener: ParseTreeListener {
 	   - ctx: the parse tree
 	 */
 	func exitStringInterpolation(_ ctx: CherryParser.StringInterpolationContext)
+	/**
+	 * Enter a parse tree produced by {@link CherryParser#lbrace}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterLbrace(_ ctx: CherryParser.LbraceContext)
+	/**
+	 * Exit a parse tree produced by {@link CherryParser#lbrace}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitLbrace(_ ctx: CherryParser.LbraceContext)
+	/**
+	 * Enter a parse tree produced by {@link CherryParser#rbrace}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterRbrace(_ ctx: CherryParser.RbraceContext)
+	/**
+	 * Exit a parse tree produced by {@link CherryParser#rbrace}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitRbrace(_ ctx: CherryParser.RbraceContext)
+	/**
+	 * Enter a parse tree produced by {@link CherryParser#semicolon}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterSemicolon(_ ctx: CherryParser.SemicolonContext)
+	/**
+	 * Exit a parse tree produced by {@link CherryParser#semicolon}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitSemicolon(_ ctx: CherryParser.SemicolonContext)
+	/**
+	 * Enter a parse tree produced by {@link CherryParser#coma}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterComa(_ ctx: CherryParser.ComaContext)
+	/**
+	 * Exit a parse tree produced by {@link CherryParser#coma}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitComa(_ ctx: CherryParser.ComaContext)
 }

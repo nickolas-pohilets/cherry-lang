@@ -20,6 +20,8 @@
 		4A91838F2951FAB000EDB39C /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9183892951F80500EDB39C /* Parser.swift */; };
 		4A9183932952011E00EDB39C /* CherryToken.Kind.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9183912952011800EDB39C /* CherryToken.Kind.swift */; };
 		4A9183B42953D43F00EDB39C /* Diagnostic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9183B22953D31B00EDB39C /* Diagnostic.swift */; };
+		4A9183B82954B9AB00EDB39C /* ErrorListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9183B72954B9AB00EDB39C /* ErrorListener.swift */; };
+		4A9183BA2955C72300EDB39C /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A9183B92955C72300EDB39C /* Utils.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -82,6 +84,8 @@
 		4A9183902951FD3C00EDB39C /* gen-tokens.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = "gen-tokens.py"; sourceTree = "<group>"; };
 		4A9183912952011800EDB39C /* CherryToken.Kind.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CherryToken.Kind.swift; sourceTree = "<group>"; };
 		4A9183B22953D31B00EDB39C /* Diagnostic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Diagnostic.swift; sourceTree = "<group>"; };
+		4A9183B72954B9AB00EDB39C /* ErrorListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorListener.swift; sourceTree = "<group>"; };
+		4A9183B92955C72300EDB39C /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +170,7 @@
 				4A9183522950A5F500EDB39C /* Cherry.g4 */,
 				4A9183892951F80500EDB39C /* Parser.swift */,
 				4A9183B22953D31B00EDB39C /* Diagnostic.swift */,
+				4A9183B72954B9AB00EDB39C /* ErrorListener.swift */,
 			);
 			path = Parser;
 			sourceTree = "<group>";
@@ -174,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				4A9183752951F5D700EDB39C /* LiteralTests.swift */,
+				4A9183B92955C72300EDB39C /* Utils.swift */,
 			);
 			path = CherryParserTests;
 			sourceTree = "<group>";
@@ -369,6 +375,7 @@
 				4A9183932952011E00EDB39C /* CherryToken.Kind.swift in Sources */,
 				4A91838F2951FAB000EDB39C /* Parser.swift in Sources */,
 				4A91838C2951FA9400EDB39C /* CherryListener.swift in Sources */,
+				4A9183B82954B9AB00EDB39C /* ErrorListener.swift in Sources */,
 				4A91838B2951FA9100EDB39C /* CherryParser.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -378,6 +385,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4A9183762951F5D700EDB39C /* LiteralTests.swift in Sources */,
+				4A9183BA2955C72300EDB39C /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

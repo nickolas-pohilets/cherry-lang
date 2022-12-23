@@ -8,10 +8,23 @@ grammar Cherry;
         stringInterpolations.last == bracketDepth
     }
     
-    private func reportCustomError(_ msg: String) {
-        let charPositionInLine = getInterpreter().getCharPositionInLine()
-        let line = getInterpreter().getLine()
-            
+    private enum ErrorPosition {
+        case tokenStart
+        case current
+    }
+    
+    private func reportCustomError(_ msg: String, position: ErrorPosition = .current) {
+        let charPositionInLine: Int
+        let line: Int
+        switch position {
+        case .tokenStart:
+            charPositionInLine = _tokenStartCharPositionInLine
+            line = _tokenStartLine
+        case .current:
+            charPositionInLine = getInterpreter().getCharPositionInLine()
+            line = getInterpreter().getLine()
+        }
+        
         let listener = getErrorListenerDispatch()
         listener.syntaxError(self, nil, line, charPositionInLine, msg, nil)
     }
@@ -66,11 +79,11 @@ FLOATING_POINT_LITERAL
 BOOLEAN_LITERAL: 'true' | 'false';
 NIL_LITERAL: 'nil' ;
 
-STRING_LITERAL: '"' STRING_CONTENT '"';
+STRING_LITERAL: '"' STRING_CONTENT ('"' | { reportCustomError("unterminated string literal", position: .tokenStart) });
 fragment STRING_CONTENT: (ESC | ~["\\\r\n])* ;
-fragment ESC: '\\' ([0"\\/bfnrt] | UNICODE | 'x' HEX HEX) ;
-fragment UNICODE : 'u' (HEX HEX HEX HEX | '{' HEX+ '}' );
-fragment HEX : [0-9a-fA-F];
+fragment ESC: '\\' ([0"\\bfnrt] | UNICODE | ~'{' { reportCustomError("invalid escape sequence in literal") } ) ;
+fragment UNICODE : 'u' ( '{' HEX+ '}' | { reportCustomError("expected hexadecimal code in braces after unicode escape") } );
+fragment HEX : [0-9a-fA-F]; // Underscores not allowed
 
 MULTILINE_STRING_LITERAL: '"""' WS? NL MULTILINE_STRING_CONTENT NL WS? '"""';
 fragment MULTILINE_STRING_CONTENT: (ESC | ~[\\])*?;

@@ -22,7 +22,7 @@ public enum DiagnosticBehavior: Hashable, CustomStringConvertible {
 public struct Diagnostic: Hashable, CustomStringConvertible {
     var file: String
     var line: Int
-    var column: Int
+    var column: Int /// Currently in codepoints (UTF-32)
     var behavior: DiagnosticBehavior
     var message: String
     

@@ -19,7 +19,7 @@ private func withTokens(_ text: String, _ action: (([CherryToken.Kind], [Diagnos
 
 private func validateTokens(_ text: String, _ expected: [CherryToken.Kind], file: StaticString = #file, line: UInt = #line) {
     withTokens(text) { tokens, _ in
-        XCTAssertEqual(tokens, expected, file: file, line: line)
+        XCTAssertNoDifference(tokens, expected, file: file, line: line)
     }
 }
 
@@ -34,8 +34,8 @@ private func validateTokens(_ text: String, _ expected: CherryToken.Kind, file: 
 
 private func validateDiagnostics(_ text: String, _ expectedTokens: [CherryToken.Kind], _ expectedDiagnostics: [Diagnostic], file: StaticString = #file, line: UInt = #line) {
     withTokens(text) { tokens, diagnostics in
-        XCTAssertEqual(tokens, expectedTokens, file: file, line: line)
-        XCTAssertEqual(diagnostics, expectedDiagnostics, file: file, line: line)
+        XCTAssertNoDifference(tokens, expectedTokens, file: file, line: line)
+        XCTAssertNoDifference(diagnostics, expectedDiagnostics, file: file, line: line)
     }
 }
 
@@ -76,6 +76,36 @@ final class LiteralTests: XCTestCase {
     func testHexFloatLiteralRequiresExponent() throws {
         validateDiagnostics("0x1.7", [.floatingPointLiteral], [
             Diagnostic(file: testFile, line: 1, column: 6, behavior: .error, message: "hexadecimal floating point literal must end with an exponent")
+        ])
+    }
+    
+    func testStringLiteral() throws {
+        let text = #"""
+        "" "abc" "a\0\"\n\r\b\f\t\\z" "їЄ언🏴‍☠️" "\u{A0}\u{a0}"
+        """#
+        validateTokens(text, .stringLiteral)
+    }
+    
+    func testStringLiteralErrors() throws {
+        let text = #"""
+        "abc
+        "a\z"
+        "a\u"
+        "a\u{"
+        "a\u{a"
+        "a\u{a0"
+        "a\u{ffffffff}"
+        """#
+        validateDiagnostics(text, [
+            .stringLiteral, .nl,
+            .stringLiteral, .nl,
+            .stringLiteral, .nl,
+            .stringLiteral, .nl,
+            .stringLiteral, .nl,
+            .stringLiteral, .nl,
+            .stringLiteral
+        ], [
+            Diagnostic(file: testFile, line: 1, column: 1, behavior: .error, message: "unterminated string literal")
         ])
     }
     

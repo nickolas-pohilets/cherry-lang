@@ -69,7 +69,7 @@ private func getDiff<T: Hashable>(old: [T], new: [T]) -> [(ChangeKind, T)]? {
 }
 
 func XCTAssertNoDifference<T: Hashable>(_ a: [T], _ b: [T], message msg: String = "", file: StaticString = #file, line: UInt = #line) {
-    if let diff = getDiff(old: a, new: b) {
+    if let diff = getDiff(old: b, new: a) {
         var message = msg
         message += ": [\n"
         for (kind, element) in diff {

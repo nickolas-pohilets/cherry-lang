@@ -1,4 +1,4 @@
-// Generated from java-escape by ANTLR 4.11.1
+// Generated from CherryParser.g4 by ANTLR 4.11.1
 import Antlr4
 
 /**
@@ -19,17 +19,77 @@ internal protocol CherryParserListener: ParseTreeListener {
 	 */
 	func exitLiteral(_ ctx: CherryParser.LiteralContext)
 	/**
-	 * Enter a parse tree produced by {@link CherryParser#numericLiteral}.
+	 * Enter a parse tree produced by {@link CherryParser#integerLiteral}.
 	 - Parameters:
 	   - ctx: the parse tree
 	 */
-	func enterNumericLiteral(_ ctx: CherryParser.NumericLiteralContext)
+	func enterIntegerLiteral(_ ctx: CherryParser.IntegerLiteralContext)
 	/**
-	 * Exit a parse tree produced by {@link CherryParser#numericLiteral}.
+	 * Exit a parse tree produced by {@link CherryParser#integerLiteral}.
 	 - Parameters:
 	   - ctx: the parse tree
 	 */
-	func exitNumericLiteral(_ ctx: CherryParser.NumericLiteralContext)
+	func exitIntegerLiteral(_ ctx: CherryParser.IntegerLiteralContext)
+	/**
+	 * Enter a parse tree produced by {@link CherryParser#floatingPointLiteral}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterFloatingPointLiteral(_ ctx: CherryParser.FloatingPointLiteralContext)
+	/**
+	 * Exit a parse tree produced by {@link CherryParser#floatingPointLiteral}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitFloatingPointLiteral(_ ctx: CherryParser.FloatingPointLiteralContext)
+	/**
+	 * Enter a parse tree produced by {@link CherryParser#stringLiteral}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterStringLiteral(_ ctx: CherryParser.StringLiteralContext)
+	/**
+	 * Exit a parse tree produced by {@link CherryParser#stringLiteral}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitStringLiteral(_ ctx: CherryParser.StringLiteralContext)
+	/**
+	 * Enter a parse tree produced by {@link CherryParser#stringContent}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterStringContent(_ ctx: CherryParser.StringContentContext)
+	/**
+	 * Exit a parse tree produced by {@link CherryParser#stringContent}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitStringContent(_ ctx: CherryParser.StringContentContext)
+	/**
+	 * Enter a parse tree produced by {@link CherryParser#booleanLiteral}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterBooleanLiteral(_ ctx: CherryParser.BooleanLiteralContext)
+	/**
+	 * Exit a parse tree produced by {@link CherryParser#booleanLiteral}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitBooleanLiteral(_ ctx: CherryParser.BooleanLiteralContext)
+	/**
+	 * Enter a parse tree produced by {@link CherryParser#nilLiteral}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func enterNilLiteral(_ ctx: CherryParser.NilLiteralContext)
+	/**
+	 * Exit a parse tree produced by {@link CherryParser#nilLiteral}.
+	 - Parameters:
+	   - ctx: the parse tree
+	 */
+	func exitNilLiteral(_ ctx: CherryParser.NilLiteralContext)
 	/**
 	 * Enter a parse tree produced by {@link CherryParser#identifierList}.
 	 - Parameters:
@@ -187,41 +247,47 @@ internal protocol CherryParserListener: ParseTreeListener {
 	 */
 	func exitPrecedenceGroupName(_ ctx: CherryParser.PrecedenceGroupNameContext)
 	/**
-	 * Enter a parse tree produced by {@link CherryParser#stat}.
+	 * Enter a parse tree produced by the {@code OperatorExpr}
+	 * labeled alternative in {@link CherryParser#expr}.
 	 - Parameters:
 	   - ctx: the parse tree
 	 */
-	func enterStat(_ ctx: CherryParser.StatContext)
+	func enterOperatorExpr(_ ctx: CherryParser.OperatorExprContext)
 	/**
-	 * Exit a parse tree produced by {@link CherryParser#stat}.
+	 * Exit a parse tree produced by the {@code OperatorExpr}
+	 * labeled alternative in {@link CherryParser#expr}.
 	 - Parameters:
 	   - ctx: the parse tree
 	 */
-	func exitStat(_ ctx: CherryParser.StatContext)
+	func exitOperatorExpr(_ ctx: CherryParser.OperatorExprContext)
 	/**
-	 * Enter a parse tree produced by {@link CherryParser#expr}.
+	 * Enter a parse tree produced by the {@code IdentifierExpr}
+	 * labeled alternative in {@link CherryParser#expr}.
 	 - Parameters:
 	   - ctx: the parse tree
 	 */
-	func enterExpr(_ ctx: CherryParser.ExprContext)
+	func enterIdentifierExpr(_ ctx: CherryParser.IdentifierExprContext)
 	/**
-	 * Exit a parse tree produced by {@link CherryParser#expr}.
+	 * Exit a parse tree produced by the {@code IdentifierExpr}
+	 * labeled alternative in {@link CherryParser#expr}.
 	 - Parameters:
 	   - ctx: the parse tree
 	 */
-	func exitExpr(_ ctx: CherryParser.ExprContext)
+	func exitIdentifierExpr(_ ctx: CherryParser.IdentifierExprContext)
 	/**
-	 * Enter a parse tree produced by {@link CherryParser#stringInterpolation}.
+	 * Enter a parse tree produced by the {@code LiteralExpr}
+	 * labeled alternative in {@link CherryParser#expr}.
 	 - Parameters:
 	   - ctx: the parse tree
 	 */
-	func enterStringInterpolation(_ ctx: CherryParser.StringInterpolationContext)
+	func enterLiteralExpr(_ ctx: CherryParser.LiteralExprContext)
 	/**
-	 * Exit a parse tree produced by {@link CherryParser#stringInterpolation}.
+	 * Exit a parse tree produced by the {@code LiteralExpr}
+	 * labeled alternative in {@link CherryParser#expr}.
 	 - Parameters:
 	   - ctx: the parse tree
 	 */
-	func exitStringInterpolation(_ ctx: CherryParser.StringInterpolationContext)
+	func exitLiteralExpr(_ ctx: CherryParser.LiteralExprContext)
 	/**
 	 * Enter a parse tree produced by {@link CherryParser#lbrace}.
 	 - Parameters:

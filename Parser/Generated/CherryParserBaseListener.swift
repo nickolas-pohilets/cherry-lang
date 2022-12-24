@@ -1,4 +1,4 @@
-// Generated from java-escape by ANTLR 4.11.1
+// Generated from CherryParser.g4 by ANTLR 4.11.1
 
 import Antlr4
 
@@ -28,13 +28,78 @@ internal class CherryParserBaseListener: CherryParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	internal func enterNumericLiteral(_ ctx: CherryParser.NumericLiteralContext) { }
+	internal func enterIntegerLiteral(_ ctx: CherryParser.IntegerLiteralContext) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	internal func exitNumericLiteral(_ ctx: CherryParser.NumericLiteralContext) { }
+	internal func exitIntegerLiteral(_ ctx: CherryParser.IntegerLiteralContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func enterFloatingPointLiteral(_ ctx: CherryParser.FloatingPointLiteralContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func exitFloatingPointLiteral(_ ctx: CherryParser.FloatingPointLiteralContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func enterStringLiteral(_ ctx: CherryParser.StringLiteralContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func exitStringLiteral(_ ctx: CherryParser.StringLiteralContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func enterStringContent(_ ctx: CherryParser.StringContentContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func exitStringContent(_ ctx: CherryParser.StringContentContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func enterBooleanLiteral(_ ctx: CherryParser.BooleanLiteralContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func exitBooleanLiteral(_ ctx: CherryParser.BooleanLiteralContext) { }
+
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func enterNilLiteral(_ ctx: CherryParser.NilLiteralContext) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	internal func exitNilLiteral(_ ctx: CherryParser.NilLiteralContext) { }
 
 	/**
 	 * {@inheritDoc}
@@ -210,39 +275,39 @@ internal class CherryParserBaseListener: CherryParserListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	internal func enterStat(_ ctx: CherryParser.StatContext) { }
+	internal func enterOperatorExpr(_ ctx: CherryParser.OperatorExprContext) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	internal func exitStat(_ ctx: CherryParser.StatContext) { }
+	internal func exitOperatorExpr(_ ctx: CherryParser.OperatorExprContext) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	internal func enterExpr(_ ctx: CherryParser.ExprContext) { }
+	internal func enterIdentifierExpr(_ ctx: CherryParser.IdentifierExprContext) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	internal func exitExpr(_ ctx: CherryParser.ExprContext) { }
+	internal func exitIdentifierExpr(_ ctx: CherryParser.IdentifierExprContext) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	internal func enterStringInterpolation(_ ctx: CherryParser.StringInterpolationContext) { }
+	internal func enterLiteralExpr(_ ctx: CherryParser.LiteralExprContext) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	internal func exitStringInterpolation(_ ctx: CherryParser.StringInterpolationContext) { }
+	internal func exitLiteralExpr(_ ctx: CherryParser.LiteralExprContext) { }
 
 	/**
 	 * {@inheritDoc}

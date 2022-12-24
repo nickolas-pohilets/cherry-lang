@@ -8,6 +8,15 @@
         "branch" : "master",
         "revision" : "76fa05c21b12b96a6c12a0a82e611ed9d87d5af4"
       }
+    },
+    {
+      "identity" : "bigint",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/attaswift/BigInt.git",
+      "state" : {
+        "revision" : "0ed110f7555c34ff468e72e1686e59721f2b0da6",
+        "version" : "5.3.0"
+      }
     }
   ],
   "version" : 2

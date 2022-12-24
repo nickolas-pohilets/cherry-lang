@@ -4,29 +4,82 @@ lexer grammar CherryLexer;
     private var stringInterpolations: [Int] = []
     private var bracketDepth: Int = 0
     
+    private var stringLiteralStartPosition: Position?
+    private var isMultilineStringLiteral: Bool = false
+    
+    private var firstBadDigit: (digit: UnicodeScalar, position: Position)?
+    
     private func canResumeInterpolation() -> Bool {
         stringInterpolations.last == bracketDepth
     }
     
-    private enum ErrorPosition {
-        case tokenStart
-        case current
+    private struct Position {
+        var index: Int /// Index in input stream
+        var line: Int
+        var charPositionInLine: Int
     }
     
-    private func reportCustomError(_ msg: String, position: ErrorPosition = .current) {
-        let charPositionInLine: Int
-        let line: Int
-        switch position {
-        case .tokenStart:
-            charPositionInLine = _tokenStartCharPositionInLine
-            line = _tokenStartLine
-        case .current:
-            charPositionInLine = getInterpreter().getCharPositionInLine()
-            line = getInterpreter().getLine()
-        }
-        
+    private func tokenStartPosition() -> Position {
+        return Position(
+            index: _tokenStartCharIndex,
+            line: _tokenStartLine,
+            charPositionInLine: _tokenStartCharPositionInLine
+        )
+    }
+    
+    private func currentPosition() -> Position {
+        return Position(
+            index: _input!.index(),
+            line: getInterpreter().getLine(),
+            charPositionInLine: getInterpreter().getCharPositionInLine()
+        )
+    }
+    
+    // Workaround for ANTLR not rewinding line/charPositionInLine when executing actions
+    private func fixedPosition(_ p: Position) -> Position {
+        let current = currentPosition()
+        assert(current.index - current.charPositionInLine <= p.index && p.index <= current.index && p.line == current.line)
+        return Position(index: p.index, line: p.line, charPositionInLine: current.charPositionInLine - (current.index - p.index))
+    }
+    
+    private func reportCustomError(_ msg: String) {
+        reportCustomError(msg, position: currentPosition())
+    }
+    
+    private func reportCustomError(_ msg: String, position: Position) {
         let listener = getErrorListenerDispatch()
-        listener.syntaxError(self, nil, line, charPositionInLine, msg, nil)
+        listener.syntaxError(self, nil, position.line, position.charPositionInLine, msg, nil)
+    }
+    
+    private func currentCharacter() throws -> UnicodeScalar? {
+        return (try _input?.LA(1)).flatMap { UnicodeScalar($0) }
+    }
+    
+    private func saveBadDigit() throws {
+        firstBadDigit = (digit: try currentCharacter()!, position: currentPosition())
+    }
+    
+    private func emitBadDigitError(_ digitDescription: String) {
+        let (digit, position) = firstBadDigit!
+        let fixedPos = fixedPosition(position)
+        reportCustomError("'\(digit)' is not a valid \(digitDescription) in integer literal", position: fixedPos)
+        firstBadDigit = nil
+    }
+    
+    private func emitBadBinaryDigitError() {
+        emitBadDigitError("binary digit (0 or 1)")
+    }
+    
+    private func emitBadOctalDigitError() {
+        emitBadDigitError("octal digit (0-7)")
+    }
+    
+    private func emitBadDecimalDigitError() {
+        emitBadDigitError("digit")
+    }
+    
+    private func emitBadHexadecimalDigitError() {
+        emitBadDigitError("hexadecimal digit (0-9, A-F)")
     }
 }
 
@@ -56,53 +109,90 @@ CWK_ASSOCIATIVITY_VALUE: 'left' | 'right' | 'none';
 //
 // Literals
 //
+
+FLOATING_POINT_LITERAL
+    : '-'?
+      // If dot is present, fractional digits are required, to disambiguate from member access
+      ( DECIMAL_LITERAL '.' DECIMAL_LITERAL ([eE] [+-]? DECIMAL_LITERAL)?
+      | DECIMAL_LITERAL [eE] [+-]? DECIMAL_LITERAL
+      // Exponent is required, to disambiguate from member access
+      | HEXADECIMAL_LITERAL '.' HEXADECIMAL_DIGITS [pP] [+-]? DECIMAL_LITERAL
+      | HEXADECIMAL_LITERAL [pP] [+-]? DECIMAL_LITERAL
+      | HEXADECIMAL_LITERAL '.' HEXADECIMAL_DIGITS?
+        { reportCustomError("hexadecimal floating point literal must end with an exponent") }
+      )
+    ;
     
 INTEGER_LITERAL
     : '-'?
       ( '0b' [01] [01_]*
       | '0o' [0-7] [0-7_]*
       | DECIMAL_LITERAL
-      | HEXADECIMAL_LITERAL
+      | '0x' HEXADECIMAL_DIGITS
+      | '0b' [01]? [01_]* {try saveBadDigit()} IDENTIFIER_CHARACTER+ { emitBadBinaryDigitError() }
+      | '0o' [0-7]? [0-7_]* {try saveBadDigit()} IDENTIFIER_CHARACTER+ { emitBadOctalDigitError() }
+      | '0x' HEXADECIMAL_DIGITS? {try saveBadDigit()} IDENTIFIER_CHARACTER+ { emitBadHexadecimalDigitError() }
+      | DECIMAL_LITERAL {try saveBadDigit()} IDENTIFIER_CHARACTER+ { emitBadDecimalDigitError() }
       )
     ;
     
 fragment DECIMAL_LITERAL: [0-9] [0-9_]* ;
 fragment HEXADECIMAL_LITERAL: '0x' HEXADECIMAL_DIGITS ;
 fragment HEXADECIMAL_DIGITS: [0-9a-fA-F] [0-9a-fA-F_]* ;
-    
-FLOATING_POINT_LITERAL
-    : '-'?
-      // If dot is present, fractional digits are required, to disambiguate from member access
-      ( DECIMAL_LITERAL ('.' DECIMAL_LITERAL)? ([eE] [+-]? DECIMAL_LITERAL)?
-      // Exponent is required, to disambiguate from member access
-      | HEXADECIMAL_LITERAL ('.' HEXADECIMAL_DIGITS)? [pP] [+-]? DECIMAL_LITERAL
-      | HEXADECIMAL_LITERAL ('.' [0-9] HEXADECIMAL_DIGITS?)?
-        { reportCustomError("hexadecimal floating point literal must end with an exponent") }
-      )
-    ;
 
 BOOLEAN_LITERAL: 'true' | 'false';
 NIL_LITERAL: 'nil' ;
 
-STRING_LITERAL: '"' STRING_CONTENT ('"' | { reportCustomError("unterminated string literal", position: .tokenStart) });
-fragment STRING_CONTENT: (ESC | ~["\\\r\n])* ;
-fragment ESC: '\\' ([0"\\bfnrt] | UNICODE | ~'{' { reportCustomError("invalid escape sequence in literal") } ) ;
-fragment UNICODE : 'u' ( '{' HEX+ '}' | { reportCustomError("expected hexadecimal code in braces after unicode escape") } );
-fragment HEX : [0-9a-fA-F]; // Underscores not allowed
+STRING_LITERAL_START
+    : '"' {
+        stringLiteralStartPosition = tokenStartPosition()
+        isMultilineStringLiteral = false
+      } -> pushMode(STRING_CONTENT)
+    ;
+    
+MULTILINE_STRING_LITERAL_START
+    : ( '""""' WS? NL
+      | '"""' { reportCustomError("multi-line string literal content must begin on a new line") }
+      )
+      {
+        stringLiteralStartPosition = tokenStartPosition()
+        isMultilineStringLiteral = true
+      } -> pushMode(STRING_CONTENT)
+    ;
+    
+STRING_INTERPOLATION_CLOSE
+    : '}' { canResumeInterpolation() }? { stringInterpolations.removeLast() } -> popMode;
 
-MULTILINE_STRING_LITERAL: '"""' WS? NL MULTILINE_STRING_CONTENT NL WS? '"""';
-fragment MULTILINE_STRING_CONTENT: (ESC | ~[\\])*?;
+// See also mode STRING_CONTENT
 
-STRING_INTERPOLATION_START   : '"' STRING_CONTENT '\\{' { stringInterpolations.append(bracketDepth) } ;
-STRING_INTERPOLATION_CONTINUE: '}' { canResumeInterpolation() }? STRING_CONTENT '\\{';
-STRING_INTERPOLATION_FINISH  : '}' { canResumeInterpolation() }? STRING_CONTENT '"' { stringInterpolations.removeLast() } ;
-
-MULTILINE_STRING_INTERPOLATION_START   : '"""' MULTILINE_STRING_CONTENT '\\{' { stringInterpolations.append(bracketDepth) } ;
-MULTILINE_STRING_INTERPOLATION_CONTINUE: '}' { canResumeInterpolation() }? MULTILINE_STRING_CONTENT '\\{';
-MULTILINE_STRING_INTERPOLATION_FINISH  : '}' { canResumeInterpolation() }? MULTILINE_STRING_CONTENT '"""' { stringInterpolations.removeLast() } ;
-
-RAW_STRING_LITERAL: '#' (RAW_STRING_LITERAL | '"' ~[\r\n]*? '"') '#' ;
-RAW_MULTILINE_STRING_LITERAL: '#' (RAW_MULTILINE_STRING_LITERAL | '"""' WS? NL  .*? NL WS? '"""') '#' ;
+RAW_STRING_LITERAL
+    : '#' (RAW_STRING_LITERAL | '"' ~[\r\n]*? '"') '#'
+    ;
+BAD_RAW_STRING_LITERAL
+    : ( '#'+ '"' ~[\r\n]* '"'?
+      | '#'+ RAW_STRING_LITERAL
+      )
+      { reportCustomError("unterminated string literal", position: tokenStartPosition()) }
+    ;
+RAW_MULTILINE_STRING_LITERAL
+    : '#'
+      ( RAW_MULTILINE_STRING_LITERAL
+      | '"""'
+        ( WS? NL
+        | { reportCustomError("multi-line string literal content must begin on a new line") }
+        )
+        .*?
+        ( NL WS?
+        | { reportCustomError("multi-line string literal closing delimiter must begin on a new line", position: currentPosition()) }
+        )
+        '"""'
+      )
+      '#'
+    ;
+BAD_RAW_MULTILINE_STRING_LITERAL
+    : '#'+ '"""' .*
+      { reportCustomError("unterminated string literal", position: tokenStartPosition()) }
+    ;
 
 //
 // Identifiers
@@ -206,3 +296,34 @@ fragment DOT_OP_CHARACTER
     : '.'
     | OP_CHARACTER
     ;
+
+
+mode STRING_CONTENT;
+
+STRING_LITERAL_END: '"' {!isMultilineStringLiteral}? -> popMode;
+
+MULTILINE_STRING_LITERAL_END
+    : ( NL WS?
+      | { reportCustomError("multi-line string literal closing delimiter must begin on a new line", position: tokenStartPosition()) }
+      )
+      '"""'
+      {isMultilineStringLiteral}?
+      -> popMode
+    ;
+
+STRING_CONTENT_NL
+  : ('\r'? '\n' | '\r')
+    {!isMultilineStringLiteral}?
+    { reportCustomError("unterminated string literal", position: stringLiteralStartPosition!) }
+    -> type(NL), popMode
+  ;
+  
+STRING_CONTENT_VERBATIM: (~["\\\r\n] | [\r\n] {isMultilineStringLiteral}?)+;
+STRING_CONTENT_ESCAPE: '\\' [0"\\nrt] ;
+STRING_CONTENT_UNICODE: '\\' 'u' '{' [0-9A-Fa-f]+ '}';
+STRING_CONTENT_BAD_ESCAPE
+    : '\\' 'u' { reportCustomError("expected hexadecimal code in braces after unicode escape") }
+    | '\\' { reportCustomError("invalid escape sequence in literal") }
+    ;
+
+STRING_INTERPOLATION_OPEN: '\\{' { stringInterpolations.append(bracketDepth) } -> pushMode(DEFAULT_MODE);

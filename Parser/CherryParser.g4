@@ -6,17 +6,40 @@ options { tokenVocab=CherryLexer; }
 //
 
 literal
-    : numericLiteral
-    | STRING_LITERAL
+    : integerLiteral
+    | floatingPointLiteral
+    | stringLiteral
 //  | regularExpressionLiteral
-    | BOOLEAN_LITERAL
-    | NIL_LITERAL
+    | booleanLiteral
+    | nilLiteral
     ;
+    
+integerLiteral: INTEGER_LITERAL ;
+floatingPointLiteral: FLOATING_POINT_LITERAL ;
 
-numericLiteral
-    : INTEGER_LITERAL
-    | FLOATING_POINT_LITERAL
+stringLiteral
+    : STRING_LITERAL_START
+      stringContent*
+      STRING_LITERAL_END
+    | MULTILINE_STRING_LITERAL_START
+      stringContent*
+      MULTILINE_STRING_LITERAL_END
+    | RAW_STRING_LITERAL
+    | BAD_RAW_STRING_LITERAL
+    | RAW_MULTILINE_STRING_LITERAL
+    | BAD_RAW_MULTILINE_STRING_LITERAL
     ;
+        
+stringContent
+    : STRING_CONTENT_VERBATIM
+    | STRING_CONTENT_ESCAPE
+    | STRING_CONTENT_UNICODE
+    | STRING_CONTENT_BAD_ESCAPE
+    | STRING_INTERPOLATION_OPEN expr STRING_INTERPOLATION_CLOSE
+    ;
+    
+booleanLiteral: BOOLEAN_LITERAL ;
+nilLiteral: NIL_LITERAL ;
 
 //
 // Identifiers
@@ -42,18 +65,19 @@ decl: varDecl
     | funcDecl
     | classDecl
     | precedenceGroupDeclaration
+    | expr semicolon
     ;
     
 varDecl
-    : 'var' identifier (';' | NL+)
+    : 'var' identifier semicolon
     ;
     
 funcDecl
-    : 'func' identifier (';' | NL+)
+    : 'func' identifier semicolon
     ;
     
 classDecl
-    : 'class' identifier (';' | NL+)
+    : 'class' identifier semicolon
     ;
         
 precedenceGroupDeclaration
@@ -80,24 +104,15 @@ precedenceGroupAssociativity
 precedenceGroupName
     : identifier
     ;
-    
-stat: expr? semicolon
-    ;
 
-expr: expr OP expr
-    | literal
-    | identifier
-    | STRING_LITERAL
-    | stringInterpolation
-    | LPAREN expr RPAREN
-    | expr LBRACE expr RBRACE expr
+expr: lhs=expr op=OP rhs=expr      # OperatorExpr
+    | literal                      # LiteralExpr
+    | identifier                   # IdentifierExpr
+    | IMPLICIT_PARAMETER_NAME      # IdentifierExpr
+//  | PROPERTY_WRAPPER_PROJECTION  # IdentifierExpr
     ;
-    
-stringInterpolation
-    : STRING_INTERPOLATION_START expr ( STRING_INTERPOLATION_CONTINUE expr)* STRING_INTERPOLATION_FINISH
-    ;
-    
+        
 lbrace: LBRACE NL* ;
 rbrace: RBRACE NL* ;
-semicolon: (SEMICOLON | NL) NL* ;
-coma: (COMA | NL) NL* ;
+semicolon: (SEMICOLON | NL | EOF) NL* ;
+coma: (COMA | NL | EOF) NL* ;
